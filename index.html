@@ -705,6 +705,7 @@ async function loadData() {
       if (snapshot.exists()) {
         data = snapshot.val();
       } else {
+        // Jika database benar-benar kosong, inisialisasi array kosong.
         data = {projects:[], todos:[], Presensi:[]};
       }
       
@@ -928,7 +929,7 @@ function getReportRange(){
   end.setHours(23,59,59,999);
   
   const start = new Date(baseDate);
-  start.setDate(baseDate.getDate() - 6); // 7 hari inklusif (termasuk hari H)
+  start.setDate(baseDate.getDate() - 6); // 7 hari inklusif
   start.setHours(0,0,0,0);
   
   return { start: start.getTime(), end: end.getTime(), today: ds(baseDate) };
@@ -1102,7 +1103,7 @@ function setKontribPeriod(p,btn){
   const customBox = document.getElementById('kp-custom-dates');
   if(p === 'custom') {
     customBox.style.display = 'grid'; 
-    // Auto-set ke tanggal 20 bulan ini/lalu, sampai tanggal 19 bulan depannya
+    // Auto-set rentang tgl 20 (bulan lalu) s/d 19 (bulan ini)
     const now = new Date();
     let s = new Date(now.getFullYear(), now.getMonth(), 20);
     if (now.getDate() < 20) {
@@ -1121,7 +1122,6 @@ function setKontribPeriod(p,btn){
   renderKontribusi();
 }
 
-// KHUSUS DASHBOARD TETAP MENGGUNAKAN MINGGU REAL-TIME
 function getDashWeekRange(){
   const now=new Date(),day=now.getDay();
   const mon=new Date(now);mon.setDate(now.getDate()-(day===0?6:day-1));mon.setHours(0,0,0,0);
@@ -1282,9 +1282,7 @@ async function init(){
   document.getElementById('rp-date').value=ds(now);
   document.getElementById('dash-date-sub').textContent=now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 
-  if(!data || !data.projects){
-    data = {projects:[], todos:[], Presensi:[]}; 
-  }
+  // FUNGSI TEMPLATE OTOMATIS SUDAH DIHAPUS TOTAL DI SINI.
 
   renderDash();
   updateTodoBadge();

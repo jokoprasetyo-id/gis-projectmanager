@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GIS Project Manager</title>
+<style>
+:root{
+  --bg-body:linear-gradient(135deg,#e8f0fe 0%,#f0faf6 40%,#fdf0fa 100%);
+  --glass:rgba(255,255,255,0.55);
+  --glass-border:rgba(255,255,255,0.75);
+  --glass-shadow:0 8px 32px rgba(31,38,135,0.10),0 1.5px 4px rgba(255,255,255,0.18) inset;
+  --glass-heavy:rgba(255,255,255,0.72);
+  --blur:blur(18px) saturate(180%);
+  --blur-sm:blur(10px) saturate(160%);
+  --surface:rgba(255,255,255,0.60);
+  --surface2:rgba(255,255,255,0.35);
+  --border:rgba(255,255,255,0.60);
+  --border2:rgba(180,200,230,0.30);
+  --text:#1a1a2e;--text2:#4a5568;--text3:#9aa5b4;
+  --teal:#0f6e56;--teal-bg:rgba(29,158,117,0.12);--teal-mid:#1d9e75;
+  --blue:#185fa5;--blue-bg:rgba(55,138,221,0.13);--blue-mid:#378add;
+  --red:#a32d2d;--red-bg:rgba(226,75,74,0.12);--red-mid:#e24b4a;
+  --amber:#854f0b;--amber-bg:rgba(186,117,23,0.12);--amber-mid:#ba7517;
+  --purple:#3c3489;--purple-bg:rgba(127,119,221,0.13);--purple-mid:#7f77dd;
+  --radius:12px;--radius-lg:18px;--radius-xl:24px;
+  --nav-w:228px;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg-body:linear-gradient(135deg,#0d1b2a 0%,#0a1f18 40%,#1a0d2e 100%);
+    --glass:rgba(30,40,60,0.60);
+    --glass-border:rgba(255,255,255,0.12);
+    --glass-shadow:0 8px 32px rgba(0,0,0,0.35),0 1px 3px rgba(255,255,255,0.04) inset;
+    --glass-heavy:rgba(30,40,60,0.78);
+    --surface:rgba(40,55,75,0.55);
+    --surface2:rgba(40,55,75,0.35);
+    --border:rgba(255,255,255,0.12);
+    --border2:rgba(255,255,255,0.07);
+    --text:#e8f0ff;--text2:#9ab0cc;--text3:#4a607a;
+    --teal:#5dcaa5;--teal-bg:rgba(93,202,165,0.13);
+    --blue:#85b7eb;--blue-bg:rgba(133,183,235,0.12);
+    --red:#f09595;--red-bg:rgba(240,149,149,0.12);
+    --amber:#ef9f27;--amber-bg:rgba(239,159,39,0.13);
+    --purple:#afa9ec;--purple-bg:rgba(175,169,236,0.13);--purple-mid:#afa9ec;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',system-ui,sans-serif;background:var(--bg-body);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.layout{display:flex;min-height:100vh}
+
+/* SIDEBAR GLASS */
+.sidebar{
+  width:var(--nav-w);
+  background:var(--glass-heavy);
+  backdrop-filter:var(--blur);
+  -webkit-backdrop-filter:var(--blur);
+  border-right:1px solid var(--glass-border);
+  padding:20px 0;
+  display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto;
+  box-shadow:var(--glass-shadow);
+}
+.sidebar::-webkit-scrollbar{width:0}
+.sidebar-logo{padding:0 16px 18px;border-bottom:1px solid var(--border);margin-bottom:10px}
+.logo-badge{
+  width:40px;height:40px;border-radius:12px;
+  background:linear-gradient(135deg,var(--teal-mid),var(--blue-mid));
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:#fff;margin-bottom:9px;
+  box-shadow:0 4px 12px rgba(29,158,117,0.35);
+}
+.logo-title{font-size:13px;font-weight:700;color:var(--text);letter-spacing:-.2px}
+.logo-sub{font-size:10px;color:var(--text3)}
+.logo-date{font-size:10px;color:var(--text2);margin-top:6px;padding:3px 8px;background:var(--surface2);border-radius:7px;display:inline-block;border:1px solid var(--border2)}
+.nav-section{font-size:9px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;padding:10px 16px 4px}
+.nav-link{display:flex;align-items:center;gap:9px;padding:9px 14px;font-size:12px;font-weight:500;color:var(--text2);cursor:pointer;transition:.18s;border-left:2px solid transparent;user-select:none;margin:1px 8px;border-radius:10px}
+.nav-link:hover{color:var(--text);background:var(--surface2)}
+.nav-link.active{
+  color:var(--teal);
+  background:var(--teal-bg);
+  border-left:none;
+  font-weight:600;
+  box-shadow:0 2px 8px rgba(29,158,117,0.10);
+}
+.nav-icon{width:16px;height:16px;flex-shrink:0;opacity:.65}
+.nav-link.active .nav-icon{opacity:1}
+.nav-badge-count{margin-left:auto;background:var(--red-bg);color:var(--red);font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;min-width:16px;text-align:center}
+
+/* MAIN */
+.main{margin-left:var(--nav-w);flex:1;padding:24px 26px;min-width:0}
+
+/* BOTTOM NAV */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--glass-heavy);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-top:1px solid var(--glass-border);z-index:100;padding-bottom:env(safe-area-inset-bottom)}
+.bnav-items{display:flex}
+.bnav-item{flex:1;padding:9px 0 7px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:9px;font-weight:500;color:var(--text3);cursor:pointer;transition:.15s;user-select:none;border:none;background:none}
+.bnav-item.active{color:var(--teal)}
+.bnav-icon{width:19px;height:19px}
+
+/* PAGE */
+.page{display:none}.page.active{display:block}
+
+/* SECTION HEADER */
+.section-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:10px}
+.section-title{font-size:20px;font-weight:700;color:var(--text);letter-spacing:-.4px}
+.section-sub{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* GLASS CARD */
+.card{
+  background:var(--glass);
+  backdrop-filter:var(--blur-sm);
+  -webkit-backdrop-filter:var(--blur-sm);
+  border:1px solid var(--glass-border);
+  border-radius:var(--radius-lg);
+  padding:18px;
+  margin-bottom:14px;
+  box-shadow:var(--glass-shadow);
+}
+.card-title{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:13px;display:flex;align-items:center;justify-content:space-between;gap:6px;text-transform:uppercase;letter-spacing:.05em}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.stat-card{
+  background:var(--glass);
+  backdrop-filter:var(--blur-sm);
+  -webkit-backdrop-filter:var(--blur-sm);
+  border:1px solid var(--glass-border);
+  border-radius:var(--radius-lg);
+  padding:16px 14px;text-align:center;
+  box-shadow:var(--glass-shadow);
+}
+.stat-n{font-size:28px;font-weight:700;line-height:1.1;margin-bottom:3px;letter-spacing:-.5px}
+.stat-l{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+
+/* DASHBOARD GRID */
+.dash-grid{display:grid;grid-template-columns:1fr 330px;gap:14px;align-items:start}
+.dash-col{display:flex;flex-direction:column;gap:0}
+
+/* FORM */
+.flabel{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px}
+.finput{
+  width:100%;
+  background:rgba(255,255,255,0.45);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid var(--glass-border);
+  border-radius:10px;
+  padding:9px 12px;
+  font-size:13px;color:var(--text);font-family:inherit;
+  outline:none;transition:.18s;-webkit-appearance:none;
+  box-shadow:0 1px 4px rgba(0,0,0,0.04);
+}
+@media(prefers-color-scheme:dark){.finput{background:rgba(40,55,75,0.45)}}
+.finput:focus{border-color:rgba(29,158,117,0.5);background:rgba(255,255,255,0.65);box-shadow:0 0 0 3px rgba(29,158,117,0.15)}
+@media(prefers-color-scheme:dark){.finput:focus{background:rgba(40,55,75,0.7)}}
+.finput::placeholder{color:var(--text3)}
+.finput[type=range]{padding:3px 0;accent-color:var(--teal-mid);background:transparent;border:none;box-shadow:none;cursor:pointer}
+.finput[type=date],.finput[type=time]{cursor:pointer;color-scheme:light dark}
+select.finput{cursor:pointer}
+.frow{margin-bottom:12px}
+.fgrow{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
+@media(max-width:480px){.fgrow{grid-template-columns:1fr}}
+
+/* PILLS */
+.pill-row{display:flex;gap:5px;flex-wrap:wrap}
+.pill{
+  padding:5px 13px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  color:var(--text2);transition:.18s;user-select:none;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+}
+.pill:hover{border-color:var(--teal-mid);color:var(--teal)}
+.pill.on{background:rgba(29,158,117,0.15);border-color:rgba(29,158,117,0.45);color:var(--teal);font-weight:700}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:8px 15px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;border:none;transition:.18s;user-select:none;text-decoration:none;white-space:nowrap;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.btn:active{transform:scale(.97)}
+.btn-block{width:100%}
+.btn-primary{background:var(--text);color:var(--bg-body,#fff);box-shadow:0 2px 8px rgba(0,0,0,0.18)}
+.btn-primary{background:#1a1a2e;color:#fff}
+@media(prefers-color-scheme:dark){.btn-primary{background:#e8f0ff;color:#0d1b2a}}
+.btn-primary:hover{opacity:.85}
+.btn-outline{background:rgba(255,255,255,0.35);color:var(--text);border:1px solid var(--border)}
+@media(prefers-color-scheme:dark){.btn-outline{background:rgba(40,55,75,0.4)}}
+.btn-outline:hover{background:var(--surface2)}
+.btn-teal{background:rgba(29,158,117,0.15);color:var(--teal);border:1px solid rgba(29,158,117,0.35)}
+.btn-teal:hover{background:rgba(29,158,117,0.22)}
+.btn-sm{padding:6px 11px;font-size:11px;border-radius:8px}
+.btn-danger{background:var(--red-bg);color:var(--red);border:1px solid rgba(226,75,74,0.25)}
+.btn-ai{background:rgba(127,119,221,0.15);color:var(--purple);border:1px solid rgba(127,119,221,0.30)}
+.btn-ai:hover{background:rgba(127,119,221,0.22)}
+.btn-row{display:flex;gap:7px;flex-wrap:wrap}
+.btn-row .btn{flex:1;min-width:0}
+
+/* BADGE */
+.badge{font-size:10px;padding:3px 8px;border-radius:7px;font-weight:700;display:inline-block}
+.b-aktif{background:var(--teal-bg);color:var(--teal)}
+.b-urgent{background:var(--red-bg);color:var(--red)}
+.b-hold{background:var(--amber-bg);color:var(--amber)}
+.b-selesai{background:var(--blue-bg);color:var(--blue)}
+
+/* PROJECT CARD */
+.pj-card{
+  background:var(--glass);
+  backdrop-filter:var(--blur-sm);
+  -webkit-backdrop-filter:var(--blur-sm);
+  border:1px solid var(--glass-border);
+  border-radius:var(--radius-lg);
+  padding:16px;margin-bottom:10px;
+  box-shadow:var(--glass-shadow);
+  border-left:3px solid var(--border);
+}
+.pj-name{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.2px}
+.pj-meta{font-size:11px;color:var(--text3);margin-top:2px}
+.pj-footer{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.prog-bar{height:5px;background:rgba(0,0,0,0.08);border-radius:3px;overflow:hidden}
+@media(prefers-color-scheme:dark){.prog-bar{background:rgba(255,255,255,0.08)}}
+.prog-fill{height:100%;border-radius:3px;transition:width .4s}
+.repo-link{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--blue);text-decoration:none;padding:3px 8px;border-radius:6px;background:var(--blue-bg);border:1px solid rgba(55,138,221,0.2)}
+.repo-link:hover{opacity:.8}
+
+/* TODO */
+.todo-item{
+  background:var(--glass);
+  backdrop-filter:var(--blur-sm);
+  -webkit-backdrop-filter:var(--blur-sm);
+  border:1px solid var(--glass-border);
+  border-radius:var(--radius);padding:11px 13px;margin-bottom:7px;
+  display:flex;align-items:flex-start;gap:9px;
+  box-shadow:var(--glass-shadow);
+}
+.todo-item.is-done{opacity:.45}
+.chk{width:18px;height:18px;border-radius:6px;border:1.5px solid var(--border);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.18s;margin-top:1px;background:rgba(255,255,255,0.3)}
+.chk.on{background:var(--teal-mid);border-color:var(--teal-mid)}
+.chk.on::after{content:'';width:4px;height:8px;border:1.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);display:block;margin-top:-1px}
+.todo-body{flex:1;min-width:0}
+.todo-text{font-size:13px;color:var(--text);line-height:1.4}
+.is-done .todo-text{text-decoration:line-through;color:var(--text3)}
+.todo-meta{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;align-items:center}
+.meta-pill{font-size:10px;padding:2px 7px;border-radius:5px;background:var(--surface2);color:var(--text2);font-weight:500;border:1px solid var(--border2)}
+.meta-proj{font-size:10px;color:var(--blue);font-weight:700}
+.meta-late{font-size:10px;color:var(--red);font-weight:700}
+.prio-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:7px}
+.pr-high{background:var(--red-mid)}.pr-med{background:var(--amber-mid)}.pr-low{background:var(--blue-mid)}
+.del-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:17px;padding:1px;transition:.15s;flex-shrink:0;line-height:1}
+.del-btn:hover{color:var(--red)}
+
+/* FILTER */
+.filter-row{display:flex;gap:5px;margin-bottom:12px;overflow-x:auto;padding-bottom:3px;-webkit-overflow-scrolling:touch}
+.filter-row::-webkit-scrollbar{display:none}
+.ftag{padding:5px 13px;border-radius:20px;font-size:11px;font-weight:600;color:var(--text2);background:var(--glass);border:1px solid var(--glass-border);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:.18s;user-select:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.ftag:hover{border-color:rgba(29,158,117,0.4);color:var(--teal)}
+.ftag.active{background:rgba(29,158,117,0.15);border-color:rgba(29,158,117,0.4);color:var(--teal)}
+
+/* ABSENSI */
+.abs-date-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
+.abs-date-label{font-size:14px;font-weight:700;color:var(--text)}
+.abs-nav{display:flex;gap:4px}
+.abs-nav-btn{height:30px;padding:0 11px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);cursor:pointer;font-size:12px;color:var(--text2);transition:.15s;user-select:none;font-family:inherit;backdrop-filter:blur(6px)}
+.abs-nav-btn:hover{background:var(--surface)}
+.abs-entry{background:var(--surface2);border-radius:10px;padding:10px 13px;margin-bottom:7px;display:flex;align-items:flex-start;gap:9px;border-left:3px solid var(--border);backdrop-filter:blur(6px)}
+.abs-time{font-size:11px;color:var(--text2);font-weight:700;white-space:nowrap;min-width:44px;margin-top:1px}
+.abs-act{font-size:12px;color:var(--text);font-weight:500}
+.abs-proj{font-size:11px;color:var(--blue);margin-top:2px}
+
+/* LAPORAN 3P */
+.rp-tabs{display:flex;gap:6px;margin-bottom:13px}
+.rptab{flex:1;padding:8px 5px;border-radius:10px;font-size:11px;font-weight:700;color:var(--text2);background:var(--glass);border:1px solid var(--glass-border);cursor:pointer;text-align:center;transition:.18s;user-select:none;backdrop-filter:blur(8px)}
+.rptab.active{color:#fff;border-color:transparent}
+.rptab.rt-p.active{background:linear-gradient(135deg,var(--teal-mid),#1d8c6a)}
+.rptab.rt-b.active{background:linear-gradient(135deg,var(--red-mid),#c43b3b)}
+.rptab.rt-n.active{background:linear-gradient(135deg,var(--blue-mid),#2872cc)}
+.rp-panel{display:none}.rp-panel.active{display:block}
+.rp-group{background:var(--surface2);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid var(--border2)}
+.rp-grp-head{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.rp-grp-name{flex:1;background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;padding:7px 10px;font-size:12px;font-weight:600;color:var(--text);font-family:inherit;outline:none}
+.rp-grp-name::placeholder{color:var(--text3);font-weight:400}
+.rp-grp-name:focus{border-color:rgba(29,158,117,0.4)}
+.rp-item-row{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.rp-dot{width:4px;height:4px;border-radius:50%;background:var(--text3);flex-shrink:0}
+.rp-item-input{flex:1;background:var(--glass);border:1px solid var(--glass-border);border-radius:7px;padding:6px 9px;font-size:12px;color:var(--text);font-family:inherit;outline:none}
+.rp-item-input::placeholder{color:var(--text3)}
+.rp-item-input:focus{border-color:rgba(29,158,117,0.4)}
+.add-item-btn{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text3);background:none;border:none;cursor:pointer;padding:3px 0;font-family:inherit;font-weight:700;transition:.15s}
+.add-item-btn:hover{color:var(--teal)}
+
+/* AI BOX */
+.ai-box{background:rgba(127,119,221,0.10);border:1px solid rgba(127,119,221,0.22);border-radius:var(--radius);padding:13px;margin-top:10px;backdrop-filter:blur(8px)}
+.ai-box-label{font-size:9px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.09em;margin-bottom:8px;display:flex;align-items:center;gap:5px}
+
+/* SECTION DIVIDER inside laporan form */
+.ai-section-head{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;padding:8px 0 4px;border-top:1px solid var(--border2);margin-top:8px}
+.ai-section-head:first-child{border-top:none;margin-top:0;padding-top:0}
+
+/* PREV BOX */
+.prev-box{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:15px;margin-top:13px;display:none}
+.prev-text{font-size:11.5px;line-height:1.9;color:var(--text);white-space:pre-wrap;font-family:ui-monospace,'SF Mono',monospace}
+
+/* MOOD */
+.mood-row{display:flex;gap:6px}
+.mood-btn{flex:1;padding:8px 4px;border-radius:10px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;background:var(--glass);border:1px solid var(--glass-border);color:var(--text2);transition:.18s;text-align:center;user-select:none;backdrop-filter:blur(6px)}
+.mood-on{background:rgba(29,158,117,0.15);border-color:rgba(29,158,117,0.38);color:var(--teal)}
+.mood-risk{background:rgba(186,117,23,0.15);border-color:rgba(186,117,23,0.38);color:var(--amber)}
+.mood-block{background:rgba(226,75,74,0.15);border-color:rgba(226,75,74,0.38);color:var(--red)}
+
+/* KONTRIBUSI */
+.kontrib-period{display:flex;gap:6px;margin-bottom:13px}
+.kp-btn{flex:1;padding:7px;border-radius:9px;font-size:11px;font-weight:700;border:1px solid var(--glass-border);background:var(--glass);color:var(--text2);cursor:pointer;text-align:center;transition:.18s;font-family:inherit;backdrop-filter:blur(6px)}
+.kp-btn.active{background:var(--text);color:rgba(255,255,255,0.95)}
+@media(prefers-color-scheme:dark){.kp-btn.active{color:#0d1b2a}}
+.kontrib-row{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+.kontrib-name{font-size:11px;color:var(--text2);min-width:128px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kontrib-track{flex:1;height:9px;background:var(--surface2);border-radius:5px;overflow:hidden}
+.kontrib-fill{height:100%;border-radius:5px;transition:width .5s}
+.kontrib-pct{font-size:11px;font-weight:700;min-width:34px;text-align:right}
+
+/* WORKLOAD */
+.wl-row{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.wl-name{font-size:11px;color:var(--text2);min-width:118px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wl-track{flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.wl-fill{height:100%;border-radius:3px}
+.wl-pct{font-size:10px;color:var(--text3);min-width:30px;text-align:right}
+
+/* DEADLINE */
+.dl-item{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--border2)}
+.dl-item:last-child{border-bottom:none}
+.dl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dl-name{flex:1;font-size:12px;color:var(--text);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dl-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;white-space:nowrap}
+.dl-urgent{background:var(--red-bg);color:var(--red)}
+.dl-warn{background:var(--amber-bg);color:var(--amber)}
+.dl-ok{background:var(--teal-bg);color:var(--teal)}
+
+/* SUM ITEM */
+.sum-item{display:flex;align-items:flex-start;gap:7px;padding:7px 0;border-bottom:1px solid var(--border2)}
+.sum-item:last-child{border-bottom:none}
+.sum-dot{width:5px;height:5px;border-radius:50%;background:var(--teal-mid);flex-shrink:0;margin-top:5px}
+.sum-text{font-size:12px;color:var(--text2);line-height:1.55}
+
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(10px);background:rgba(30,40,60,0.85);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:9px 18px;font-size:12px;font-weight:600;color:#fff;opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;z-index:999;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(min-width:768px){.toast{bottom:20px}}
+
+.spinner{width:13px;height:13px;border:2px solid rgba(127,119,221,0.25);border-top-color:var(--purple-mid);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:22px;color:var(--text3);font-size:12px;background:var(--surface2);border-radius:var(--radius);border:1px dashed var(--border)}
+@keyframes fadein{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.pj-card,.todo-item,.abs-entry{animation:fadein .22s ease}
+
+/* SECTION LABEL */
+.sec-divider{display:flex;align-items:center;gap:8px;margin:10px 0 6px;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.07em}
+.sec-divider::before,.sec-divider::after{content:'';flex:1;height:1px;background:var(--border2)}
+
+@media(max-width:1100px){.dash-grid{grid-template-columns:1fr}}
+@media(max-width:767px){
+  .sidebar{display:none}
+  .main{margin-left:0;padding:14px 12px 80px}
+  .bottom-nav{display:block}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(min-width:768px) and (max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-badge">GIS</div>
+    <div class="logo-title">GIS Analyst Workspace</div>
+    <div class="logo-sub">SHIRVANO CONSULTING</div>
+    <div class="logo-date" id="nav-date">—</div>
+  </div>
+  <div class="nav-section">Utama</div>
+  <div class="nav-link active" data-p="dashboard" onclick="goPage('dashboard')">
+    <svg class="nav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1.2"/><rect x="10" y="1" width="7" height="6" rx="1.2"/><rect x="1" y="10" width="7" height="7" rx="1.2"/><rect x="11" y="10" width="6" height="7" rx="1.2"/></svg>
+    Dashboard
+  </div>
+  <div class="nav-link" data-p="proyek" onclick="goPage('proyek')">
+    <svg class="nav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 5h14M2 9h14M2 13h8"/></svg>
+    Proyek
+  </div>
+  <div class="nav-link" data-p="todo" onclick="goPage('todo')">
+    <svg class="nav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3,6 6,9 11,4"/><polyline points="3,12 6,15 11,10"/><line x1="13" y1="6" x2="16" y2="6"/><line x1="13" y1="12" x2="16" y2="12"/></svg>
+    To-Do <span class="nav-badge-count" id="todo-badge" style="display:none">0</span>
+  </div>
+  <div class="nav-link" data-p="absensi" onclick="goPage('absensi')">
+    <svg class="nav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="9" r="7"/><polyline points="9,5 9,9 12,11"/></svg>
+    Absensi
+  </div>
+  <div class="nav-section">Laporan</div>
+  <div class="nav-link" data-p="laporan" onclick="goPage('laporan')">
+    <svg class="nav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 1h8a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V3a2 2 0 012-2z"/><line x1="6" y1="7" x2="12" y2="7"/><line x1="6" y1="10" x2="12" y2="10"/><line x1="6" y1="13" x2="9" y2="13"/></svg>
+    Laporan 3P
+  </div>
+  <div class="nav-link" data-p="kontribusi" onclick="goPage('kontribusi')">
+    <svg class="nav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="12" width="3" height="5" rx="1"/><rect x="6" y="8" width="3" height="9" rx="1"/><rect x="11" y="4" width="3" height="13" rx="1"/></svg>
+    Kontribusi Proyek
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- DASHBOARD -->
+<div id="page-dashboard" class="page active">
+  <div class="section-header">
+    <div>
+      <div class="section-title">Dashboard</div>
+      <div class="section-sub" id="dash-date-sub">—</div>
+    </div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-n" style="color:var(--teal)" id="d-aktif">0</div><div class="stat-l">Proyek Aktif</div></div>
+    <div class="stat-card"><div class="stat-n" style="color:var(--blue)" id="d-todo">0</div><div class="stat-l">To-Do Pending</div></div>
+    <div class="stat-card"><div class="stat-n" style="color:var(--red)" id="d-late">0</div><div class="stat-l">Terlambat</div></div>
+    <div class="stat-card"><div class="stat-n" style="color:var(--text2)" id="d-done">0</div><div class="stat-l">Selesai Minggu Ini</div></div>
+  </div>
+  <div class="dash-grid">
+    <div class="dash-col">
+      <div class="card">
+        <div class="card-title">Aktivitas Hari Ini</div>
+        <div id="dash-today"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Progress Proyek</div>
+        <div id="dash-proyek"></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span>Ringkasan Minggu Ini</span><span id="dash-week-badge" style="font-size:10px;color:var(--text3);font-weight:500"></span></div>
+        <div id="dash-week"></div>
+      </div>
+    </div>
+    <div class="dash-col">
+      <div class="card">
+        <div class="card-title">Deadline Mendatang</div>
+        <div id="dash-deadline"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Workload Minggu Ini</div>
+        <div id="dash-workload"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Prioritas Tinggi</div>
+        <div id="dash-high-todos"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Repository Proyek</div>
+        <div id="dash-repos"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROYEK -->
+<div id="page-proyek" class="page">
+  <div class="section-header">
+    <div><div class="section-title">Proyek</div></div>
+    <button class="btn btn-primary btn-sm" onclick="toggleEl('add-proyek-card')">+ Tambah</button>
+  </div>
+  <div class="card" id="add-proyek-card" style="display:none">
+    <div class="card-title">Proyek Baru</div>
+    <div class="frow"><div class="flabel">Nama Proyek</div><input class="finput" id="pj-name" placeholder="contoh: Geospasial KPI Blora"></div>
+    <div class="fgrow">
+      <div><div class="flabel">Klien / Instansi</div><input class="finput" id="pj-client" placeholder="Pemda Blora"></div>
+      <div><div class="flabel">Deadline</div><input class="finput" type="date" id="pj-deadline"></div>
+    </div>
+    <div class="frow"><div class="flabel">Link Repository / Drive (opsional)</div><input class="finput" id="pj-repo" placeholder="https://drive.google.com/... atau github.com/..."></div>
+    <div class="frow">
+      <div class="flabel">Status</div>
+      <div class="pill-row" id="pj-status">
+        <div class="pill on" data-v="Aktif" onclick="pickPill(this)">Aktif</div>
+        <div class="pill" data-v="Urgent" onclick="pickPill(this)">Urgent</div>
+        <div class="pill" data-v="On Hold" onclick="pickPill(this)">On Hold</div>
+        <div class="pill" data-v="Selesai" onclick="pickPill(this)">Selesai</div>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="flabel">Warna</div>
+      <div class="pill-row" id="pj-color">
+        <div class="pill on" data-v="#1d9e75" onclick="pickPill(this)" style="color:#1d9e75">Hijau</div>
+        <div class="pill" data-v="#378add" onclick="pickPill(this)" style="color:#378add">Biru</div>
+        <div class="pill" data-v="#ba7517" onclick="pickPill(this)" style="color:#ba7517">Amber</div>
+        <div class="pill" data-v="#e24b4a" onclick="pickPill(this)" style="color:#e24b4a">Merah</div>
+        <div class="pill" data-v="#7f77dd" onclick="pickPill(this)" style="color:#7f77dd">Ungu</div>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="flabel">Progress: <span id="pj-prog-lbl">0%</span></div>
+      <input class="finput" type="range" id="pj-prog" min="0" max="100" value="0" step="5" oninput="document.getElementById('pj-prog-lbl').textContent=this.value+'%'">
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="addProyek()">Simpan</button>
+      <button class="btn btn-outline" onclick="toggleEl('add-proyek-card')">Batal</button>
+    </div>
+  </div>
+  <div id="proj-list"></div>
+</div>
+
+<!-- TODO -->
+<div id="page-todo" class="page">
+  <div class="section-header">
+    <div><div class="section-title">To-Do</div></div>
+    <button class="btn btn-primary btn-sm" onclick="toggleEl('add-todo-card')">+ Tambah</button>
+  </div>
+  <div class="card" id="add-todo-card" style="display:none">
+    <div class="card-title">Tugas Baru</div>
+    <div class="frow"><div class="flabel">Deskripsi Tugas</div><input class="finput" id="td-text" placeholder="contoh: Analisis isochrone Banjarmasin"></div>
+    <div class="fgrow">
+      <div><div class="flabel">Proyek</div><select class="finput" id="td-proj"><option value="">— Pilih —</option></select></div>
+      <div><div class="flabel">Deadline</div><input class="finput" type="date" id="td-date"></div>
+    </div>
+    <div class="frow">
+      <div class="flabel">Prioritas</div>
+      <div class="pill-row" id="td-prio">
+        <div class="pill on" data-v="high" onclick="pickPill(this)">Tinggi</div>
+        <div class="pill" data-v="med" onclick="pickPill(this)">Sedang</div>
+        <div class="pill" data-v="low" onclick="pickPill(this)">Rendah</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="addTodo()">Simpan</button>
+      <button class="btn btn-outline" onclick="toggleEl('add-todo-card')">Batal</button>
+    </div>
+  </div>
+  <div class="filter-row">
+    <div class="ftag active" data-f="all" onclick="setFilter(this)">Semua</div>
+    <div class="ftag" data-f="pending" onclick="setFilter(this)">Pending</div>
+    <div class="ftag" data-f="done" onclick="setFilter(this)">Selesai</div>
+    <div class="ftag" data-f="high" onclick="setFilter(this)">Prioritas Tinggi</div>
+    <div class="ftag" data-f="late" onclick="setFilter(this)">Terlambat</div>
+    <div class="ftag" data-f="today" onclick="setFilter(this)">Hari Ini</div>
+  </div>
+  <div id="todo-list"></div>
+</div>
+
+<!-- ABSENSI -->
+<div id="page-absensi" class="page">
+  <div class="section-header"><div><div class="section-title">Absensi & Aktivitas</div></div></div>
+  <div class="card">
+    <div class="abs-date-head">
+      <div class="abs-date-label" id="abs-date-label">—</div>
+      <div class="abs-nav">
+        <button class="abs-nav-btn" onclick="moveAbsDate(-1)">‹</button>
+        <button class="abs-nav-btn" onclick="moveAbsDate(0)">Hari Ini</button>
+        <button class="abs-nav-btn" onclick="moveAbsDate(1)">›</button>
+      </div>
+    </div>
+    <div class="frow"><div class="flabel">Aktivitas</div><input class="finput" id="abs-act" placeholder="contoh: Meeting kick-off KPI Blora"></div>
+    <div class="fgrow">
+      <div><div class="flabel">Proyek</div><select class="finput" id="abs-proj"><option value="">— Pilih —</option></select></div>
+      <div><div class="flabel">Waktu (opsional)</div><input class="finput" type="time" id="abs-time"></div>
+    </div>
+    <button class="btn btn-teal btn-block" onclick="addAbsensi()">Catat Aktivitas</button>
+  </div>
+  <div id="abs-list"></div>
+</div>
+
+<!-- LAPORAN 3P -->
+<div id="page-laporan" class="page">
+  <div class="section-header"><div><div class="section-title">Laporan 3P</div></div></div>
+  <div class="card">
+    <div class="fgrow">
+      <div><div class="flabel">Tim / Divisi</div><input class="finput" id="rp-team" value="GIS"></div>
+      <div><div class="flabel">Tanggal</div><input class="finput" type="date" id="rp-date"></div>
+    </div>
+    <div class="frow">
+      <div class="flabel">Status Minggu</div>
+      <div class="mood-row">
+        <button class="mood-btn" data-m="on-track" onclick="pickMood('on-track')">On Track</button>
+        <button class="mood-btn" data-m="at-risk" onclick="pickMood('at-risk')">At Risk</button>
+        <button class="mood-btn" data-m="blocked" onclick="pickMood('blocked')">Blocked</button>
+      </div>
+    </div>
+
+    <!-- AI & Manual fill buttons for ALL 3P -->
+    <div class="ai-section-head">Auto-isi Laporan</div>
+    <p style="font-size:11px;color:var(--text2);margin-bottom:8px;line-height:1.5">Tombol di bawah akan mengisi <strong>Progres, Problem, dan Plan</strong> secara otomatis berdasarkan data absensi &amp; to-do minggu ini.</p>
+    <div class="btn-row">
+      <button class="btn btn-ai" id="btn-ai-fill" onclick="autoFillAI()">
+        <svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 1l1.4 3.8H13l-3.4 2.4 1.3 3.8L7 8.8l-3.9 2.2 1.3-3.8L1 4.8h4.6z"/></svg>
+        Auto-isi AI (3P)
+      </button>
+      <button class="btn btn-outline" onclick="manualFill()">Isi Manual (3P)</button>
+    </div>
+    <div id="ai-status" style="display:none;padding:8px 0 0;font-size:12px;color:var(--text2);display:flex;align-items:center;gap:6px"></div>
+    <div id="ai-result"></div>
+  </div>
+  <div class="rp-tabs">
+    <button class="rptab rt-p active" onclick="switchRp('p',this)">Progres <span id="rc-p" style="font-size:10px;opacity:.65">0</span></button>
+    <button class="rptab rt-b" onclick="switchRp('b',this)">Problem <span id="rc-b" style="font-size:10px;opacity:.65">0</span></button>
+    <button class="rptab rt-n" onclick="switchRp('n',this)">Plan <span id="rc-n" style="font-size:10px;opacity:.65">0</span></button>
+  </div>
+  <div id="rp-panel-p" class="rp-panel active"></div>
+  <div id="rp-panel-b" class="rp-panel"></div>
+  <div id="rp-panel-n" class="rp-panel"></div>
+  <div class="btn-row" style="margin-top:13px">
+    <button class="btn btn-primary" onclick="previewLaporan()">Preview</button>
+    <button class="btn btn-outline" onclick="copyLaporan()">Salin</button>
+    <button class="btn btn-outline" onclick="emailLaporan()">Email ↗</button>
+  </div>
+  <div class="prev-box" id="rp-prev">
+    <div class="flabel" style="margin-bottom:9px">Preview Laporan</div>
+    <div class="prev-text" id="rp-prev-text"></div>
+  </div>
+</div>
+
+<!-- KONTRIBUSI -->
+<div id="page-kontribusi" class="page">
+  <div class="section-header">
+    <div>
+      <div class="section-title">Kontribusi per Proyek</div>
+      <div class="section-sub">Berapa persen waktu dihabiskan per proyek</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Periode</div>
+    <div class="kontrib-period">
+      <button class="kp-btn active" onclick="setKontribPeriod('week',this)">Minggu Ini</button>
+      <button class="kp-btn" onclick="setKontribPeriod('month',this)">Bulan Ini</button>
+      <button class="kp-btn" onclick="setKontribPeriod('all',this)">Semua Waktu</button>
+    </div>
+    <div id="kontrib-chart"></div>
+    <div id="kontrib-total" style="margin-top:8px;font-size:11px;color:var(--text3);text-align:right"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Detail per Proyek</div>
+    <div id="kontrib-detail"></div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="bnav-items">
+    <button class="bnav-item active" data-p="dashboard" onclick="goPage('dashboard')">
+      <svg class="bnav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1.2"/><rect x="10" y="1" width="7" height="6" rx="1.2"/><rect x="1" y="10" width="7" height="7" rx="1.2"/><rect x="11" y="10" width="6" height="7" rx="1.2"/></svg>
+      Dash
+    </button>
+    <button class="bnav-item" data-p="proyek" onclick="goPage('proyek')">
+      <svg class="bnav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 5h14M2 9h14M2 13h8"/></svg>
+      Proyek
+    </button>
+    <button class="bnav-item" data-p="todo" onclick="goPage('todo')">
+      <svg class="bnav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3,6 6,9 11,4"/><line x1="13" y1="6" x2="16" y2="6"/></svg>
+      To-Do
+    </button>
+    <button class="bnav-item" data-p="absensi" onclick="goPage('absensi')">
+      <svg class="bnav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="9" r="7"/><polyline points="9,5 9,9 12,11"/></svg>
+      Absensi
+    </button>
+    <button class="bnav-item" data-p="laporan" onclick="goPage('laporan')">
+      <svg class="bnav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 1h8a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V3a2 2 0 012-2z"/><line x1="6" y1="7" x2="12" y2="7"/><line x1="6" y1="10" x2="12" y2="10"/></svg>
+      Laporan
+    </button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let data={projects:[],todos:[],absensi:[]};
+let todoFilter='all',moodVal='',rpData={p:[],b:[],n:[]},absDate=new Date(),kontribPeriod='week';
+const absDate0=new Date();
+let uid=Date.now();
+
+function gid(){return 'i'+(uid++)}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function ds(d){return(d instanceof Date?d:new Date(d)).toISOString().split('T')[0]}
+function fmtDate(s){if(!s)return'';try{return new Date(s+'T00:00:00').toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})}catch(e){return s}}
+function fmtDateLong(s){if(!s)return'';try{return new Date(s+'T00:00:00').toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}catch(e){return s}}
+
+async function save(){try{await window.storage.set('gpm5',JSON.stringify(data))}catch(e){}}
+async function loadData(){try{const r=await window.storage.get('gpm5');if(r&&r.value)data=JSON.parse(r.value)}catch(e){}}
+
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400)}
+function toggleEl(id){const el=document.getElementById(id);el.style.display=el.style.display==='none'||el.style.display===''?'block':'none'}
+
+function goPage(p){
+  document.querySelectorAll('.nav-link').forEach(el=>el.classList.toggle('active',el.dataset.p===p));
+  document.querySelectorAll('.bnav-item').forEach(el=>el.classList.toggle('active',el.dataset.p===p));
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  if(p==='dashboard')renderDash();
+  if(p==='proyek')renderProyek();
+  if(p==='todo'){fillProjSelect('td-proj');renderTodo()}
+  if(p==='absensi'){fillProjSelect('abs-proj');renderAbsensi()}
+  if(p==='laporan'){initRpIfEmpty();renderRpAll()}
+  if(p==='kontribusi')renderKontribusi();
+}
+
+function pickPill(el){el.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));el.classList.add('on')}
+function getPillVal(id){const el=document.querySelector('#'+id+' .pill.on');return el?el.dataset.v:''}
+
+function pickMood(m){
+  moodVal=moodVal===m?'':m;
+  document.querySelectorAll('.mood-btn').forEach(b=>{
+    b.className='mood-btn';
+    if(b.dataset.m===moodVal){
+      if(m==='on-track')b.classList.add('mood-on');
+      else if(m==='at-risk')b.classList.add('mood-risk');
+      else b.classList.add('mood-block');
+    }
+  });
+}
+
+function fillProjSelect(id){
+  const s=document.getElementById(id);if(!s)return;
+  const cur=s.value;
+  s.innerHTML='<option value="">— Pilih —</option>'+data.projects.filter(p=>p.status!=='Selesai').map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
+  s.value=cur;
+}
+
+/* ======= PROYEK ======= */
+function addProyek(){
+  const name=document.getElementById('pj-name').value.trim();
+  if(!name){toast('Nama proyek wajib diisi!');return}
+  const statusVal=getPillVal('pj-status')||'Aktif';
+  const progressVal=statusVal==='Selesai'?100:parseInt(document.getElementById('pj-prog').value)||0;
+  data.projects.push({id:gid(),name,client:document.getElementById('pj-client').value.trim(),deadline:document.getElementById('pj-deadline').value,repo:document.getElementById('pj-repo').value.trim(),status:statusVal,color:getPillVal('pj-color')||'#1d9e75',progress:progressVal,createdAt:Date.now()});
+  save();renderProyek();
+  ['pj-name','pj-client','pj-deadline','pj-repo'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('pj-prog').value=0;document.getElementById('pj-prog-lbl').textContent='0%';
+  toggleEl('add-proyek-card');toast('Proyek ditambahkan!');
+}
+function setProgres(id,v){const p=data.projects.find(x=>x.id===id);if(!p)return;p.progress=parseInt(v);save();const f=document.getElementById('pf-'+id);if(f)f.style.width=v+'%'}
+function setStatus(id,v){
+  const p=data.projects.find(x=>x.id===id);if(!p)return;
+  p.status=v;
+  if(v==='Selesai'){p.progress=100;const f=document.getElementById('pf-'+id),lbl=document.getElementById('pp-'+id),sl=document.getElementById('ps-'+id);if(f)f.style.width='100%';if(lbl)lbl.textContent='100%';if(sl){sl.value=100;sl.disabled=true;}}
+  else{const sl=document.getElementById('ps-'+id);if(sl)sl.disabled=false;}
+  save();renderProyek();
+}
+function setRepoInline(id,v){const p=data.projects.find(x=>x.id===id);if(p){p.repo=v;save();renderDashRepos()}}
+function delProyek(id){
+  if(!confirm('Hapus proyek ini beserta semua to-do terkait?'))return;
+  data.projects=data.projects.filter(p=>p.id!==id);
+  data.todos=data.todos.filter(t=>t.projId!==id);
+  data.absensi=data.absensi.filter(a=>a.projId!==id);
+  save();renderProyek();fillProjSelect('td-proj');fillProjSelect('abs-proj');toast('Proyek dihapus');
+}
+function renderProyek(){
+  const el=document.getElementById('proj-list');
+  if(!data.projects.length){el.innerHTML='<div class="empty">Belum ada proyek. Klik "+ Tambah" di atas.</div>';return}
+  const BADGE={Aktif:'b-aktif',Urgent:'b-urgent','On Hold':'b-hold',Selesai:'b-selesai'};
+  el.innerHTML=data.projects.map(p=>{
+    const todos=data.todos.filter(t=>t.projId===p.id);
+    const doneT=todos.filter(t=>t.done).length;
+    const effProg=p.status==='Selesai'?100:p.progress;
+    return`<div class="pj-card" style="border-left-color:${p.color}">
+      <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
+        <div style="flex:1;min-width:0">
+          <div class="pj-name">${esc(p.name)}</div>
+          <div class="pj-meta">${esc(p.client||'—')}${p.deadline?' · '+fmtDate(p.deadline):''}</div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:7px">
+            <span class="badge ${BADGE[p.status]||'b-aktif'}">${p.status}</span>
+            ${todos.length?`<span class="badge" style="background:var(--surface2);color:var(--text2)">${doneT}/${todos.length} tugas</span>`:''}
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:11px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <span style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;font-weight:600">Progress</span>
+          <span style="font-size:11px;color:var(--text2);font-weight:700" id="pp-${p.id}">${effProg}%</span>
+        </div>
+        <input type="range" min="0" max="100" value="${effProg}" step="5" id="ps-${p.id}" class="finput" style="margin-bottom:5px" ${p.status==='Selesai'?'disabled':''} oninput="document.getElementById('pp-${p.id}').textContent=this.value+'%';setProgres('${p.id}',this.value)">
+        <div class="prog-bar"><div class="prog-fill" style="width:${effProg}%;background:${p.color}" id="pf-${p.id}"></div></div>
+      </div>
+      <div style="margin-top:11px">
+        <div class="flabel" style="margin-bottom:4px">Link Repository / Drive</div>
+        <input class="finput" style="font-size:12px" placeholder="https://..." value="${esc(p.repo||'')}" oninput="setRepoInline('${p.id}',this.value)">
+        ${p.repo?`<a class="repo-link" href="${esc(p.repo)}" target="_blank" rel="noopener" style="margin-top:6px;display:inline-flex"><svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12l10-10M6 2h6v6"/></svg>${esc(p.repo.replace(/https?:\/\//,'').substring(0,40))}</a>`:''}
+      </div>
+      <div class="pj-footer">
+        <select class="btn btn-outline btn-sm" style="cursor:pointer" onchange="setStatus('${p.id}',this.value)">
+          <option ${p.status==='Aktif'?'selected':''}>Aktif</option>
+          <option ${p.status==='Urgent'?'selected':''}>Urgent</option>
+          <option ${p.status==='On Hold'?'selected':''}>On Hold</option>
+          <option ${p.status==='Selesai'?'selected':''}>Selesai</option>
+        </select>
+        <button class="btn btn-danger btn-sm" onclick="delProyek('${p.id}')">Hapus</button>
+      </div>
+    </div>`
+  }).join('');
+}
+
+/* ======= TODO ======= */
+function addTodo(){
+  const text=document.getElementById('td-text').value.trim();
+  if(!text){toast('Isi tugas terlebih dahulu!');return}
+  const projId=document.getElementById('td-proj').value;
+  const proj=data.projects.find(p=>p.id===projId);
+  data.todos.push({id:gid(),text,projId,projName:proj?proj.name:'',deadline:document.getElementById('td-date').value,priority:getPillVal('td-prio')||'med',done:false,doneAt:null,createdAt:Date.now()});
+  save();renderTodo();renderDash();updateTodoBadge();
+  document.getElementById('td-text').value='';document.getElementById('td-date').value='';
+  toast('To-do ditambahkan!');
+}
+function toggleTodo(id){const t=data.todos.find(x=>x.id===id);if(t){t.done=!t.done;t.doneAt=t.done?Date.now():null;save();renderTodo();renderDash();updateTodoBadge()}}
+function delTodo(id){data.todos=data.todos.filter(t=>t.id!==id);save();renderTodo();renderDash();updateTodoBadge();toast('Dihapus')}
+function updateTodoBadge(){const n=data.todos.filter(t=>!t.done).length;const b=document.getElementById('todo-badge');if(b){b.textContent=n;b.style.display=n?'inline-block':'none'}}
+function setFilter(el){todoFilter=el.dataset.f;document.querySelectorAll('.ftag').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderTodo()}
+function renderTodo(){
+  const el=document.getElementById('todo-list');
+  const today=ds(new Date());
+  let list=[...data.todos];
+  if(todoFilter==='pending')list=list.filter(t=>!t.done);
+  else if(todoFilter==='done')list=list.filter(t=>t.done);
+  else if(todoFilter==='high')list=list.filter(t=>t.priority==='high');
+  else if(todoFilter==='late')list=list.filter(t=>!t.done&&t.deadline&&t.deadline<today);
+  else if(todoFilter==='today')list=list.filter(t=>t.deadline===today||(!t.done&&t.deadline&&t.deadline<today));
+  list.sort((a,b)=>{if(a.done!==b.done)return a.done?1:-1;const o={high:0,med:1,low:2};return(o[a.priority]||1)-(o[b.priority]||1)});
+  if(!list.length){el.innerHTML='<div class="empty">Tidak ada to-do</div>';return}
+  el.innerHTML=list.map(t=>{
+    const pc=t.priority==='high'?'pr-high':t.priority==='low'?'pr-low':'pr-med';
+    const late=!t.done&&t.deadline&&t.deadline<today;
+    return`<div class="todo-item ${t.done?'is-done':''}">
+      <div class="prio-dot ${pc}"></div>
+      <div class="chk ${t.done?'on':''}" onclick="toggleTodo('${t.id}')"></div>
+      <div class="todo-body">
+        <div class="todo-text">${esc(t.text)}</div>
+        <div class="todo-meta">
+          ${t.projName?`<span class="meta-proj">${esc(t.projName)}</span>`:''}
+          ${t.deadline?`<span class="meta-pill">${fmtDate(t.deadline)}</span>`:''}
+          ${late?`<span class="meta-late">Terlambat</span>`:''}
+        </div>
+      </div>
+      <button class="del-btn" onclick="delTodo('${t.id}')">×</button>
+    </div>`
+  }).join('');
+}
+
+/* ======= ABSENSI ======= */
+function moveAbsDate(d){if(d===0)absDate=new Date(absDate0);else{absDate=new Date(absDate);absDate.setDate(absDate.getDate()+d)}renderAbsensi()}
+function addAbsensi(){
+  const act=document.getElementById('abs-act').value.trim();
+  if(!act){toast('Isi aktivitas terlebih dahulu!');return}
+  const projId=document.getElementById('abs-proj').value;
+  const proj=data.projects.find(p=>p.id===projId);
+  data.absensi.push({id:gid(),act,projId,projName:proj?proj.name:'',time:document.getElementById('abs-time').value||'',date:ds(absDate),createdAt:Date.now()});
+  save();renderAbsensi();renderDash();
+  document.getElementById('abs-act').value='';document.getElementById('abs-time').value='';toast('Aktivitas dicatat!');
+}
+function delAbsensi(id){data.absensi=data.absensi.filter(a=>a.id!==id);save();renderAbsensi();renderDash();toast('Dihapus')}
+function renderAbsensi(){
+  document.getElementById('abs-date-label').textContent=fmtDateLong(ds(absDate));
+  const el=document.getElementById('abs-list');
+  const list=data.absensi.filter(a=>a.date===ds(absDate)).sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99')||a.createdAt-b.createdAt);
+  if(!list.length){el.innerHTML='<div class="empty">Belum ada aktivitas hari ini</div>';return}
+  el.innerHTML=list.map(a=>{
+    const color=(data.projects.find(p=>p.id===a.projId)||{}).color||'var(--border)';
+    return`<div class="abs-entry" style="border-left-color:${color}">
+      <div class="abs-time">${a.time||'—'}</div>
+      <div style="flex:1;min-width:0"><div class="abs-act">${esc(a.act)}</div>${a.projName?`<div class="abs-proj">${esc(a.projName)}</div>`:''}</div>
+      <button class="del-btn" onclick="delAbsensi('${a.id}')">×</button>
+    </div>`
+  }).join('');
+}
+
+/* ======= LAPORAN 3P ======= */
+function initRpIfEmpty(){
+  if(!rpData.p.length)rpData.p=[['','']];
+  if(!rpData.b.length)rpData.b=[['','']];
+  if(!rpData.n.length)rpData.n=[['','']];
+}
+
+function getWeekRange(){
+  const now=new Date(),day=now.getDay();
+  const mon=new Date(now);mon.setDate(now.getDate()-(day===0?6:day-1));mon.setHours(0,0,0,0);
+  const sun=new Date(mon);sun.setDate(mon.getDate()+6);sun.setHours(23,59,59,999);
+  return{start:mon.getTime(),end:sun.getTime()};
+}
+
+function buildWeekData(){
+  const{start,end}=getWeekRange();
+  const weekDone=data.todos.filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end);
+  const weekAbs=data.absensi.filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
+  const weekPending=data.todos.filter(t=>!t.done);
+  const today=ds(new Date());
+  const weekLate=data.todos.filter(t=>!t.done&&t.deadline&&t.deadline<today);
+  return{weekDone,weekAbs,weekPending,weekLate};
+}
+
+/* AUTO-FILL AI: mengisi KETIGA bagian P, B, N */
+async function autoFillAI(){
+  const{weekDone,weekAbs,weekPending,weekLate}=buildWeekData();
+  if(!weekDone.length&&!weekAbs.length&&!weekPending.length){toast('Belum ada data minggu ini!');return}
+  const statusEl=document.getElementById('ai-status'),resultEl=document.getElementById('ai-result');
+  statusEl.style.cssText='display:flex;padding:8px 0 0;font-size:12px;color:var(--text2);align-items:center;gap:6px';
+  statusEl.innerHTML='<div class="spinner"></div> AI sedang merangkum ketiga bagian 3P…';
+  resultEl.innerHTML='';
+  document.getElementById('btn-ai-fill').disabled=true;
+
+  const absText=weekAbs.map(a=>`- [${a.date}${a.time?' '+a.time:''}] ${a.act}${a.projName?' ('+a.projName+')':''}`).join('\n');
+  const doneText=weekDone.map(t=>`- ${t.text}${t.projName?' ('+t.projName+')':''}`).join('\n');
+  const pendingText=weekPending.map(t=>`- ${t.text}${t.projName?' ('+t.projName+')':''}${t.deadline?' [deadline:'+t.deadline+']':''}`).join('\n');
+  const lateText=weekLate.map(t=>`- ${t.text}${t.projName?' ('+t.projName+')':''} [TERLAMBAT, deadline:${t.deadline}]`).join('\n');
+
+  const prompt=`Kamu asisten laporan mingguan tim GIS/Geospasial. Buat laporan 3P lengkap (Progres, Problem, Plan).
+
+DATA MINGGU INI:
+ABSENSI/AKTIVITAS:
+${absText||'(kosong)'}
+TUGAS SELESAI:
+${doneText||'(kosong)'}
+TUGAS PENDING (belum selesai):
+${pendingText||'(kosong)'}
+TUGAS TERLAMBAT:
+${lateText||'(kosong)'}
+SEMUA PROYEK AKTIF:
+${data.projects.filter(p=>p.status!=='Selesai').map(p=>`- ${p.name} (progress ${p.progress}%)`).join('\n')||'(kosong)'}
+
+Balas HANYA JSON valid tanpa markdown, tanpa penjelasan. Format PERSIS:
+{
+  "progres": [{"proyek":"nama proyek","items":["item 1","item 2"]}],
+  "problem": [{"kategori":"nama kategori/proyek","items":["masalah 1","masalah 2"]}],
+  "plan": [{"kategori":"nama kategori/proyek","items":["rencana 1","rencana 2"]}],
+  "ringkasan": "1-2 kalimat ringkasan eksekutif"
+}
+
+Panduan:
+- progres: tugas/aktivitas yang sudah selesai minggu ini, dikelompokkan per proyek
+- problem: hambatan/kendala yang teridentifikasi dari tugas terlambat, pending, atau konteks pekerjaan
+- plan: rencana minggu depan berdasarkan tugas pending, deadline mendatang, dan progress proyek
+- Jika tidak ada data untuk suatu bagian, tetap isi dengan item generik yang relevan`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,messages:[{role:'user',content:prompt}]})});
+    const json=await res.json();
+    let raw=json.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim();
+    const parsed=JSON.parse(raw);
+
+    // Isi Progres
+    if(parsed.progres&&parsed.progres.length){
+      rpData.p=parsed.progres.map(g=>[g.proyek||'',...(g.items||[])]);
+    } else rpData.p=[['','']];
+
+    // Isi Problem
+    if(parsed.problem&&parsed.problem.length){
+      rpData.b=parsed.problem.map(g=>[g.kategori||'',...(g.items||[])]);
+    } else rpData.b=[['Tidak ada kendala signifikan minggu ini','']];
+
+    // Isi Plan
+    if(parsed.plan&&parsed.plan.length){
+      rpData.n=parsed.plan.map(g=>[g.kategori||'',...(g.items||[])]);
+    } else rpData.n=[['','']];
+
+    renderRpAll();countRp();
+    // Pindah ke tab Progres setelah isi
+    document.querySelector('.rptab.rt-p').click();
+
+    statusEl.style.display='none';
+    resultEl.innerHTML=`<div class="ai-box">
+      <div class="ai-box-label"><svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 1l1.4 3.8H13l-3.4 2.4 1.3 3.8L7 8.8l-3.9 2.2 1.3-3.8L1 4.8h4.6z"/></svg> Ringkasan AI — Ketiga bagian 3P sudah terisi</div>
+      <div style="font-size:12px;color:var(--text);line-height:1.6">${esc(parsed.ringkasan||'')}</div>
+      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+        <span style="font-size:10px;padding:2px 8px;border-radius:5px;background:rgba(29,158,117,0.12);color:var(--teal);font-weight:700">Progres ✓</span>
+        <span style="font-size:10px;padding:2px 8px;border-radius:5px;background:rgba(226,75,74,0.12);color:var(--red);font-weight:700">Problem ✓</span>
+        <span style="font-size:10px;padding:2px 8px;border-radius:5px;background:rgba(55,138,221,0.12);color:var(--blue);font-weight:700">Plan ✓</span>
+      </div>
+    </div>`;
+    toast('Laporan 3P berhasil diisi AI!');
+  }catch(err){
+    statusEl.innerHTML='<span style="color:var(--red);font-size:12px">Gagal meringkas. Cek koneksi atau coba lagi.</span>';
+    console.error(err);
+  }
+  document.getElementById('btn-ai-fill').disabled=false;
+}
+
+/* MANUAL FILL: mengisi KETIGA bagian P, B, N dari data lokal */
+function manualFill(){
+  const{weekDone,weekAbs,weekPending,weekLate}=buildWeekData();
+  const today=ds(new Date());
+
+  // PROGRES: dari absensi + tugas selesai
+  const grpP={};
+  weekDone.forEach(t=>{const k=t.projName||'Umum';if(!grpP[k])grpP[k]=[];grpP[k].push(t.text)});
+  weekAbs.forEach(a=>{const k=a.projName||'Umum';if(!grpP[k])grpP[k]=[];const txt=a.time?`[${a.time}] ${a.act}`:a.act;if(!grpP[k].includes(txt))grpP[k].push(txt)});
+  const progresEntries=Object.entries(grpP);
+
+  // PROBLEM: dari tugas terlambat + tugas pending tanpa progress
+  const grpB={};
+  weekLate.forEach(t=>{const k=t.projName||'Umum';if(!grpB[k])grpB[k]=[];grpB[k].push(`Tugas terlambat: ${t.text} (deadline ${fmtDate(t.deadline)})`)});
+  // Proyek urgent
+  data.projects.filter(p=>p.status==='Urgent').forEach(p=>{if(!grpB[p.name])grpB[p.name]=[];grpB[p.name].push(`Proyek berstatus Urgent, progress ${p.progress}%`)});
+  const problemEntries=Object.entries(grpB);
+
+  // PLAN: dari tugas pending, dikelompokkan per proyek
+  const grpN={};
+  weekPending.slice(0,10).forEach(t=>{const k=t.projName||'Umum';if(!grpN[k])grpN[k]=[];grpN[k].push(t.text+(t.deadline?` (target: ${fmtDate(t.deadline)})`:''))});
+  const planEntries=Object.entries(grpN);
+
+  if(!progresEntries.length&&!problemEntries.length&&!planEntries.length){toast('Tidak ada data yang cukup');return}
+
+  rpData.p=progresEntries.length?progresEntries.map(([k,items])=>[k,...items]):[['','']];
+  rpData.b=problemEntries.length?problemEntries.map(([k,items])=>[k,...items]):[['Tidak ada kendala signifikan','']];
+  rpData.n=planEntries.length?planEntries.map(([k,items])=>[k,...items]):[['','']];
+
+  renderRpAll();countRp();
+  document.querySelector('.rptab.rt-p').click();
+  toast('Laporan 3P berhasil diisi dari data lokal!');
+}
+
+function renderRpAll(){['p','b','n'].forEach(k=>renderRpPanel(k));countRp()}
+function renderRpPanel(k){
+  const el=document.getElementById('rp-panel-'+k);el.innerHTML='';
+  rpData[k].forEach((grp,gi)=>{
+    const div=document.createElement('div');div.className='rp-group';
+    const items=grp.slice(1);
+    div.innerHTML=`<div class="rp-grp-head">
+      <input class="rp-grp-name" placeholder="Nama proyek / kategori" value="${esc(grp[0]||'')}" oninput="rpData['${k}'][${gi}][0]=this.value;countRp()">
+      <button class="del-btn" onclick="delRpGrp('${k}',${gi})">×</button>
+    </div>
+    <div id="ri-${k}-${gi}">${items.map((it,ii)=>`<div class="rp-item-row"><div class="rp-dot"></div><input class="rp-item-input" placeholder="Keterangan..." value="${esc(it)}" oninput="rpData['${k}'][${gi}][${ii+1}]=this.value;countRp()">${items.length>1?`<button class="del-btn" style="font-size:13px" onclick="delRpItem('${k}',${gi},${ii+1})">×</button>`:''}</div>`).join('')}</div>
+    <button class="add-item-btn" onclick="addRpItem('${k}',${gi})">+ item</button>`;
+    el.appendChild(div);
+  });
+  const ab=document.createElement('button');ab.className='btn btn-outline btn-sm';ab.style.marginTop='6px';ab.textContent='+ Grup';ab.onclick=()=>{rpData[k].push(['','']);renderRpPanel(k);countRp()};
+  el.appendChild(ab);
+}
+function delRpGrp(k,gi){rpData[k].length>1?rpData[k].splice(gi,1):rpData[k]=[['','']];renderRpPanel(k);countRp()}
+function addRpItem(k,gi){rpData[k][gi].push('');renderRpPanel(k);countRp()}
+function delRpItem(k,gi,ii){rpData[k][gi].splice(ii,1);renderRpPanel(k);countRp()}
+function countRp(){['p','b','n'].forEach(k=>{const n=rpData[k].reduce((a,g)=>a+g.slice(1).filter(x=>x.trim()).length,0);document.getElementById('rc-'+k).textContent=n})}
+function switchRp(k,btn){document.querySelectorAll('.rptab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.rp-panel').forEach(p=>p.classList.remove('active'));document.getElementById('rp-panel-'+k).classList.add('active')}
+
+function genRpText(){
+  const team=document.getElementById('rp-team').value||'Tim',date=document.getElementById('rp-date').value;
+  const ml=moodVal?` | ${moodVal==='on-track'?'On Track':moodVal==='at-risk'?'At Risk':'Blocked'}`:'';
+  let txt=`Laporan 3P ${team}\n${date?fmtDate(date):''}${ml}\n${'─'.repeat(36)}\n\n`;
+  const lb={p:'PROGRES',b:'PROBLEM',n:'PLAN'};
+  ['p','b','n'].forEach(k=>{
+    txt+=lb[k]+'\n';
+    const has=rpData[k].some(g=>g.slice(1).some(x=>x.trim()));
+    if(!has)txt+='-\n';
+    else rpData[k].forEach(g=>{const items=g.slice(1).filter(x=>x.trim());if(!items.length)return;if(g[0].trim()){txt+=`${g[0]}:\n`;items.forEach(i=>txt+=`  - ${i}\n`)}else items.forEach(i=>txt+=`- ${i}\n`)});
+    txt+='\n';
+  });
+  return txt.trim();
+}
+function previewLaporan(){const pv=document.getElementById('rp-prev');document.getElementById('rp-prev-text').textContent=genRpText();pv.style.display='block';setTimeout(()=>pv.scrollIntoView({behavior:'smooth',block:'nearest'}),60)}
+function copyLaporan(){const txt=genRpText();navigator.clipboard.writeText(txt).then(()=>toast('Laporan disalin!')).catch(()=>{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('Laporan disalin!')})}
+function emailLaporan(){const team=document.getElementById('rp-team').value||'Tim';const date=document.getElementById('rp-date').value;window.open(`mailto:?subject=${encodeURIComponent('Laporan 3P '+team+' - '+(date?fmtDate(date):''))}&body=${encodeURIComponent(genRpText())}`,'_blank')}
+
+/* ======= KONTRIBUSI ======= */
+function setKontribPeriod(p,btn){kontribPeriod=p;document.querySelectorAll('.kp-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderKontribusi()}
+function getKontribRange(){
+  if(kontribPeriod==='week'){const{start,end}=getWeekRange();return{start,end}}
+  if(kontribPeriod==='month'){const now=new Date();const s=new Date(now.getFullYear(),now.getMonth(),1,0,0,0,0);const e=new Date(now.getFullYear(),now.getMonth()+1,0,23,59,59,999);return{start:s.getTime(),end:e.getTime()}}
+  return{start:0,end:Infinity}
+}
+function renderKontribusi(){
+  const{start,end}=getKontribRange();
+  const fAbs=data.absensi.filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
+  const fDone=data.todos.filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end);
+  const chartEl=document.getElementById('kontrib-chart'),totalEl=document.getElementById('kontrib-total'),detailEl=document.getElementById('kontrib-detail');
+  const grpA={};fAbs.forEach(a=>{const k=a.projName||'Tanpa Proyek';grpA[k]=(grpA[k]||0)+1});
+  const grpD={};fDone.forEach(t=>{const k=t.projName||'Tanpa Proyek';grpD[k]=(grpD[k]||0)+1});
+  const allKeys=[...new Set([...Object.keys(grpA),...Object.keys(grpD)])];
+  if(!allKeys.length){chartEl.innerHTML='<div class="empty">Belum ada data pada periode ini</div>';totalEl.textContent='';detailEl.innerHTML='';return}
+  const scores={};allKeys.forEach(k=>{scores[k]=(grpA[k]||0)+(grpD[k]||0)});
+  const total=Object.values(scores).reduce((a,b)=>a+b,0);
+  const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  const colorMap={};data.projects.forEach(p=>{colorMap[p.name]=p.color});
+  const fallback=['#1d9e75','#378add','#e24b4a','#ba7517','#7f77dd','#639922'];
+  chartEl.innerHTML=sorted.map(([name,score],i)=>{
+    const pct=total>0?Math.round(score/total*100):0;
+    const color=colorMap[name]||fallback[i%fallback.length];
+    return`<div class="kontrib-row"><div class="kontrib-name" title="${esc(name)}">${esc(name)}</div><div class="kontrib-track"><div class="kontrib-fill" style="width:${pct}%;background:${color}"></div></div><div class="kontrib-pct" style="color:${color}">${pct}%</div></div>`;
+  }).join('');
+  const lbl=kontribPeriod==='week'?'minggu ini':kontribPeriod==='month'?'bulan ini':'semua waktu';
+  totalEl.textContent=`${fAbs.length} aktivitas + ${fDone.length} tugas selesai ${lbl}`;
+  detailEl.innerHTML=sorted.map(([name,score],i)=>{
+    const color=colorMap[name]||fallback[i%fallback.length];
+    const pct=total>0?Math.round(score/total*100):0;
+    return`<div style="padding:10px 0;border-bottom:1px solid var(--border2)">
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px">
+        <div style="width:9px;height:9px;border-radius:50%;background:${color};flex-shrink:0"></div>
+        <span style="font-size:12px;font-weight:700;color:var(--text);flex:1">${esc(name)}</span>
+        <span style="font-size:14px;font-weight:700;color:${color}">${pct}%</span>
+      </div>
+      <div style="display:flex;gap:6px">
+        <span style="font-size:11px;color:var(--text2);background:var(--surface2);padding:2px 9px;border-radius:5px;border:1px solid var(--border2)">${grpA[name]||0} aktivitas</span>
+        <span style="font-size:11px;color:var(--text2);background:var(--surface2);padding:2px 9px;border-radius:5px;border:1px solid var(--border2)">${grpD[name]||0} tugas selesai</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ======= DASHBOARD ======= */
+function renderDashRepos(){
+  const reposEl=document.getElementById('dash-repos');if(!reposEl)return;
+  const withRepo=data.projects.filter(p=>p.repo);
+  if(!withRepo.length){reposEl.innerHTML='<div class="empty">Belum ada link repository. Tambahkan di halaman Proyek.</div>';return}
+  reposEl.innerHTML=withRepo.map(p=>`<div class="sum-item"><div class="sum-dot" style="background:${p.color}"></div><div class="sum-text"><strong style="font-size:12px">${esc(p.name)}</strong><br><a href="${esc(p.repo)}" target="_blank" rel="noopener" style="font-size:11px;color:var(--blue);word-break:break-all">${esc(p.repo)}</a></div></div>`).join('');
+}
+
+function renderDash(){
+  const today=ds(new Date());
+  const aktif=data.projects.filter(p=>p.status!=='Selesai').length;
+  const pending=data.todos.filter(t=>!t.done).length;
+  const late=data.todos.filter(t=>!t.done&&t.deadline&&t.deadline<today).length;
+  const{start,end}=getWeekRange();
+  const doneWeek=data.todos.filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end).length;
+  document.getElementById('d-aktif').textContent=aktif;
+  document.getElementById('d-todo').textContent=pending;
+  document.getElementById('d-late').textContent=late;
+  document.getElementById('d-done').textContent=doneWeek;
+
+  const wn=Math.ceil((((new Date()-new Date(new Date().getFullYear(),0,1))/86400000)+1)/7);
+  document.getElementById('dash-week-badge').textContent='W'+wn;
+
+  const todayAbs=data.absensi.filter(a=>a.date===today).sort((a,b)=>(a.time||'').localeCompare(b.time||'')||a.createdAt-b.createdAt);
+  const todayTodos=data.todos.filter(t=>t.done&&t.doneAt&&ds(new Date(t.doneAt))===today);
+  const dtEl=document.getElementById('dash-today');
+  if(!todayAbs.length&&!todayTodos.length)dtEl.innerHTML='<div class="empty">Belum ada aktivitas hari ini</div>';
+  else{
+    let html='';
+    todayAbs.forEach(a=>{const c=(data.projects.find(p=>p.id===a.projId)||{}).color||'var(--teal-mid)';html+=`<div class="sum-item"><div class="sum-dot" style="background:${c}"></div><div class="sum-text">${a.time?`<strong>${a.time}</strong> · `:''}${esc(a.act)}${a.projName?` <span style="color:var(--blue);font-size:10px">(${esc(a.projName)})</span>`:''}</div></div>`});
+    todayTodos.forEach(t=>{html+=`<div class="sum-item"><div class="sum-dot" style="opacity:.4"></div><div class="sum-text">✓ ${esc(t.text)}${t.projName?` <span style="color:var(--blue);font-size:10px">(${esc(t.projName)})</span>`:''}</div></div>`});
+    dtEl.innerHTML=html;
+  }
+
+  const topProj=data.projects.filter(p=>p.status!=='Selesai').slice(0,5);
+  const dpEl=document.getElementById('dash-proyek');
+  if(!topProj.length)dpEl.innerHTML='<div class="empty">Belum ada proyek aktif</div>';
+  else dpEl.innerHTML=topProj.map(p=>`<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:210px" title="${esc(p.name)}">${esc(p.name)}</span><span style="font-size:10px;color:var(--text3);font-weight:600">${p.progress}%</span></div><div class="prog-bar"><div class="prog-fill" style="width:${p.progress}%;background:${p.color}"></div></div></div>`).join('');
+
+  const wAbs=data.absensi.filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
+  const wDone=data.todos.filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end);
+  const wEl=document.getElementById('dash-week');
+  if(!wDone.length&&!wAbs.length)wEl.innerHTML='<div class="empty">Belum ada aktivitas minggu ini</div>';
+  else{
+    const grp={};
+    wDone.forEach(t=>{const k=t.projName||'Umum';if(!grp[k])grp[k]=[];grp[k].push(t.text)});
+    wAbs.forEach(a=>{const k=a.projName||'Umum';if(!grp[k])grp[k]=[];const txt=a.time?`[${a.time}] ${a.act}`:a.act;if(!grp[k].includes(txt))grp[k].push(txt)});
+    wEl.innerHTML=Object.entries(grp).map(([proj,items])=>`<div class="sum-item"><div class="sum-dot"></div><div class="sum-text"><strong>${esc(proj)}</strong>: ${items.slice(0,3).map(esc).join(', ')}${items.length>3?` +${items.length-3} lainnya`:''}</div></div>`).join('');
+  }
+
+  const dlEl=document.getElementById('dash-deadline');
+  const nowTs=Date.now();
+  const upcoming=[
+    ...data.projects.filter(p=>p.deadline&&p.status!=='Selesai').map(p=>({name:p.name,color:p.color,deadline:p.deadline,diff:Math.ceil((new Date(p.deadline+'T00:00:00').getTime()-nowTs)/86400000)})),
+    ...data.todos.filter(t=>!t.done&&t.deadline).map(t=>({name:t.text,color:'var(--text3)',deadline:t.deadline,diff:Math.ceil((new Date(t.deadline+'T00:00:00').getTime()-nowTs)/86400000)}))
+  ].filter(x=>x.diff<=14).sort((a,b)=>a.diff-b.diff).slice(0,6);
+  if(!upcoming.length)dlEl.innerHTML='<div class="empty">Tidak ada deadline dalam 14 hari ke depan</div>';
+  else dlEl.innerHTML=upcoming.map(x=>{
+    const cls=x.diff<0?'dl-urgent':x.diff<=3?'dl-urgent':x.diff<=7?'dl-warn':'dl-ok';
+    const label=x.diff<0?`${Math.abs(x.diff)}h terlambat`:x.diff===0?'Hari ini':x.diff===1?'Besok':`${x.diff} hari lagi`;
+    return`<div class="dl-item"><div class="dl-dot" style="background:${x.color}"></div><div class="dl-name" title="${esc(x.name)}">${esc(x.name)}</div><span class="dl-badge ${cls}">${label}</span></div>`;
+  }).join('');
+
+  const wlEl=document.getElementById('dash-workload');
+  const wlGrp={};wAbs.forEach(a=>{const k=a.projName||'Tanpa Proyek';wlGrp[k]=(wlGrp[k]||0)+1});
+  const wlTotal=Object.values(wlGrp).reduce((a,b)=>a+b,0);
+  if(!wlTotal)wlEl.innerHTML='<div class="empty">Belum ada absensi minggu ini</div>';
+  else{
+    const cm={};data.projects.forEach(p=>{cm[p.name]=p.color});
+    const fb=['#1d9e75','#378add','#e24b4a','#ba7517','#7f77dd'];
+    wlEl.innerHTML=Object.entries(wlGrp).sort((a,b)=>b[1]-a[1]).map(([name,cnt],i)=>{
+      const pct=Math.round(cnt/wlTotal*100),color=cm[name]||fb[i%fb.length];
+      return`<div class="wl-row"><div class="wl-name" title="${esc(name)}">${esc(name)}</div><div class="wl-track"><div class="wl-fill" style="width:${pct}%;background:${color}"></div></div><div class="wl-pct">${pct}%</div></div>`;
+    }).join('');
+  }
+
+  const highTodos=data.todos.filter(t=>!t.done&&t.priority==='high').slice(0,5);
+  const htEl=document.getElementById('dash-high-todos');
+  if(!highTodos.length)htEl.innerHTML='<div class="empty">Tidak ada to-do prioritas tinggi</div>';
+  else htEl.innerHTML=highTodos.map(t=>`<div class="sum-item"><div class="sum-dot" style="background:var(--red-mid)"></div><div class="sum-text">${esc(t.text)}${t.projName?` <span style="color:var(--blue);font-size:10px">(${esc(t.projName)})</span>`:''}</div></div>`).join('');
+
+  renderDashRepos();
+}
+
+/* ======= INIT ======= */
+async function init(){
+  await loadData();
+  const now=new Date();
+  document.getElementById('nav-date').textContent=now.toLocaleDateString('id-ID',{weekday:'short',day:'numeric',month:'short'});
+  document.getElementById('rp-date').value=ds(now);
+  document.getElementById('dash-date-sub').textContent=now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  if(!data.projects.length){
+    data.projects=[
+      {id:gid(),name:'Geospasial KPI Blora',client:'Pemda Blora',deadline:'2026-05-30',status:'Aktif',color:'#1d9e75',progress:40,repo:'https://drive.google.com/drive/folders/kpi-blora',createdAt:Date.now()},
+      {id:gid(),name:'FS Yapro',client:'PT Yapro',deadline:'2026-06-15',status:'Aktif',color:'#378add',progress:25,repo:'https://github.com/gis-team/fs-yapro',createdAt:Date.now()},
+      {id:gid(),name:'KLHS Wadaslintang',client:'Pemda Wonosobo',deadline:'2026-04-30',status:'Urgent',color:'#e24b4a',progress:70,repo:'',createdAt:Date.now()}
+    ];
+    const n=Date.now();
+    data.todos=[
+      {id:gid(),text:'Collecting data progress, revisi parameter',projId:data.projects[0].id,projName:'Geospasial KPI Blora',deadline:'',priority:'high',done:true,doneAt:n-3600000,createdAt:n-5000000},
+      {id:gid(),text:'Follow up hasil paparan ke klien',projId:data.projects[0].id,projName:'Geospasial KPI Blora',deadline:'2026-04-14',priority:'med',done:false,doneAt:null,createdAt:n-4500000},
+      {id:gid(),text:'Revisi analisis Solo',projId:data.projects[1].id,projName:'FS Yapro',deadline:'',priority:'high',done:true,doneAt:n-7200000,createdAt:n-4000000},
+      {id:gid(),text:'Analisis isochrone Banjarmasin',projId:data.projects[1].id,projName:'FS Yapro',deadline:'2026-04-15',priority:'high',done:false,doneAt:null,createdAt:n-3500000},
+      {id:gid(),text:'Revisi peta KLHS Wadaslintang',projId:data.projects[2].id,projName:'KLHS Wadaslintang',deadline:'2026-04-14',priority:'high',done:true,doneAt:n-1800000,createdAt:n-3000000}
+    ];
+    data.absensi=[
+      {id:gid(),act:'Meeting internal review progress KPI Blora',projId:data.projects[0].id,projName:'Geospasial KPI Blora',time:'08:30',date:ds(now),createdAt:n-3600000},
+      {id:gid(),act:'Analisis data spasial dan revisi parameter lereng',projId:data.projects[0].id,projName:'Geospasial KPI Blora',time:'10:00',date:ds(now),createdAt:n-2000000},
+      {id:gid(),act:'Revisi peta KLHS, koordinasi dengan tim lapangan',projId:data.projects[2].id,projName:'KLHS Wadaslintang',time:'13:30',date:ds(now),createdAt:n-1000000}
+    ];
+    await save();
+  }
+  renderDash();updateTodoBadge();
+}
+init();
+</script>
+</body>
+</html>

@@ -558,7 +558,7 @@ select.finput{cursor:pointer}
   <div class="card">
     <div class="fgrow">
       <div><div class="flabel">Tim / Divisi</div><input class="finput" id="rp-team" value="GIS"></div>
-      <div><div class="flabel">Tanggal</div><input class="finput" type="date" id="rp-date"></div>
+      <div><div class="flabel">Tanggal Laporan</div><input class="finput" type="date" id="rp-date"></div>
     </div>
     <div class="frow">
       <div class="flabel">Status Minggu</div>
@@ -570,7 +570,7 @@ select.finput{cursor:pointer}
     </div>
 
     <div class="ai-section-head">Auto-isi Laporan</div>
-    <p style="font-size:11px;color:var(--text2);margin-bottom:8px;line-height:1.5">Tombol di bawah akan mengisi <strong>Progres, Problem, dan Plan</strong> secara otomatis berdasarkan data Presensi &amp; to-do minggu ini.</p>
+    <p style="font-size:11px;color:var(--text2);margin-bottom:8px;line-height:1.5">Tombol di bawah akan menarik data <strong>mundur 7 hari</strong> terhitung dari Tanggal Laporan yang kamu pilih di atas.</p>
     <div class="btn-row">
       <button class="btn btn-ai" id="btn-ai-fill" onclick="autoFillAI()">
         <svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 1l1.4 3.8H13l-3.4 2.4 1.3 3.8L7 8.8l-3.9 2.2 1.3-3.8L1 4.8h4.6z"/></svg>
@@ -612,8 +612,13 @@ select.finput{cursor:pointer}
     <div class="kontrib-period">
       <button class="kp-btn active" onclick="setKontribPeriod('week',this)">Minggu Ini</button>
       <button class="kp-btn" onclick="setKontribPeriod('month',this)">Bulan Ini</button>
-      <button class="kp-btn" onclick="setKontribPeriod('all',this)">Semua Waktu</button>
+      <button class="kp-btn" onclick="setKontribPeriod('custom',this)">Custom (Tgl 20)</button>
     </div>
+    <div class="fgrow" id="kp-custom-dates" style="display:none;margin-bottom:13px">
+      <div><div class="flabel">Dari Tanggal</div><input type="date" class="finput" id="kp-start" onchange="renderKontribusi()"></div>
+      <div><div class="flabel">Sampai Tanggal</div><input type="date" class="finput" id="kp-end" onchange="renderKontribusi()"></div>
+    </div>
+    
     <div id="kontrib-chart"></div>
     <div id="kontrib-total" style="margin-top:8px;font-size:11px;color:var(--text3);text-align:right"></div>
   </div>
@@ -654,13 +659,14 @@ select.finput{cursor:pointer}
 <div class="toast" id="toast"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database-compat.js"></script>
 
 <script>
-// INISIALISASI FIREBASE
+// INISIALISASI FIREBASE REALTIME DATABASE
 const firebaseConfig = {
   apiKey: "AIzaSyAzb-5f8ovX7izetbxk7HNZZb3qtY9Og58",
   authDomain: "gis-projectmanager.firebaseapp.com",
+  databaseURL: "https://gis-projectmanager-default-rtdb.firebaseio.com", 
   projectId: "gis-projectmanager",
   storageBucket: "gis-projectmanager.firebasestorage.app",
   messagingSenderId: "429308985979",
@@ -668,11 +674,11 @@ const firebaseConfig = {
   measurementId: "G-95XBYKSSKQ"
 };
 firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+const db = firebase.database();
 
 // STATE LOKAL
-let data={projects:[],todos:[],Presensi:[]};
-let todoFilter='all',moodVal='',rpData={p:[],b:[],n:[]},absDate=new Date(),kontribPeriod='week';
+let data = {projects:[], todos:[], Presensi:[]};
+let todoFilter='all', moodVal='', rpData={p:[],b:[],n:[]}, absDate=new Date(), kontribPeriod='week';
 const absDate0=new Date();
 let uid=Date.now();
 
@@ -682,39 +688,40 @@ function ds(d){return(d instanceof Date?d:new Date(d)).toISOString().split('T')[
 function fmtDate(s){if(!s)return'';try{return new Date(s+'T00:00:00').toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})}catch(e){return s}}
 function fmtDateLong(s){if(!s)return'';try{return new Date(s+'T00:00:00').toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}catch(e){return s}}
 
-// FUNGSI SAVE KE FIREBASE
+// FUNGSI SAVE KE REALTIME DATABASE
 async function save(){
   try {
-    await db.collection("gpm_data").doc("main_state").set(data);
+    await db.ref("gpm_data/main_state").set(data);
   } catch(e) {
     console.error("Error saving data:", e);
     toast('Gagal sinkronisasi data!');
   }
 }
 
-// FUNGSI LOAD DARI FIREBASE (REALTIME)
+// FUNGSI LOAD DARI REALTIME DATABASE
 async function loadData() {
   return new Promise((resolve) => {
-    db.collection("gpm_data").doc("main_state").onSnapshot((doc) => {
-      if (doc.exists) {
-        data = doc.data();
-        
-        // Refresh UI pada halaman yang sedang aktif
-        const activePage = document.querySelector('.page.active');
-        if(activePage) {
-           const p = activePage.id.replace('page-', '');
-           if(p === 'dashboard') renderDash();
-           if(p === 'proyek') renderProyek();
-           if(p === 'todo') { fillProjSelect('td-proj'); renderTodo(); }
-           if(p === 'Presensi') { fillProjSelect('abs-proj'); renderPresensi(); }
-           if(p === 'laporan') { initRpIfEmpty(); renderRpAll(); }
-           if(p === 'kontribusi') renderKontribusi();
-        }
+    db.ref("gpm_data/main_state").on('value', (snapshot) => {
+      if (snapshot.exists()) {
+        data = snapshot.val();
+      } else {
+        data = {projects:[], todos:[], Presensi:[]};
+      }
+      
+      const activePage = document.querySelector('.page.active');
+      if(activePage) {
+         const p = activePage.id.replace('page-', '');
+         if(p === 'dashboard') renderDash();
+         if(p === 'proyek') renderProyek();
+         if(p === 'todo') { fillProjSelect('td-proj'); renderTodo(); }
+         if(p === 'Presensi') { fillProjSelect('abs-proj'); renderPresensi(); }
+         if(p === 'laporan') { initRpIfEmpty(); renderRpAll(); }
+         if(p === 'kontribusi') renderKontribusi();
       }
       resolve();
     }, (error) => {
       console.error("Gagal load Firebase:", error);
-      resolve(); // Tetap resolve agar tidak error berhenti
+      resolve(); 
     });
   });
 }
@@ -753,7 +760,7 @@ function pickMood(m){
 function fillProjSelect(id){
   const s=document.getElementById(id);if(!s)return;
   const cur=s.value;
-  s.innerHTML='<option value="">— Pilih —</option>'+data.projects.filter(p=>p.status!=='Selesai').map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
+  s.innerHTML='<option value="">— Pilih —</option>'+(data.projects || []).filter(p=>p.status!=='Selesai').map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
   s.value=cur;
 }
 
@@ -763,34 +770,35 @@ function addProyek(){
   if(!name){toast('Nama proyek wajib diisi!');return}
   const statusVal=getPillVal('pj-status')||'Aktif';
   const progressVal=statusVal==='Selesai'?100:parseInt(document.getElementById('pj-prog').value)||0;
+  if(!data.projects) data.projects = [];
   data.projects.push({id:gid(),name,client:document.getElementById('pj-client').value.trim(),deadline:document.getElementById('pj-deadline').value,repo:document.getElementById('pj-repo').value.trim(),status:statusVal,color:getPillVal('pj-color')||'#1d9e75',progress:progressVal,createdAt:Date.now()});
   save();renderProyek();
   ['pj-name','pj-client','pj-deadline','pj-repo'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('pj-prog').value=0;document.getElementById('pj-prog-lbl').textContent='0%';
   toggleEl('add-proyek-card');toast('Proyek ditambahkan!');
 }
-function setProgres(id,v){const p=data.projects.find(x=>x.id===id);if(!p)return;p.progress=parseInt(v);save();const f=document.getElementById('pf-'+id);if(f)f.style.width=v+'%'}
+function setProgres(id,v){const p=(data.projects || []).find(x=>x.id===id);if(!p)return;p.progress=parseInt(v);save();const f=document.getElementById('pf-'+id);if(f)f.style.width=v+'%'}
 function setStatus(id,v){
-  const p=data.projects.find(x=>x.id===id);if(!p)return;
+  const p=(data.projects || []).find(x=>x.id===id);if(!p)return;
   p.status=v;
   if(v==='Selesai'){p.progress=100;const f=document.getElementById('pf-'+id),lbl=document.getElementById('pp-'+id),sl=document.getElementById('ps-'+id);if(f)f.style.width='100%';if(lbl)lbl.textContent='100%';if(sl){sl.value=100;sl.disabled=true;}}
   else{const sl=document.getElementById('ps-'+id);if(sl)sl.disabled=false;}
   save();renderProyek();
 }
-function setRepoInline(id,v){const p=data.projects.find(x=>x.id===id);if(p){p.repo=v;save();renderDashRepos()}}
+function setRepoInline(id,v){const p=(data.projects || []).find(x=>x.id===id);if(p){p.repo=v;save();renderDashRepos()}}
 function delProyek(id){
   if(!confirm('Hapus proyek ini beserta semua to-do terkait?'))return;
-  data.projects=data.projects.filter(p=>p.id!==id);
-  data.todos=data.todos.filter(t=>t.projId!==id);
-  data.Presensi=data.Presensi.filter(a=>a.projId!==id);
+  if(data.projects) data.projects=data.projects.filter(p=>p.id!==id);
+  if(data.todos) data.todos=data.todos.filter(t=>t.projId!==id);
+  if(data.Presensi) data.Presensi=data.Presensi.filter(a=>a.projId!==id);
   save();renderProyek();fillProjSelect('td-proj');fillProjSelect('abs-proj');toast('Proyek dihapus');
 }
 function renderProyek(){
   const el=document.getElementById('proj-list');
-  if(!data.projects.length){el.innerHTML='<div class="empty">Belum ada proyek. Klik "+ Tambah" di atas.</div>';return}
+  if(!data.projects || !data.projects.length){el.innerHTML='<div class="empty">Belum ada proyek. Klik "+ Tambah" di atas.</div>';return}
   const BADGE={Aktif:'b-aktif',Urgent:'b-urgent','On Hold':'b-hold',Selesai:'b-selesai'};
   el.innerHTML=data.projects.map(p=>{
-    const todos=data.todos.filter(t=>t.projId===p.id);
+    const todos=(data.todos || []).filter(t=>t.projId===p.id);
     const doneT=todos.filter(t=>t.done).length;
     const effProg=p.status==='Selesai'?100:p.progress;
     return`<div class="pj-card" style="border-left-color:${p.color}">
@@ -835,20 +843,21 @@ function addTodo(){
   const text=document.getElementById('td-text').value.trim();
   if(!text){toast('Isi tugas terlebih dahulu!');return}
   const projId=document.getElementById('td-proj').value;
-  const proj=data.projects.find(p=>p.id===projId);
+  const proj=(data.projects || []).find(p=>p.id===projId);
+  if(!data.todos) data.todos = [];
   data.todos.push({id:gid(),text,projId,projName:proj?proj.name:'',deadline:document.getElementById('td-date').value,priority:getPillVal('td-prio')||'med',done:false,doneAt:null,createdAt:Date.now()});
   save();renderTodo();renderDash();updateTodoBadge();
   document.getElementById('td-text').value='';document.getElementById('td-date').value='';
   toast('To-do ditambahkan!');
 }
-function toggleTodo(id){const t=data.todos.find(x=>x.id===id);if(t){t.done=!t.done;t.doneAt=t.done?Date.now():null;save();renderTodo();renderDash();updateTodoBadge()}}
-function delTodo(id){data.todos=data.todos.filter(t=>t.id!==id);save();renderTodo();renderDash();updateTodoBadge();toast('Dihapus')}
-function updateTodoBadge(){const n=data.todos.filter(t=>!t.done).length;const b=document.getElementById('todo-badge');if(b){b.textContent=n;b.style.display=n?'inline-block':'none'}}
+function toggleTodo(id){const t=(data.todos || []).find(x=>x.id===id);if(t){t.done=!t.done;t.doneAt=t.done?Date.now():null;save();renderTodo();renderDash();updateTodoBadge()}}
+function delTodo(id){if(data.todos) data.todos=data.todos.filter(t=>t.id!==id);save();renderTodo();renderDash();updateTodoBadge();toast('Dihapus')}
+function updateTodoBadge(){const n=(data.todos || []).filter(t=>!t.done).length;const b=document.getElementById('todo-badge');if(b){b.textContent=n;b.style.display=n?'inline-block':'none'}}
 function setFilter(el){todoFilter=el.dataset.f;document.querySelectorAll('.ftag').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderTodo()}
 function renderTodo(){
   const el=document.getElementById('todo-list');
   const today=ds(new Date());
-  let list=[...data.todos];
+  let list=[...(data.todos || [])];
   if(todoFilter==='pending')list=list.filter(t=>!t.done);
   else if(todoFilter==='done')list=list.filter(t=>t.done);
   else if(todoFilter==='high')list=list.filter(t=>t.priority==='high');
@@ -881,19 +890,20 @@ function addPresensi(){
   const act=document.getElementById('abs-act').value.trim();
   if(!act){toast('Isi aktivitas terlebih dahulu!');return}
   const projId=document.getElementById('abs-proj').value;
-  const proj=data.projects.find(p=>p.id===projId);
+  const proj=(data.projects || []).find(p=>p.id===projId);
+  if(!data.Presensi) data.Presensi = [];
   data.Presensi.push({id:gid(),act,projId,projName:proj?proj.name:'',time:document.getElementById('abs-time').value||'',date:ds(absDate),createdAt:Date.now()});
   save();renderPresensi();renderDash();
   document.getElementById('abs-act').value='';document.getElementById('abs-time').value='';toast('Aktivitas dicatat!');
 }
-function delPresensi(id){data.Presensi=data.Presensi.filter(a=>a.id!==id);save();renderPresensi();renderDash();toast('Dihapus')}
+function delPresensi(id){if(data.Presensi) data.Presensi=data.Presensi.filter(a=>a.id!==id);save();renderPresensi();renderDash();toast('Dihapus')}
 function renderPresensi(){
   document.getElementById('abs-date-label').textContent=fmtDateLong(ds(absDate));
   const el=document.getElementById('abs-list');
-  const list=data.Presensi.filter(a=>a.date===ds(absDate)).sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99')||a.createdAt-b.createdAt);
+  const list=(data.Presensi || []).filter(a=>a.date===ds(absDate)).sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99')||a.createdAt-b.createdAt);
   if(!list.length){el.innerHTML='<div class="empty">Belum ada aktivitas hari ini</div>';return}
   el.innerHTML=list.map(a=>{
-    const color=(data.projects.find(p=>p.id===a.projId)||{}).color||'var(--border)';
+    const color=((data.projects || []).find(p=>p.id===a.projId)||{}).color||'var(--border)';
     return`<div class="abs-entry" style="border-left-color:${color}">
       <div class="abs-time">${a.time||'—'}</div>
       <div style="flex:1;min-width:0"><div class="abs-act">${esc(a.act)}</div>${a.projName?`<div class="abs-proj">${esc(a.projName)}</div>`:''}</div>
@@ -909,26 +919,33 @@ function initRpIfEmpty(){
   if(!rpData.n.length)rpData.n=[['','']];
 }
 
-function getWeekRange(){
-  const now=new Date(),day=now.getDay();
-  const mon=new Date(now);mon.setDate(now.getDate()-(day===0?6:day-1));mon.setHours(0,0,0,0);
-  const sun=new Date(mon);sun.setDate(mon.getDate()+6);sun.setHours(23,59,59,999);
-  return{start:mon.getTime(),end:sun.getTime()};
+// FUNGSI KHUSUS LAPORAN: Menghitung 7 hari mundur dari Tanggal Laporan
+function getReportRange(){
+  const dtVal = document.getElementById('rp-date').value;
+  const baseDate = dtVal ? new Date(dtVal) : new Date();
+  
+  const end = new Date(baseDate);
+  end.setHours(23,59,59,999);
+  
+  const start = new Date(baseDate);
+  start.setDate(baseDate.getDate() - 6); // 7 hari inklusif (termasuk hari H)
+  start.setHours(0,0,0,0);
+  
+  return { start: start.getTime(), end: end.getTime(), today: ds(baseDate) };
 }
 
-function buildWeekData(){
-  const{start,end}=getWeekRange();
-  const weekDone=data.todos.filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end);
-  const weekAbs=data.Presensi.filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
-  const weekPending=data.todos.filter(t=>!t.done);
-  const today=ds(new Date());
-  const weekLate=data.todos.filter(t=>!t.done&&t.deadline&&t.deadline<today);
+function buildReportData(){
+  const{start, end, today}=getReportRange();
+  const weekDone=(data.todos || []).filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end);
+  const weekAbs=(data.Presensi || []).filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
+  const weekPending=(data.todos || []).filter(t=>!t.done);
+  const weekLate=(data.todos || []).filter(t=>!t.done&&t.deadline&&t.deadline<today);
   return{weekDone,weekAbs,weekPending,weekLate};
 }
 
 async function autoFillAI(){
-  const{weekDone,weekAbs,weekPending,weekLate}=buildWeekData();
-  if(!weekDone.length&&!weekAbs.length&&!weekPending.length){toast('Belum ada data minggu ini!');return}
+  const{weekDone,weekAbs,weekPending,weekLate}=buildReportData();
+  if(!weekDone.length&&!weekAbs.length&&!weekPending.length){toast('Belum ada data untuk periode ini!');return}
   const statusEl=document.getElementById('ai-status'),resultEl=document.getElementById('ai-result');
   statusEl.style.cssText='display:flex;padding:8px 0 0;font-size:12px;color:var(--text2);align-items:center;gap:6px';
   statusEl.innerHTML='<div class="spinner"></div> AI sedang merangkum ketiga bagian 3P…';
@@ -942,7 +959,7 @@ async function autoFillAI(){
 
   const prompt=`Kamu asisten laporan mingguan tim GIS/Geospasial. Buat laporan 3P lengkap (Progres, Problem, Plan).
 
-DATA MINGGU INI:
+DATA PERIODE INI:
 Presensi/AKTIVITAS:
 ${absText||'(kosong)'}
 TUGAS SELESAI:
@@ -952,7 +969,7 @@ ${pendingText||'(kosong)'}
 TUGAS TERLAMBAT:
 ${lateText||'(kosong)'}
 SEMUA PROYEK AKTIF:
-${data.projects.filter(p=>p.status!=='Selesai').map(p=>`- ${p.name} (progress ${p.progress}%)`).join('\n')||'(kosong)'}
+${(data.projects || []).filter(p=>p.status!=='Selesai').map(p=>`- ${p.name} (progress ${p.progress}%)`).join('\n')||'(kosong)'}
 
 Balas HANYA JSON valid tanpa markdown, tanpa penjelasan. Format PERSIS:
 {
@@ -980,7 +997,7 @@ Panduan:
 
     if(parsed.problem&&parsed.problem.length){
       rpData.b=parsed.problem.map(g=>[g.kategori||'',...(g.items||[])]);
-    } else rpData.b=[['Tidak ada kendala signifikan minggu ini','']];
+    } else rpData.b=[['Tidak ada kendala signifikan pada periode ini','']];
 
     if(parsed.plan&&parsed.plan.length){
       rpData.n=parsed.plan.map(g=>[g.kategori||'',...(g.items||[])]);
@@ -1008,8 +1025,7 @@ Panduan:
 }
 
 function manualFill(){
-  const{weekDone,weekAbs,weekPending,weekLate}=buildWeekData();
-  const today=ds(new Date());
+  const{weekDone,weekAbs,weekPending,weekLate}=buildReportData();
 
   const grpP={};
   weekDone.forEach(t=>{const k=t.projName||'Umum';if(!grpP[k])grpP[k]=[];grpP[k].push(t.text)});
@@ -1018,7 +1034,7 @@ function manualFill(){
 
   const grpB={};
   weekLate.forEach(t=>{const k=t.projName||'Umum';if(!grpB[k])grpB[k]=[];grpB[k].push(`Tugas terlambat: ${t.text} (deadline ${fmtDate(t.deadline)})`)});
-  data.projects.filter(p=>p.status==='Urgent').forEach(p=>{if(!grpB[p.name])grpB[p.name]=[];grpB[p.name].push(`Proyek berstatus Urgent, progress ${p.progress}%`)});
+  (data.projects || []).filter(p=>p.status==='Urgent').forEach(p=>{if(!grpB[p.name])grpB[p.name]=[];grpB[p.name].push(`Proyek berstatus Urgent, progress ${p.progress}%`)});
   const problemEntries=Object.entries(grpB);
 
   const grpN={};
@@ -1078,33 +1094,82 @@ function copyLaporan(){const txt=genRpText();navigator.clipboard.writeText(txt).
 function emailLaporan(){const team=document.getElementById('rp-team').value||'Tim';const date=document.getElementById('rp-date').value;window.open(`mailto:?subject=${encodeURIComponent('Laporan 3P '+team+' - '+(date?fmtDate(date):''))}&body=${encodeURIComponent(genRpText())}`,'_blank')}
 
 /* ======= KONTRIBUSI ======= */
-function setKontribPeriod(p,btn){kontribPeriod=p;document.querySelectorAll('.kp-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderKontribusi()}
+function setKontribPeriod(p,btn){
+  kontribPeriod=p;
+  document.querySelectorAll('.kp-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  
+  const customBox = document.getElementById('kp-custom-dates');
+  if(p === 'custom') {
+    customBox.style.display = 'grid'; 
+    // Auto-set ke tanggal 20 bulan ini/lalu, sampai tanggal 19 bulan depannya
+    const now = new Date();
+    let s = new Date(now.getFullYear(), now.getMonth(), 20);
+    if (now.getDate() < 20) {
+      s.setMonth(now.getMonth() - 1);
+    }
+    let e = new Date(s);
+    e.setMonth(s.getMonth() + 1);
+    e.setDate(19);
+
+    document.getElementById('kp-start').value = ds(s);
+    document.getElementById('kp-end').value = ds(e);
+  } else {
+    customBox.style.display = 'none';
+  }
+  
+  renderKontribusi();
+}
+
+// KHUSUS DASHBOARD TETAP MENGGUNAKAN MINGGU REAL-TIME
+function getDashWeekRange(){
+  const now=new Date(),day=now.getDay();
+  const mon=new Date(now);mon.setDate(now.getDate()-(day===0?6:day-1));mon.setHours(0,0,0,0);
+  const sun=new Date(mon);sun.setDate(mon.getDate()+6);sun.setHours(23,59,59,999);
+  return{start:mon.getTime(),end:sun.getTime()};
+}
+
 function getKontribRange(){
-  if(kontribPeriod==='week'){const{start,end}=getWeekRange();return{start,end}}
+  if(kontribPeriod==='week'){const{start,end}=getDashWeekRange();return{start,end}}
   if(kontribPeriod==='month'){const now=new Date();const s=new Date(now.getFullYear(),now.getMonth(),1,0,0,0,0);const e=new Date(now.getFullYear(),now.getMonth()+1,0,23,59,59,999);return{start:s.getTime(),end:e.getTime()}}
+  if(kontribPeriod==='custom'){
+    const s = document.getElementById('kp-start').value;
+    const e = document.getElementById('kp-end').value;
+    if(!s || !e) return {start:0, end:Infinity};
+    return {
+      start: new Date(s+'T00:00:00').getTime(),
+      end: new Date(e+'T23:59:59').getTime()
+    };
+  }
   return{start:0,end:Infinity}
 }
+
 function renderKontribusi(){
   const{start,end}=getKontribRange();
-  const fAbs=data.Presensi.filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
-  const fDone=data.todos.filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end);
+  const fAbs=(data.Presensi || []).filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
+  const fDone=(data.todos || []).filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end);
   const chartEl=document.getElementById('kontrib-chart'),totalEl=document.getElementById('kontrib-total'),detailEl=document.getElementById('kontrib-detail');
   const grpA={};fAbs.forEach(a=>{const k=a.projName||'Tanpa Proyek';grpA[k]=(grpA[k]||0)+1});
   const grpD={};fDone.forEach(t=>{const k=t.projName||'Tanpa Proyek';grpD[k]=(grpD[k]||0)+1});
   const allKeys=[...new Set([...Object.keys(grpA),...Object.keys(grpD)])];
+  
   if(!allKeys.length){chartEl.innerHTML='<div class="empty">Belum ada data pada periode ini</div>';totalEl.textContent='';detailEl.innerHTML='';return}
+  
   const scores={};allKeys.forEach(k=>{scores[k]=(grpA[k]||0)+(grpD[k]||0)});
   const total=Object.values(scores).reduce((a,b)=>a+b,0);
   const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
-  const colorMap={};data.projects.forEach(p=>{colorMap[p.name]=p.color});
+  const colorMap={};(data.projects || []).forEach(p=>{colorMap[p.name]=p.color});
   const fallback=['#1d9e75','#378add','#e24b4a','#ba7517','#7f77dd','#639922'];
+  
   chartEl.innerHTML=sorted.map(([name,score],i)=>{
     const pct=total>0?Math.round(score/total*100):0;
     const color=colorMap[name]||fallback[i%fallback.length];
     return`<div class="kontrib-row"><div class="kontrib-name" title="${esc(name)}">${esc(name)}</div><div class="kontrib-track"><div class="kontrib-fill" style="width:${pct}%;background:${color}"></div></div><div class="kontrib-pct" style="color:${color}">${pct}%</div></div>`;
   }).join('');
-  const lbl=kontribPeriod==='week'?'minggu ini':kontribPeriod==='month'?'bulan ini':'semua waktu';
-  totalEl.textContent=`${fAbs.length} aktivitas + ${fDone.length} tugas selesai ${lbl}`;
+  
+  const lbl=kontribPeriod==='week'?'minggu ini':kontribPeriod==='month'?'bulan ini':'periode ini';
+  totalEl.textContent=`${fAbs.length} aktivitas + ${fDone.length} tugas selesai (${lbl})`;
+  
   detailEl.innerHTML=sorted.map(([name,score],i)=>{
     const color=colorMap[name]||fallback[i%fallback.length];
     const pct=total>0?Math.round(score/total*100):0;
@@ -1125,18 +1190,20 @@ function renderKontribusi(){
 /* ======= DASHBOARD ======= */
 function renderDashRepos(){
   const reposEl=document.getElementById('dash-repos');if(!reposEl)return;
-  const withRepo=data.projects.filter(p=>p.repo);
+  const withRepo=(data.projects || []).filter(p=>p.repo);
   if(!withRepo.length){reposEl.innerHTML='<div class="empty">Belum ada link repository. Tambahkan di halaman Proyek.</div>';return}
   reposEl.innerHTML=withRepo.map(p=>`<div class="sum-item"><div class="sum-dot" style="background:${p.color}"></div><div class="sum-text"><strong style="font-size:12px">${esc(p.name)}</strong><br><a href="${esc(p.repo)}" target="_blank" rel="noopener" style="font-size:11px;color:var(--blue);word-break:break-all">${esc(p.repo)}</a></div></div>`).join('');
 }
 
 function renderDash(){
   const today=ds(new Date());
-  const aktif=data.projects.filter(p=>p.status!=='Selesai').length;
-  const pending=data.todos.filter(t=>!t.done).length;
-  const late=data.todos.filter(t=>!t.done&&t.deadline&&t.deadline<today).length;
-  const{start,end}=getWeekRange();
-  const doneWeek=data.todos.filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end).length;
+  const aktif=(data.projects || []).filter(p=>p.status!=='Selesai').length;
+  const pending=(data.todos || []).filter(t=>!t.done).length;
+  const late=(data.todos || []).filter(t=>!t.done&&t.deadline&&t.deadline<today).length;
+  
+  const{start,end}=getDashWeekRange();
+  const doneWeek=(data.todos || []).filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end).length;
+  
   document.getElementById('d-aktif').textContent=aktif;
   document.getElementById('d-todo').textContent=pending;
   document.getElementById('d-late').textContent=late;
@@ -1145,24 +1212,24 @@ function renderDash(){
   const wn=Math.ceil((((new Date()-new Date(new Date().getFullYear(),0,1))/86400000)+1)/7);
   document.getElementById('dash-week-badge').textContent='W'+wn;
 
-  const todayAbs=data.Presensi.filter(a=>a.date===today).sort((a,b)=>(a.time||'').localeCompare(b.time||'')||a.createdAt-b.createdAt);
-  const todayTodos=data.todos.filter(t=>t.done&&t.doneAt&&ds(new Date(t.doneAt))===today);
+  const todayAbs=(data.Presensi || []).filter(a=>a.date===today).sort((a,b)=>(a.time||'').localeCompare(b.time||'')||a.createdAt-b.createdAt);
+  const todayTodos=(data.todos || []).filter(t=>t.done&&t.doneAt&&ds(new Date(t.doneAt))===today);
   const dtEl=document.getElementById('dash-today');
   if(!todayAbs.length&&!todayTodos.length)dtEl.innerHTML='<div class="empty">Belum ada aktivitas hari ini</div>';
   else{
     let html='';
-    todayAbs.forEach(a=>{const c=(data.projects.find(p=>p.id===a.projId)||{}).color||'var(--teal-mid)';html+=`<div class="sum-item"><div class="sum-dot" style="background:${c}"></div><div class="sum-text">${a.time?`<strong>${a.time}</strong> · `:''}${esc(a.act)}${a.projName?` <span style="color:var(--blue);font-size:10px">(${esc(a.projName)})</span>`:''}</div></div>`});
+    todayAbs.forEach(a=>{const c=((data.projects || []).find(p=>p.id===a.projId)||{}).color||'var(--teal-mid)';html+=`<div class="sum-item"><div class="sum-dot" style="background:${c}"></div><div class="sum-text">${a.time?`<strong>${a.time}</strong> · `:''}${esc(a.act)}${a.projName?` <span style="color:var(--blue);font-size:10px">(${esc(a.projName)})</span>`:''}</div></div>`});
     todayTodos.forEach(t=>{html+=`<div class="sum-item"><div class="sum-dot" style="opacity:.4"></div><div class="sum-text">✓ ${esc(t.text)}${t.projName?` <span style="color:var(--blue);font-size:10px">(${esc(t.projName)})</span>`:''}</div></div>`});
     dtEl.innerHTML=html;
   }
 
-  const topProj=data.projects.filter(p=>p.status!=='Selesai').slice(0,5);
+  const topProj=(data.projects || []).filter(p=>p.status!=='Selesai').slice(0,5);
   const dpEl=document.getElementById('dash-proyek');
   if(!topProj.length)dpEl.innerHTML='<div class="empty">Belum ada proyek aktif</div>';
   else dpEl.innerHTML=topProj.map(p=>`<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:210px" title="${esc(p.name)}">${esc(p.name)}</span><span style="font-size:10px;color:var(--text3);font-weight:600">${p.progress}%</span></div><div class="prog-bar"><div class="prog-fill" style="width:${p.progress}%;background:${p.color}"></div></div></div>`).join('');
 
-  const wAbs=data.Presensi.filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
-  const wDone=data.todos.filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end);
+  const wAbs=(data.Presensi || []).filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
+  const wDone=(data.todos || []).filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end);
   const wEl=document.getElementById('dash-week');
   if(!wDone.length&&!wAbs.length)wEl.innerHTML='<div class="empty">Belum ada aktivitas minggu ini</div>';
   else{
@@ -1175,8 +1242,8 @@ function renderDash(){
   const dlEl=document.getElementById('dash-deadline');
   const nowTs=Date.now();
   const upcoming=[
-    ...data.projects.filter(p=>p.deadline&&p.status!=='Selesai').map(p=>({name:p.name,color:p.color,deadline:p.deadline,diff:Math.ceil((new Date(p.deadline+'T00:00:00').getTime()-nowTs)/86400000)})),
-    ...data.todos.filter(t=>!t.done&&t.deadline).map(t=>({name:t.text,color:'var(--text3)',deadline:t.deadline,diff:Math.ceil((new Date(t.deadline+'T00:00:00').getTime()-nowTs)/86400000)}))
+    ...(data.projects || []).filter(p=>p.deadline&&p.status!=='Selesai').map(p=>({name:p.name,color:p.color,deadline:p.deadline,diff:Math.ceil((new Date(p.deadline+'T00:00:00').getTime()-nowTs)/86400000)})),
+    ...(data.todos || []).filter(t=>!t.done&&t.deadline).map(t=>({name:t.text,color:'var(--text3)',deadline:t.deadline,diff:Math.ceil((new Date(t.deadline+'T00:00:00').getTime()-nowTs)/86400000)}))
   ].filter(x=>x.diff<=14).sort((a,b)=>a.diff-b.diff).slice(0,6);
   if(!upcoming.length)dlEl.innerHTML='<div class="empty">Tidak ada deadline dalam 14 hari ke depan</div>';
   else dlEl.innerHTML=upcoming.map(x=>{
@@ -1190,7 +1257,7 @@ function renderDash(){
   const wlTotal=Object.values(wlGrp).reduce((a,b)=>a+b,0);
   if(!wlTotal)wlEl.innerHTML='<div class="empty">Belum ada Presensi minggu ini</div>';
   else{
-    const cm={};data.projects.forEach(p=>{cm[p.name]=p.color});
+    const cm={};(data.projects || []).forEach(p=>{cm[p.name]=p.color});
     const fb=['#1d9e75','#378add','#e24b4a','#ba7517','#7f77dd'];
     wlEl.innerHTML=Object.entries(wlGrp).sort((a,b)=>b[1]-a[1]).map(([name,cnt],i)=>{
       const pct=Math.round(cnt/wlTotal*100),color=cm[name]||fb[i%fb.length];
@@ -1198,7 +1265,7 @@ function renderDash(){
     }).join('');
   }
 
-  const highTodos=data.todos.filter(t=>!t.done&&t.priority==='high').slice(0,5);
+  const highTodos=(data.todos || []).filter(t=>!t.done&&t.priority==='high').slice(0,5);
   const htEl=document.getElementById('dash-high-todos');
   if(!highTodos.length)htEl.innerHTML='<div class="empty">Tidak ada to-do prioritas tinggi</div>';
   else htEl.innerHTML=highTodos.map(t=>`<div class="sum-item"><div class="sum-dot" style="background:var(--red-mid)"></div><div class="sum-text">${esc(t.text)}${t.projName?` <span style="color:var(--blue);font-size:10px">(${esc(t.projName)})</span>`:''}</div></div>`).join('');
@@ -1208,38 +1275,19 @@ function renderDash(){
 
 /* ======= INIT ======= */
 async function init(){
-  await loadData(); // Load dari Firebase pertama kali (ini juga ngetrigger onSnapshot realtime listener)
+  await loadData(); 
   
   const now=new Date();
   document.getElementById('nav-date').textContent=now.toLocaleDateString('id-ID',{weekday:'short',day:'numeric',month:'short'});
   document.getElementById('rp-date').value=ds(now);
   document.getElementById('dash-date-sub').textContent=now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 
-  // Cek kalau Firebase masih benar-benar kosong, kasih data template awal
-  if(!data || !data.projects || !data.projects.length){
-    data = {projects:[],todos:[],Presensi:[]}; // Pastikan kerangkanya aman
-    data.projects=[
-      {id:gid(),name:'Geospasial KPI Blora',client:'Pemda Blora',deadline:'2026-05-30',status:'Aktif',color:'#1d9e75',progress:40,repo:'https://drive.google.com/drive/folders/kpi-blora',createdAt:Date.now()},
-      {id:gid(),name:'FS Yapro',client:'PT Yapro',deadline:'2026-06-15',status:'Aktif',color:'#378add',progress:25,repo:'https://github.com/gis-team/fs-yapro',createdAt:Date.now()},
-      {id:gid(),name:'KLHS Wadaslintang',client:'Pemda Wonosobo',deadline:'2026-04-30',status:'Urgent',color:'#e24b4a',progress:70,repo:'',createdAt:Date.now()}
-    ];
-    const n=Date.now();
-    data.todos=[
-      {id:gid(),text:'Collecting data progress, revisi parameter',projId:data.projects[0].id,projName:'Geospasial KPI Blora',deadline:'',priority:'high',done:true,doneAt:n-3600000,createdAt:n-5000000},
-      {id:gid(),text:'Follow up hasil paparan ke klien',projId:data.projects[0].id,projName:'Geospasial KPI Blora',deadline:'2026-04-14',priority:'med',done:false,doneAt:null,createdAt:n-4500000},
-      {id:gid(),text:'Revisi analisis Solo',projId:data.projects[1].id,projName:'FS Yapro',deadline:'',priority:'high',done:true,doneAt:n-7200000,createdAt:n-4000000},
-      {id:gid(),text:'Analisis isochrone Banjarmasin',projId:data.projects[1].id,projName:'FS Yapro',deadline:'2026-04-15',priority:'high',done:false,doneAt:null,createdAt:n-3500000},
-      {id:gid(),text:'Revisi peta KLHS Wadaslintang',projId:data.projects[2].id,projName:'KLHS Wadaslintang',deadline:'2026-04-14',priority:'high',done:true,doneAt:n-1800000,createdAt:n-3000000}
-    ];
-    data.Presensi=[
-      {id:gid(),act:'Meeting internal review progress KPI Blora',projId:data.projects[0].id,projName:'Geospasial KPI Blora',time:'08:30',date:ds(now),createdAt:n-3600000},
-      {id:gid(),act:'Analisis data spasial dan revisi parameter lereng',projId:data.projects[0].id,projName:'Geospasial KPI Blora',time:'10:00',date:ds(now),createdAt:n-2000000},
-      {id:gid(),act:'Revisi peta KLHS, koordinasi dengan tim lapangan',projId:data.projects[2].id,projName:'KLHS Wadaslintang',time:'13:30',date:ds(now),createdAt:n-1000000}
-    ];
-    await save(); // Simpan template ke Firebase biar sinkron di semua device
+  if(!data || !data.projects){
+    data = {projects:[], todos:[], Presensi:[]}; 
   }
 
-  renderDash();updateTodoBadge();
+  renderDash();
+  updateTodoBadge();
 }
 
 init();

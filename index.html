@@ -253,7 +253,7 @@ select.finput{cursor:pointer}
 .ftag:hover{border-color:rgba(29,158,117,0.4);color:var(--teal)}
 .ftag.active{background:rgba(29,158,117,0.15);border-color:rgba(29,158,117,0.4);color:var(--teal)}
 
-/* ABSENSI */
+/* PRESENSI */
 .abs-date-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
 .abs-date-label{font-size:14px;font-weight:700;color:var(--text)}
 .abs-nav{display:flex;gap:4px}
@@ -387,9 +387,9 @@ select.finput{cursor:pointer}
     <svg class="nav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3,6 6,9 11,4"/><polyline points="3,12 6,15 11,10"/><line x1="13" y1="6" x2="16" y2="6"/><line x1="13" y1="12" x2="16" y2="12"/></svg>
     To-Do <span class="nav-badge-count" id="todo-badge" style="display:none">0</span>
   </div>
-  <div class="nav-link" data-p="absensi" onclick="goPage('absensi')">
+  <div class="nav-link" data-p="Presensi" onclick="goPage('Presensi')">
     <svg class="nav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="9" r="7"/><polyline points="9,5 9,9 12,11"/></svg>
-    Absensi
+    Presensi
   </div>
   <div class="nav-section">Laporan</div>
   <div class="nav-link" data-p="laporan" onclick="goPage('laporan')">
@@ -537,9 +537,9 @@ select.finput{cursor:pointer}
   <div id="todo-list"></div>
 </div>
 
-<!-- ABSENSI -->
-<div id="page-absensi" class="page">
-  <div class="section-header"><div><div class="section-title">Absensi & Aktivitas</div></div></div>
+<!-- Presensi -->
+<div id="page-Presensi" class="page">
+  <div class="section-header"><div><div class="section-title">Presensi & Aktivitas</div></div></div>
   <div class="card">
     <div class="abs-date-head">
       <div class="abs-date-label" id="abs-date-label">—</div>
@@ -554,7 +554,7 @@ select.finput{cursor:pointer}
       <div><div class="flabel">Proyek</div><select class="finput" id="abs-proj"><option value="">— Pilih —</option></select></div>
       <div><div class="flabel">Waktu (opsional)</div><input class="finput" type="time" id="abs-time"></div>
     </div>
-    <button class="btn btn-teal btn-block" onclick="addAbsensi()">Catat Aktivitas</button>
+    <button class="btn btn-teal btn-block" onclick="addPresensi()">Catat Aktivitas</button>
   </div>
   <div id="abs-list"></div>
 </div>
@@ -578,7 +578,7 @@ select.finput{cursor:pointer}
 
     <!-- AI & Manual fill buttons for ALL 3P -->
     <div class="ai-section-head">Auto-isi Laporan</div>
-    <p style="font-size:11px;color:var(--text2);margin-bottom:8px;line-height:1.5">Tombol di bawah akan mengisi <strong>Progres, Problem, dan Plan</strong> secara otomatis berdasarkan data absensi &amp; to-do minggu ini.</p>
+    <p style="font-size:11px;color:var(--text2);margin-bottom:8px;line-height:1.5">Tombol di bawah akan mengisi <strong>Progres, Problem, dan Plan</strong> secara otomatis berdasarkan data Presensi &amp; to-do minggu ini.</p>
     <div class="btn-row">
       <button class="btn btn-ai" id="btn-ai-fill" onclick="autoFillAI()">
         <svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 1l1.4 3.8H13l-3.4 2.4 1.3 3.8L7 8.8l-3.9 2.2 1.3-3.8L1 4.8h4.6z"/></svg>
@@ -650,9 +650,9 @@ select.finput{cursor:pointer}
       <svg class="bnav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3,6 6,9 11,4"/><line x1="13" y1="6" x2="16" y2="6"/></svg>
       To-Do
     </button>
-    <button class="bnav-item" data-p="absensi" onclick="goPage('absensi')">
+    <button class="bnav-item" data-p="Presensi" onclick="goPage('Presensi')">
       <svg class="bnav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="9" r="7"/><polyline points="9,5 9,9 12,11"/></svg>
-      Absensi
+      Presensi
     </button>
     <button class="bnav-item" data-p="laporan" onclick="goPage('laporan')">
       <svg class="bnav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 1h8a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V3a2 2 0 012-2z"/><line x1="6" y1="7" x2="12" y2="7"/><line x1="6" y1="10" x2="12" y2="10"/></svg>
@@ -664,7 +664,7 @@ select.finput{cursor:pointer}
 <div class="toast" id="toast"></div>
 
 <script>
-let data={projects:[],todos:[],absensi:[]};
+let data={projects:[],todos:[],Presensi:[]};
 let todoFilter='all',moodVal='',rpData={p:[],b:[],n:[]},absDate=new Date(),kontribPeriod='week';
 const absDate0=new Date();
 let uid=Date.now();
@@ -689,7 +689,7 @@ function goPage(p){
   if(p==='dashboard')renderDash();
   if(p==='proyek')renderProyek();
   if(p==='todo'){fillProjSelect('td-proj');renderTodo()}
-  if(p==='absensi'){fillProjSelect('abs-proj');renderAbsensi()}
+  if(p==='Presensi'){fillProjSelect('abs-proj');renderPresensi()}
   if(p==='laporan'){initRpIfEmpty();renderRpAll()}
   if(p==='kontribusi')renderKontribusi();
 }
@@ -741,7 +741,7 @@ function delProyek(id){
   if(!confirm('Hapus proyek ini beserta semua to-do terkait?'))return;
   data.projects=data.projects.filter(p=>p.id!==id);
   data.todos=data.todos.filter(t=>t.projId!==id);
-  data.absensi=data.absensi.filter(a=>a.projId!==id);
+  data.Presensi=data.Presensi.filter(a=>a.projId!==id);
   save();renderProyek();fillProjSelect('td-proj');fillProjSelect('abs-proj');toast('Proyek dihapus');
 }
 function renderProyek(){
@@ -834,29 +834,29 @@ function renderTodo(){
   }).join('');
 }
 
-/* ======= ABSENSI ======= */
-function moveAbsDate(d){if(d===0)absDate=new Date(absDate0);else{absDate=new Date(absDate);absDate.setDate(absDate.getDate()+d)}renderAbsensi()}
-function addAbsensi(){
+/* ======= Presensi ======= */
+function moveAbsDate(d){if(d===0)absDate=new Date(absDate0);else{absDate=new Date(absDate);absDate.setDate(absDate.getDate()+d)}renderPresensi()}
+function addPresensi(){
   const act=document.getElementById('abs-act').value.trim();
   if(!act){toast('Isi aktivitas terlebih dahulu!');return}
   const projId=document.getElementById('abs-proj').value;
   const proj=data.projects.find(p=>p.id===projId);
-  data.absensi.push({id:gid(),act,projId,projName:proj?proj.name:'',time:document.getElementById('abs-time').value||'',date:ds(absDate),createdAt:Date.now()});
-  save();renderAbsensi();renderDash();
+  data.Presensi.push({id:gid(),act,projId,projName:proj?proj.name:'',time:document.getElementById('abs-time').value||'',date:ds(absDate),createdAt:Date.now()});
+  save();renderPresensi();renderDash();
   document.getElementById('abs-act').value='';document.getElementById('abs-time').value='';toast('Aktivitas dicatat!');
 }
-function delAbsensi(id){data.absensi=data.absensi.filter(a=>a.id!==id);save();renderAbsensi();renderDash();toast('Dihapus')}
-function renderAbsensi(){
+function delPresensi(id){data.Presensi=data.Presensi.filter(a=>a.id!==id);save();renderPresensi();renderDash();toast('Dihapus')}
+function renderPresensi(){
   document.getElementById('abs-date-label').textContent=fmtDateLong(ds(absDate));
   const el=document.getElementById('abs-list');
-  const list=data.absensi.filter(a=>a.date===ds(absDate)).sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99')||a.createdAt-b.createdAt);
+  const list=data.Presensi.filter(a=>a.date===ds(absDate)).sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99')||a.createdAt-b.createdAt);
   if(!list.length){el.innerHTML='<div class="empty">Belum ada aktivitas hari ini</div>';return}
   el.innerHTML=list.map(a=>{
     const color=(data.projects.find(p=>p.id===a.projId)||{}).color||'var(--border)';
     return`<div class="abs-entry" style="border-left-color:${color}">
       <div class="abs-time">${a.time||'—'}</div>
       <div style="flex:1;min-width:0"><div class="abs-act">${esc(a.act)}</div>${a.projName?`<div class="abs-proj">${esc(a.projName)}</div>`:''}</div>
-      <button class="del-btn" onclick="delAbsensi('${a.id}')">×</button>
+      <button class="del-btn" onclick="delPresensi('${a.id}')">×</button>
     </div>`
   }).join('');
 }
@@ -878,7 +878,7 @@ function getWeekRange(){
 function buildWeekData(){
   const{start,end}=getWeekRange();
   const weekDone=data.todos.filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end);
-  const weekAbs=data.absensi.filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
+  const weekAbs=data.Presensi.filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
   const weekPending=data.todos.filter(t=>!t.done);
   const today=ds(new Date());
   const weekLate=data.todos.filter(t=>!t.done&&t.deadline&&t.deadline<today);
@@ -903,7 +903,7 @@ async function autoFillAI(){
   const prompt=`Kamu asisten laporan mingguan tim GIS/Geospasial. Buat laporan 3P lengkap (Progres, Problem, Plan).
 
 DATA MINGGU INI:
-ABSENSI/AKTIVITAS:
+Presensi/AKTIVITAS:
 ${absText||'(kosong)'}
 TUGAS SELESAI:
 ${doneText||'(kosong)'}
@@ -976,7 +976,7 @@ function manualFill(){
   const{weekDone,weekAbs,weekPending,weekLate}=buildWeekData();
   const today=ds(new Date());
 
-  // PROGRES: dari absensi + tugas selesai
+  // PROGRES: dari Presensi + tugas selesai
   const grpP={};
   weekDone.forEach(t=>{const k=t.projName||'Umum';if(!grpP[k])grpP[k]=[];grpP[k].push(t.text)});
   weekAbs.forEach(a=>{const k=a.projName||'Umum';if(!grpP[k])grpP[k]=[];const txt=a.time?`[${a.time}] ${a.act}`:a.act;if(!grpP[k].includes(txt))grpP[k].push(txt)});
@@ -1055,7 +1055,7 @@ function getKontribRange(){
 }
 function renderKontribusi(){
   const{start,end}=getKontribRange();
-  const fAbs=data.absensi.filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
+  const fAbs=data.Presensi.filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
   const fDone=data.todos.filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end);
   const chartEl=document.getElementById('kontrib-chart'),totalEl=document.getElementById('kontrib-total'),detailEl=document.getElementById('kontrib-detail');
   const grpA={};fAbs.forEach(a=>{const k=a.projName||'Tanpa Proyek';grpA[k]=(grpA[k]||0)+1});
@@ -1114,7 +1114,7 @@ function renderDash(){
   const wn=Math.ceil((((new Date()-new Date(new Date().getFullYear(),0,1))/86400000)+1)/7);
   document.getElementById('dash-week-badge').textContent='W'+wn;
 
-  const todayAbs=data.absensi.filter(a=>a.date===today).sort((a,b)=>(a.time||'').localeCompare(b.time||'')||a.createdAt-b.createdAt);
+  const todayAbs=data.Presensi.filter(a=>a.date===today).sort((a,b)=>(a.time||'').localeCompare(b.time||'')||a.createdAt-b.createdAt);
   const todayTodos=data.todos.filter(t=>t.done&&t.doneAt&&ds(new Date(t.doneAt))===today);
   const dtEl=document.getElementById('dash-today');
   if(!todayAbs.length&&!todayTodos.length)dtEl.innerHTML='<div class="empty">Belum ada aktivitas hari ini</div>';
@@ -1130,7 +1130,7 @@ function renderDash(){
   if(!topProj.length)dpEl.innerHTML='<div class="empty">Belum ada proyek aktif</div>';
   else dpEl.innerHTML=topProj.map(p=>`<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:210px" title="${esc(p.name)}">${esc(p.name)}</span><span style="font-size:10px;color:var(--text3);font-weight:600">${p.progress}%</span></div><div class="prog-bar"><div class="prog-fill" style="width:${p.progress}%;background:${p.color}"></div></div></div>`).join('');
 
-  const wAbs=data.absensi.filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
+  const wAbs=data.Presensi.filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
   const wDone=data.todos.filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end);
   const wEl=document.getElementById('dash-week');
   if(!wDone.length&&!wAbs.length)wEl.innerHTML='<div class="empty">Belum ada aktivitas minggu ini</div>';
@@ -1157,7 +1157,7 @@ function renderDash(){
   const wlEl=document.getElementById('dash-workload');
   const wlGrp={};wAbs.forEach(a=>{const k=a.projName||'Tanpa Proyek';wlGrp[k]=(wlGrp[k]||0)+1});
   const wlTotal=Object.values(wlGrp).reduce((a,b)=>a+b,0);
-  if(!wlTotal)wlEl.innerHTML='<div class="empty">Belum ada absensi minggu ini</div>';
+  if(!wlTotal)wlEl.innerHTML='<div class="empty">Belum ada Presensi minggu ini</div>';
   else{
     const cm={};data.projects.forEach(p=>{cm[p.name]=p.color});
     const fb=['#1d9e75','#378add','#e24b4a','#ba7517','#7f77dd'];
@@ -1197,7 +1197,7 @@ async function init(){
       {id:gid(),text:'Analisis isochrone Banjarmasin',projId:data.projects[1].id,projName:'FS Yapro',deadline:'2026-04-15',priority:'high',done:false,doneAt:null,createdAt:n-3500000},
       {id:gid(),text:'Revisi peta KLHS Wadaslintang',projId:data.projects[2].id,projName:'KLHS Wadaslintang',deadline:'2026-04-14',priority:'high',done:true,doneAt:n-1800000,createdAt:n-3000000}
     ];
-    data.absensi=[
+    data.Presensi=[
       {id:gid(),act:'Meeting internal review progress KPI Blora',projId:data.projects[0].id,projName:'Geospasial KPI Blora',time:'08:30',date:ds(now),createdAt:n-3600000},
       {id:gid(),act:'Analisis data spasial dan revisi parameter lereng',projId:data.projects[0].id,projName:'Geospasial KPI Blora',time:'10:00',date:ds(now),createdAt:n-2000000},
       {id:gid(),act:'Revisi peta KLHS, koordinasi dengan tim lapangan',projId:data.projects[2].id,projName:'KLHS Wadaslintang',time:'13:30',date:ds(now),createdAt:n-1000000}

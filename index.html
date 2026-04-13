@@ -662,16 +662,16 @@ select.finput{cursor:pointer}
 <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database-compat.js"></script>
 
 <script>
-// INISIALISASI FIREBASE REALTIME DATABASE
+// INISIALISASI FIREBASE REALTIME DATABASE (AKUN BARU - gis-projectmanager1)
 const firebaseConfig = {
-  apiKey: "AIzaSyAzb-5f8ovX7izetbxk7HNZZb3qtY9Og58",
-  authDomain: "gis-projectmanager.firebaseapp.com",
-  databaseURL: "https://gis-projectmanager-default-rtdb.firebaseio.com", 
-  projectId: "gis-projectmanager",
-  storageBucket: "gis-projectmanager.firebasestorage.app",
-  messagingSenderId: "429308985979",
-  appId: "1:429308985979:web:95d896aba0e0fcc09198de",
-  measurementId: "G-95XBYKSSKQ"
+  apiKey: "AIzaSyAbuxXjRygUR0fRvBZASAn54MyvSxVsn5Q",
+  authDomain: "gis-projectmanager1.firebaseapp.com",
+  databaseURL: "https://gis-projectmanager1-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "gis-projectmanager1",
+  storageBucket: "gis-projectmanager1.firebasestorage.app",
+  messagingSenderId: "55740115890",
+  appId: "1:55740115890:web:f32c57e2a3ab66d19892ab",
+  measurementId: "G-TE44MN26KZ"
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
@@ -1281,8 +1281,6 @@ async function init(){
   document.getElementById('nav-date').textContent=now.toLocaleDateString('id-ID',{weekday:'short',day:'numeric',month:'short'});
   document.getElementById('rp-date').value=ds(now);
   document.getElementById('dash-date-sub').textContent=now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-
-  // FUNGSI TEMPLATE OTOMATIS SUDAH DIHAPUS TOTAL DI SINI.
 
   renderDash();
   updateTodoBadge();

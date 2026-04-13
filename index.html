@@ -255,14 +255,14 @@ select.finput{cursor:pointer}
 
 /* PRESENSI */
 .abs-date-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
-.abs-date-label{font-size:14px;font-weight:700;color:var(--text)}
+.abs-date-label{font-size:13px;font-weight:700;color:var(--text)}
 .abs-nav{display:flex;gap:4px}
 .abs-nav-btn{height:30px;padding:0 11px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);cursor:pointer;font-size:12px;color:var(--text2);transition:.15s;user-select:none;font-family:inherit;backdrop-filter:blur(6px)}
 .abs-nav-btn:hover{background:var(--surface)}
-.abs-entry{background:var(--surface2);border-radius:10px;padding:10px 13px;margin-bottom:7px;display:flex;align-items:flex-start;gap:9px;border-left:3px solid var(--border);backdrop-filter:blur(6px)}
-.abs-time{font-size:11px;color:var(--text2);font-weight:700;white-space:nowrap;min-width:44px;margin-top:1px}
-.abs-act{font-size:12px;color:var(--text);font-weight:500}
-.abs-proj{font-size:11px;color:var(--blue);margin-top:2px}
+.abs-entry{background:var(--surface2);border-radius:8px;padding:8px 12px;margin-bottom:6px;display:flex;align-items:flex-start;gap:9px;border-left:3px solid var(--border);backdrop-filter:blur(6px)}
+.abs-time{font-size:11px;color:var(--text2);font-weight:700;white-space:nowrap;min-width:44px;margin-top:2px}
+.abs-act{font-size:11.5px;color:var(--text);font-weight:500}
+.abs-proj{font-size:10px;color:var(--blue);margin-top:1px}
 
 /* LAPORAN 3P */
 .rp-tabs{display:flex;gap:6px;margin-bottom:13px}
@@ -534,23 +534,34 @@ select.finput{cursor:pointer}
 
 <div id="page-Presensi" class="page">
   <div class="section-header"><div><div class="section-title">Presensi & Aktivitas</div></div></div>
+  
   <div class="card">
     <div class="abs-date-head">
-      <div class="abs-date-label" id="abs-date-label">—</div>
+      <div class="abs-date-label" id="abs-date-label" style="font-size:13px">—</div>
       <div class="abs-nav">
-        <button class="abs-nav-btn" onclick="moveAbsDate(-1)">‹</button>
-        <button class="abs-nav-btn" onclick="moveAbsDate(0)">Hari Ini</button>
-        <button class="abs-nav-btn" onclick="moveAbsDate(1)">›</button>
+        <button class="abs-nav-btn" onclick="moveAbsWeek(-1)">‹ Mg</button>
+        <button class="abs-nav-btn" onclick="moveAbsWeek(0)">Minggu Ini</button>
+        <button class="abs-nav-btn" onclick="moveAbsWeek(1)">Mg ›</button>
       </div>
     </div>
-    <div class="frow"><div class="flabel">Aktivitas</div><input class="finput" id="abs-act" placeholder="contoh: Meeting kick-off KPI Blora"></div>
+
     <div class="fgrow">
-      <div><div class="flabel">Proyek</div><select class="finput" id="abs-proj"><option value="">— Pilih —</option></select></div>
+      <div><div class="flabel">Tanggal Aktivitas</div><input class="finput" type="date" id="abs-input-date"></div>
       <div><div class="flabel">Waktu (opsional)</div><input class="finput" type="time" id="abs-time"></div>
+    </div>
+    <div class="frow">
+      <div class="flabel">Proyek</div><select class="finput" id="abs-proj"><option value="">— Pilih —</option></select>
+    </div>
+    <div class="frow">
+      <div class="flabel">Aktivitas</div><input class="finput" id="abs-act" placeholder="contoh: Analisis jaringan untuk proposal">
     </div>
     <button class="btn btn-teal btn-block" onclick="addPresensi()">Catat Aktivitas</button>
   </div>
-  <div id="abs-list"></div>
+
+  <div class="card">
+    <div class="card-title">Rekap Mingguan</div>
+    <div id="abs-list"></div>
+  </div>
 </div>
 
 <div id="page-laporan" class="page">
@@ -662,7 +673,7 @@ select.finput{cursor:pointer}
 <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database-compat.js"></script>
 
 <script>
-// INISIALISASI FIREBASE REALTIME DATABASE (AKUN BARU - gis-projectmanager1)
+// INISIALISASI FIREBASE REALTIME DATABASE
 const firebaseConfig = {
   apiKey: "AIzaSyAbuxXjRygUR0fRvBZASAn54MyvSxVsn5Q",
   authDomain: "gis-projectmanager1.firebaseapp.com",
@@ -677,16 +688,24 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 // STATE LOKAL
-let data = {projects:[], todos:[], Presensi:[]};
-let todoFilter='all', moodVal='', rpData={p:[],b:[],n:[]}, absDate=new Date(), kontribPeriod='week';
-const absDate0=new Date();
+let data = {projects:[], todos:[], Presensi:[], talenta:{}};
+let todoFilter='all', moodVal='', rpData={p:[],b:[],n:[]}, kontribPeriod='week';
 let uid=Date.now();
+
+// Fungsi untuk mendapatkan hari Senin minggu ini
+function getMonday(d) {
+  d = new Date(d);
+  var day = d.getDay(), diff = d.getDate() - day + (day == 0 ? -6:1);
+  return new Date(d.setDate(diff));
+}
+let currentWeekStart = getMonday(new Date());
+currentWeekStart.setHours(0,0,0,0);
 
 function gid(){return 'i'+(uid++)}
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function ds(d){return(d instanceof Date?d:new Date(d)).toISOString().split('T')[0]}
 function fmtDate(s){if(!s)return'';try{return new Date(s+'T00:00:00').toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})}catch(e){return s}}
-function fmtDateLong(s){if(!s)return'';try{return new Date(s+'T00:00:00').toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}catch(e){return s}}
+function fmtDateLong(s){if(!s)return'';try{return new Date(s+'T00:00:00').toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'short'})}catch(e){return s}}
 
 // FUNGSI SAVE KE REALTIME DATABASE
 async function save(){
@@ -705,8 +724,7 @@ async function loadData() {
       if (snapshot.exists()) {
         data = snapshot.val();
       } else {
-        // Jika database benar-benar kosong, inisialisasi array kosong.
-        data = {projects:[], todos:[], Presensi:[]};
+        data = {projects:[], todos:[], Presensi:[], talenta:{}};
       }
       
       const activePage = document.querySelector('.page.active');
@@ -864,7 +882,18 @@ function renderTodo(){
   else if(todoFilter==='high')list=list.filter(t=>t.priority==='high');
   else if(todoFilter==='late')list=list.filter(t=>!t.done&&t.deadline&&t.deadline<today);
   else if(todoFilter==='today')list=list.filter(t=>t.deadline===today||(!t.done&&t.deadline&&t.deadline<today));
-  list.sort((a,b)=>{if(a.done!==b.done)return a.done?1:-1;const o={high:0,med:1,low:2};return(o[a.priority]||1)-(o[b.priority]||1)});
+  
+  list.sort((a,b) => {
+    if (a.done !== b.done) return a.done ? 1 : -1;
+    if (a.deadline && b.deadline && a.deadline !== b.deadline) {
+      return new Date(a.deadline) - new Date(b.deadline);
+    }
+    if (a.deadline && !b.deadline) return -1;
+    if (!a.deadline && b.deadline) return 1;
+    const o = {high:0, med:1, low:2};
+    return (o[a.priority]||1) - (o[b.priority]||1);
+  });
+
   if(!list.length){el.innerHTML='<div class="empty">Tidak ada to-do</div>';return}
   el.innerHTML=list.map(t=>{
     const pc=t.priority==='high'?'pr-high':t.priority==='low'?'pr-low':'pr-med';
@@ -885,32 +914,79 @@ function renderTodo(){
   }).join('');
 }
 
-/* ======= Presensi ======= */
-function moveAbsDate(d){if(d===0)absDate=new Date(absDate0);else{absDate=new Date(absDate);absDate.setDate(absDate.getDate()+d)}renderPresensi()}
+/* ======= PRESENSI (MINGGUAN) ======= */
+function moveAbsWeek(d){
+  if(d===0) currentWeekStart = getMonday(new Date());
+  else currentWeekStart.setDate(currentWeekStart.getDate() + (d * 7));
+  renderPresensi();
+}
+
 function addPresensi(){
   const act=document.getElementById('abs-act').value.trim();
   if(!act){toast('Isi aktivitas terlebih dahulu!');return}
+  const dateVal=document.getElementById('abs-input-date').value;
+  if(!dateVal){toast('Pilih tanggal aktivitas!');return}
   const projId=document.getElementById('abs-proj').value;
   const proj=(data.projects || []).find(p=>p.id===projId);
   if(!data.Presensi) data.Presensi = [];
-  data.Presensi.push({id:gid(),act,projId,projName:proj?proj.name:'',time:document.getElementById('abs-time').value||'',date:ds(absDate),createdAt:Date.now()});
+  data.Presensi.push({id:gid(),act,projId,projName:proj?proj.name:'',time:document.getElementById('abs-time').value||'',date:dateVal,createdAt:Date.now()});
   save();renderPresensi();renderDash();
   document.getElementById('abs-act').value='';document.getElementById('abs-time').value='';toast('Aktivitas dicatat!');
 }
+
 function delPresensi(id){if(data.Presensi) data.Presensi=data.Presensi.filter(a=>a.id!==id);save();renderPresensi();renderDash();toast('Dihapus')}
+
+// FUNGSI BARU: Toggle Talenta Per Tanggal
+function toggleTalentaDate(d) {
+  if (!data.talenta) data.talenta = {};
+  data.talenta[d] = !data.talenta[d];
+  save(); 
+  renderPresensi(); 
+  if (data.talenta[d]) toast('Presensi Talenta ' + fmtDateLong(d) + ' ditandai selesai!');
+}
+
 function renderPresensi(){
-  document.getElementById('abs-date-label').textContent=fmtDateLong(ds(absDate));
-  const el=document.getElementById('abs-list');
-  const list=(data.Presensi || []).filter(a=>a.date===ds(absDate)).sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99')||a.createdAt-b.createdAt);
-  if(!list.length){el.innerHTML='<div class="empty">Belum ada aktivitas hari ini</div>';return}
-  el.innerHTML=list.map(a=>{
-    const color=((data.projects || []).find(p=>p.id===a.projId)||{}).color||'var(--border)';
-    return`<div class="abs-entry" style="border-left-color:${color}">
-      <div class="abs-time">${a.time||'—'}</div>
-      <div style="flex:1;min-width:0"><div class="abs-act">${esc(a.act)}</div>${a.projName?`<div class="abs-proj">${esc(a.projName)}</div>`:''}</div>
-      <button class="del-btn" onclick="delPresensi('${a.id}')">×</button>
-    </div>`
-  }).join('');
+  const we = new Date(currentWeekStart);
+  we.setDate(we.getDate() + 6);
+  
+  // Format Tanggal di Atas: 13 Apr - 19 Apr 2026
+  document.getElementById('abs-date-label').textContent = fmtDate(ds(currentWeekStart)) + " - " + fmtDate(ds(we));
+  
+  const el = document.getElementById('abs-list');
+  let html = '';
+  
+  // Render 7 hari sekaligus (Senin - Minggu)
+  for(let i=0; i<7; i++) {
+    let d = new Date(currentWeekStart);
+    d.setDate(d.getDate() + i);
+    let dStr = ds(d);
+    
+    let acts = (data.Presensi || []).filter(a=>a.date === dStr).sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99')||a.createdAt-b.createdAt);
+    let talentaOn = data.talenta && data.talenta[dStr] ? 'on' : '';
+    
+    let actsHtml = acts.length ? acts.map(a=>{
+      const color=((data.projects || []).find(p=>p.id===a.projId)||{}).color||'var(--border)';
+      return `<div class="abs-entry" style="border-left-color:${color}; margin-bottom:5px; padding:8px 11px;">
+        <div class="abs-time">${a.time||'—'}</div>
+        <div style="flex:1;min-width:0"><div class="abs-act" style="font-size:11.5px">${esc(a.act)}</div>${a.projName?`<div class="abs-proj" style="font-size:10px">${esc(a.projName)}</div>`:''}</div>
+        <button class="del-btn" onclick="delPresensi('${a.id}')">×</button>
+      </div>`
+    }).join('') : `<div style="font-size:11px;color:var(--text3);padding:4px 0 8px;">Tidak ada aktivitas dicatat</div>`;
+
+    html += `
+    <div style="margin-top:${i===0?'0':'18px'}">
+      <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border2);padding-bottom:6px;margin-bottom:8px">
+        <div style="font-size:12px;font-weight:700;color:var(--text)">${fmtDateLong(dStr)}</div>
+        <div style="display:flex;align-items:center;gap:6px;cursor:pointer;background:var(--surface2);padding:3px 8px;border-radius:6px;border:1px solid var(--border)" onclick="toggleTalentaDate('${dStr}')">
+          <span style="font-size:10px;font-weight:600;color:var(--text2)">Talenta HR</span>
+          <div class="chk ${talentaOn}" style="width:14px;height:14px;border-radius:4px;margin-top:0"></div>
+        </div>
+      </div>
+      ${actsHtml}
+    </div>
+    `;
+  }
+  el.innerHTML = html;
 }
 
 /* ======= LAPORAN 3P ======= */
@@ -920,7 +996,6 @@ function initRpIfEmpty(){
   if(!rpData.n.length)rpData.n=[['','']];
 }
 
-// FUNGSI KHUSUS LAPORAN: Menghitung 7 hari mundur dari Tanggal Laporan
 function getReportRange(){
   const dtVal = document.getElementById('rp-date').value;
   const baseDate = dtVal ? new Date(dtVal) : new Date();
@@ -929,7 +1004,7 @@ function getReportRange(){
   end.setHours(23,59,59,999);
   
   const start = new Date(baseDate);
-  start.setDate(baseDate.getDate() - 6); // 7 hari inklusif
+  start.setDate(baseDate.getDate() - 6); 
   start.setHours(0,0,0,0);
   
   return { start: start.getTime(), end: end.getTime(), today: ds(baseDate) };
@@ -1103,7 +1178,6 @@ function setKontribPeriod(p,btn){
   const customBox = document.getElementById('kp-custom-dates');
   if(p === 'custom') {
     customBox.style.display = 'grid'; 
-    // Auto-set rentang tgl 20 (bulan lalu) s/d 19 (bulan ini)
     const now = new Date();
     let s = new Date(now.getFullYear(), now.getMonth(), 20);
     if (now.getDate() < 20) {
@@ -1280,6 +1354,10 @@ async function init(){
   const now=new Date();
   document.getElementById('nav-date').textContent=now.toLocaleDateString('id-ID',{weekday:'short',day:'numeric',month:'short'});
   document.getElementById('rp-date').value=ds(now);
+  
+  // Set default input tanggal presensi ke hari ini
+  document.getElementById('abs-input-date').value=ds(now);
+  
   document.getElementById('dash-date-sub').textContent=now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 
   renderDash();

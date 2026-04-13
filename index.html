@@ -366,7 +366,6 @@ select.finput{cursor:pointer}
 <body>
 <div class="layout">
 
-<!-- SIDEBAR -->
 <nav class="sidebar">
   <div class="sidebar-logo">
     <div class="logo-badge">GIS</div>
@@ -402,10 +401,8 @@ select.finput{cursor:pointer}
   </div>
 </nav>
 
-<!-- MAIN -->
 <main class="main">
 
-<!-- DASHBOARD -->
 <div id="page-dashboard" class="page active">
   <div class="section-header">
     <div>
@@ -455,7 +452,6 @@ select.finput{cursor:pointer}
   </div>
 </div>
 
-<!-- PROYEK -->
 <div id="page-proyek" class="page">
   <div class="section-header">
     <div><div class="section-title">Proyek</div></div>
@@ -500,7 +496,6 @@ select.finput{cursor:pointer}
   <div id="proj-list"></div>
 </div>
 
-<!-- TODO -->
 <div id="page-todo" class="page">
   <div class="section-header">
     <div><div class="section-title">To-Do</div></div>
@@ -537,7 +532,6 @@ select.finput{cursor:pointer}
   <div id="todo-list"></div>
 </div>
 
-<!-- Presensi -->
 <div id="page-Presensi" class="page">
   <div class="section-header"><div><div class="section-title">Presensi & Aktivitas</div></div></div>
   <div class="card">
@@ -559,7 +553,6 @@ select.finput{cursor:pointer}
   <div id="abs-list"></div>
 </div>
 
-<!-- LAPORAN 3P -->
 <div id="page-laporan" class="page">
   <div class="section-header"><div><div class="section-title">Laporan 3P</div></div></div>
   <div class="card">
@@ -576,7 +569,6 @@ select.finput{cursor:pointer}
       </div>
     </div>
 
-    <!-- AI & Manual fill buttons for ALL 3P -->
     <div class="ai-section-head">Auto-isi Laporan</div>
     <p style="font-size:11px;color:var(--text2);margin-bottom:8px;line-height:1.5">Tombol di bawah akan mengisi <strong>Progres, Problem, dan Plan</strong> secara otomatis berdasarkan data Presensi &amp; to-do minggu ini.</p>
     <div class="btn-row">
@@ -608,7 +600,6 @@ select.finput{cursor:pointer}
   </div>
 </div>
 
-<!-- KONTRIBUSI -->
 <div id="page-kontribusi" class="page">
   <div class="section-header">
     <div>
@@ -635,7 +626,6 @@ select.finput{cursor:pointer}
 </main>
 </div>
 
-<!-- BOTTOM NAV -->
 <div class="bottom-nav">
   <div class="bnav-items">
     <button class="bnav-item active" data-p="dashboard" onclick="goPage('dashboard')">
@@ -663,7 +653,24 @@ select.finput{cursor:pointer}
 
 <div class="toast" id="toast"></div>
 
+<script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
+
 <script>
+// INISIALISASI FIREBASE
+const firebaseConfig = {
+  apiKey: "AIzaSyAzb-5f8ovX7izetbxk7HNZZb3qtY9Og58",
+  authDomain: "gis-projectmanager.firebaseapp.com",
+  projectId: "gis-projectmanager",
+  storageBucket: "gis-projectmanager.firebasestorage.app",
+  messagingSenderId: "429308985979",
+  appId: "1:429308985979:web:95d896aba0e0fcc09198de",
+  measurementId: "G-95XBYKSSKQ"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// STATE LOKAL
 let data={projects:[],todos:[],Presensi:[]};
 let todoFilter='all',moodVal='',rpData={p:[],b:[],n:[]},absDate=new Date(),kontribPeriod='week';
 const absDate0=new Date();
@@ -675,8 +682,42 @@ function ds(d){return(d instanceof Date?d:new Date(d)).toISOString().split('T')[
 function fmtDate(s){if(!s)return'';try{return new Date(s+'T00:00:00').toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})}catch(e){return s}}
 function fmtDateLong(s){if(!s)return'';try{return new Date(s+'T00:00:00').toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}catch(e){return s}}
 
-async function save(){try{await window.storage.set('gpm5',JSON.stringify(data))}catch(e){}}
-async function loadData(){try{const r=await window.storage.get('gpm5');if(r&&r.value)data=JSON.parse(r.value)}catch(e){}}
+// FUNGSI SAVE KE FIREBASE
+async function save(){
+  try {
+    await db.collection("gpm_data").doc("main_state").set(data);
+  } catch(e) {
+    console.error("Error saving data:", e);
+    toast('Gagal sinkronisasi data!');
+  }
+}
+
+// FUNGSI LOAD DARI FIREBASE (REALTIME)
+async function loadData() {
+  return new Promise((resolve) => {
+    db.collection("gpm_data").doc("main_state").onSnapshot((doc) => {
+      if (doc.exists) {
+        data = doc.data();
+        
+        // Refresh UI pada halaman yang sedang aktif
+        const activePage = document.querySelector('.page.active');
+        if(activePage) {
+           const p = activePage.id.replace('page-', '');
+           if(p === 'dashboard') renderDash();
+           if(p === 'proyek') renderProyek();
+           if(p === 'todo') { fillProjSelect('td-proj'); renderTodo(); }
+           if(p === 'Presensi') { fillProjSelect('abs-proj'); renderPresensi(); }
+           if(p === 'laporan') { initRpIfEmpty(); renderRpAll(); }
+           if(p === 'kontribusi') renderKontribusi();
+        }
+      }
+      resolve();
+    }, (error) => {
+      console.error("Gagal load Firebase:", error);
+      resolve(); // Tetap resolve agar tidak error berhenti
+    });
+  });
+}
 
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400)}
 function toggleEl(id){const el=document.getElementById(id);el.style.display=el.style.display==='none'||el.style.display===''?'block':'none'}
@@ -885,7 +926,6 @@ function buildWeekData(){
   return{weekDone,weekAbs,weekPending,weekLate};
 }
 
-/* AUTO-FILL AI: mengisi KETIGA bagian P, B, N */
 async function autoFillAI(){
   const{weekDone,weekAbs,weekPending,weekLate}=buildWeekData();
   if(!weekDone.length&&!weekAbs.length&&!weekPending.length){toast('Belum ada data minggu ini!');return}
@@ -934,23 +974,19 @@ Panduan:
     let raw=json.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim();
     const parsed=JSON.parse(raw);
 
-    // Isi Progres
     if(parsed.progres&&parsed.progres.length){
       rpData.p=parsed.progres.map(g=>[g.proyek||'',...(g.items||[])]);
     } else rpData.p=[['','']];
 
-    // Isi Problem
     if(parsed.problem&&parsed.problem.length){
       rpData.b=parsed.problem.map(g=>[g.kategori||'',...(g.items||[])]);
     } else rpData.b=[['Tidak ada kendala signifikan minggu ini','']];
 
-    // Isi Plan
     if(parsed.plan&&parsed.plan.length){
       rpData.n=parsed.plan.map(g=>[g.kategori||'',...(g.items||[])]);
     } else rpData.n=[['','']];
 
     renderRpAll();countRp();
-    // Pindah ke tab Progres setelah isi
     document.querySelector('.rptab.rt-p').click();
 
     statusEl.style.display='none';
@@ -971,25 +1007,20 @@ Panduan:
   document.getElementById('btn-ai-fill').disabled=false;
 }
 
-/* MANUAL FILL: mengisi KETIGA bagian P, B, N dari data lokal */
 function manualFill(){
   const{weekDone,weekAbs,weekPending,weekLate}=buildWeekData();
   const today=ds(new Date());
 
-  // PROGRES: dari Presensi + tugas selesai
   const grpP={};
   weekDone.forEach(t=>{const k=t.projName||'Umum';if(!grpP[k])grpP[k]=[];grpP[k].push(t.text)});
   weekAbs.forEach(a=>{const k=a.projName||'Umum';if(!grpP[k])grpP[k]=[];const txt=a.time?`[${a.time}] ${a.act}`:a.act;if(!grpP[k].includes(txt))grpP[k].push(txt)});
   const progresEntries=Object.entries(grpP);
 
-  // PROBLEM: dari tugas terlambat + tugas pending tanpa progress
   const grpB={};
   weekLate.forEach(t=>{const k=t.projName||'Umum';if(!grpB[k])grpB[k]=[];grpB[k].push(`Tugas terlambat: ${t.text} (deadline ${fmtDate(t.deadline)})`)});
-  // Proyek urgent
   data.projects.filter(p=>p.status==='Urgent').forEach(p=>{if(!grpB[p.name])grpB[p.name]=[];grpB[p.name].push(`Proyek berstatus Urgent, progress ${p.progress}%`)});
   const problemEntries=Object.entries(grpB);
 
-  // PLAN: dari tugas pending, dikelompokkan per proyek
   const grpN={};
   weekPending.slice(0,10).forEach(t=>{const k=t.projName||'Umum';if(!grpN[k])grpN[k]=[];grpN[k].push(t.text+(t.deadline?` (target: ${fmtDate(t.deadline)})`:''))});
   const planEntries=Object.entries(grpN);
@@ -1177,13 +1208,16 @@ function renderDash(){
 
 /* ======= INIT ======= */
 async function init(){
-  await loadData();
+  await loadData(); // Load dari Firebase pertama kali (ini juga ngetrigger onSnapshot realtime listener)
+  
   const now=new Date();
   document.getElementById('nav-date').textContent=now.toLocaleDateString('id-ID',{weekday:'short',day:'numeric',month:'short'});
   document.getElementById('rp-date').value=ds(now);
   document.getElementById('dash-date-sub').textContent=now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 
-  if(!data.projects.length){
+  // Cek kalau Firebase masih benar-benar kosong, kasih data template awal
+  if(!data || !data.projects || !data.projects.length){
+    data = {projects:[],todos:[],Presensi:[]}; // Pastikan kerangkanya aman
     data.projects=[
       {id:gid(),name:'Geospasial KPI Blora',client:'Pemda Blora',deadline:'2026-05-30',status:'Aktif',color:'#1d9e75',progress:40,repo:'https://drive.google.com/drive/folders/kpi-blora',createdAt:Date.now()},
       {id:gid(),name:'FS Yapro',client:'PT Yapro',deadline:'2026-06-15',status:'Aktif',color:'#378add',progress:25,repo:'https://github.com/gis-team/fs-yapro',createdAt:Date.now()},
@@ -1202,10 +1236,12 @@ async function init(){
       {id:gid(),act:'Analisis data spasial dan revisi parameter lereng',projId:data.projects[0].id,projName:'Geospasial KPI Blora',time:'10:00',date:ds(now),createdAt:n-2000000},
       {id:gid(),act:'Revisi peta KLHS, koordinasi dengan tim lapangan',projId:data.projects[2].id,projName:'KLHS Wadaslintang',time:'13:30',date:ds(now),createdAt:n-1000000}
     ];
-    await save();
+    await save(); // Simpan template ke Firebase biar sinkron di semua device
   }
+
   renderDash();updateTodoBadge();
 }
+
 init();
 </script>
 </body>

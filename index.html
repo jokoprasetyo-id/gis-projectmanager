@@ -457,7 +457,7 @@ select.finput{cursor:pointer}
 <div id="page-proyek" class="page">
   <div class="section-header">
     <div><div class="section-title">Proyek</div></div>
-    <button class="btn btn-primary btn-sm" onclick="toggleEl('add-proyek-card'); resetProyekForm();">+ Tambah</button>
+    <button class="btn btn-primary btn-sm" onclick="resetProyekForm(); document.getElementById('add-proyek-card').style.display='block';">+ Tambah</button>
   </div>
   <div class="card" id="add-proyek-card" style="display:none">
     <div class="card-title">Form Proyek</div>
@@ -501,7 +501,7 @@ select.finput{cursor:pointer}
 <div id="page-todo" class="page">
   <div class="section-header">
     <div><div class="section-title">To-Do</div></div>
-    <button class="btn btn-primary btn-sm" onclick="toggleEl('add-todo-card'); resetTodoForm();">+ Tambah</button>
+    <button class="btn btn-primary btn-sm" onclick="resetTodoForm(); document.getElementById('add-todo-card').style.display='block';">+ Tambah</button>
   </div>
   <div class="card" id="add-todo-card" style="display:none">
     <div class="card-title">Form Tugas</div>

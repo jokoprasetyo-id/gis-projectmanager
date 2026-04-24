@@ -49,40 +49,18 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',system-ui,sans-serif;background:var(--bg-body);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
 .layout{display:flex;min-height:100vh}
 
-/* SIDEBAR GLASS */
-.sidebar{
-  width:var(--nav-w);
-  background:var(--glass-heavy);
-  backdrop-filter:var(--blur);
-  -webkit-backdrop-filter:var(--blur);
-  border-right:1px solid var(--glass-border);
-  padding:20px 0;
-  display:flex;flex-direction:column;
-  position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto;
-  box-shadow:var(--glass-shadow);
-}
+/* SIDEBAR */
+.sidebar{width:var(--nav-w);background:var(--glass-heavy);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-right:1px solid var(--glass-border);padding:20px 0;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto;box-shadow:var(--glass-shadow)}
 .sidebar::-webkit-scrollbar{width:0}
 .sidebar-logo{padding:0 16px 18px;border-bottom:1px solid var(--border);margin-bottom:10px}
-.logo-badge{
-  width:40px;height:40px;border-radius:12px;
-  background:linear-gradient(135deg,var(--teal-mid),var(--blue-mid));
-  display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:700;color:#fff;margin-bottom:9px;
-  box-shadow:0 4px 12px rgba(29,158,117,0.35);
-}
+.logo-badge{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--teal-mid),var(--blue-mid));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;margin-bottom:9px;box-shadow:0 4px 12px rgba(29,158,117,0.35)}
 .logo-title{font-size:13px;font-weight:700;color:var(--text);letter-spacing:-.2px}
 .logo-sub{font-size:10px;color:var(--text3)}
 .logo-date{font-size:10px;color:var(--text2);margin-top:6px;padding:3px 8px;background:var(--surface2);border-radius:7px;display:inline-block;border:1px solid var(--border2)}
 .nav-section{font-size:9px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;padding:10px 16px 4px}
 .nav-link{display:flex;align-items:center;gap:9px;padding:9px 14px;font-size:12px;font-weight:500;color:var(--text2);cursor:pointer;transition:.18s;border-left:2px solid transparent;user-select:none;margin:1px 8px;border-radius:10px}
 .nav-link:hover{color:var(--text);background:var(--surface2)}
-.nav-link.active{
-  color:var(--teal);
-  background:var(--teal-bg);
-  border-left:none;
-  font-weight:600;
-  box-shadow:0 2px 8px rgba(29,158,117,0.10);
-}
+.nav-link.active{color:var(--teal);background:var(--teal-bg);border-left:none;font-weight:600;box-shadow:0 2px 8px rgba(29,158,117,0.10)}
 .nav-icon{width:16px;height:16px;flex-shrink:0;opacity:.65}
 .nav-link.active .nav-icon{opacity:1}
 .nav-badge-count{margin-left:auto;background:var(--red-bg);color:var(--red);font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;min-width:16px;text-align:center}
@@ -106,29 +84,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sy
 .section-sub{font-size:11px;color:var(--text3);margin-top:2px}
 
 /* GLASS CARD */
-.card{
-  background:var(--glass);
-  backdrop-filter:var(--blur-sm);
-  -webkit-backdrop-filter:var(--blur-sm);
-  border:1px solid var(--glass-border);
-  border-radius:var(--radius-lg);
-  padding:18px;
-  margin-bottom:14px;
-  box-shadow:var(--glass-shadow);
-}
+.card{background:var(--glass);backdrop-filter:var(--blur-sm);-webkit-backdrop-filter:var(--blur-sm);border:1px solid var(--glass-border);border-radius:var(--radius-lg);padding:18px;margin-bottom:14px;box-shadow:var(--glass-shadow)}
 .card-title{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:13px;display:flex;align-items:center;justify-content:space-between;gap:6px;text-transform:uppercase;letter-spacing:.05em}
 
 /* STATS */
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
-.stat-card{
-  background:var(--glass);
-  backdrop-filter:var(--blur-sm);
-  -webkit-backdrop-filter:var(--blur-sm);
-  border:1px solid var(--glass-border);
-  border-radius:var(--radius-lg);
-  padding:16px 14px;text-align:center;
-  box-shadow:var(--glass-shadow);
-}
+.stat-card{background:var(--glass);backdrop-filter:var(--blur-sm);-webkit-backdrop-filter:var(--blur-sm);border:1px solid var(--glass-border);border-radius:var(--radius-lg);padding:16px 14px;text-align:center;box-shadow:var(--glass-shadow)}
 .stat-n{font-size:28px;font-weight:700;line-height:1.1;margin-bottom:3px;letter-spacing:-.5px}
 .stat-l{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;font-weight:600}
 
@@ -138,18 +99,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sy
 
 /* FORM */
 .flabel{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px}
-.finput{
-  width:100%;
-  background:rgba(255,255,255,0.45);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-  border:1px solid var(--glass-border);
-  border-radius:10px;
-  padding:9px 12px;
-  font-size:13px;color:var(--text);font-family:inherit;
-  outline:none;transition:.18s;-webkit-appearance:none;
-  box-shadow:0 1px 4px rgba(0,0,0,0.04);
-}
+.finput{width:100%;background:rgba(255,255,255,0.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--glass-border);border-radius:10px;padding:9px 12px;font-size:13px;color:var(--text);font-family:inherit;outline:none;transition:.18s;-webkit-appearance:none;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
 @media(prefers-color-scheme:dark){.finput{background:rgba(40,55,75,0.45)}}
 .finput:focus{border-color:rgba(29,158,117,0.5);background:rgba(255,255,255,0.65);box-shadow:0 0 0 3px rgba(29,158,117,0.15)}
 @media(prefers-color-scheme:dark){.finput:focus{background:rgba(40,55,75,0.7)}}
@@ -163,13 +113,7 @@ select.finput{cursor:pointer}
 
 /* PILLS */
 .pill-row{display:flex;gap:5px;flex-wrap:wrap}
-.pill{
-  padding:5px 13px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;
-  background:var(--surface2);
-  border:1px solid var(--border);
-  color:var(--text2);transition:.18s;user-select:none;
-  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-}
+.pill{padding:5px 13px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;background:var(--surface2);border:1px solid var(--border);color:var(--text2);transition:.18s;user-select:none;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .pill:hover{border-color:var(--teal-mid);color:var(--teal)}
 .pill.on{background:rgba(29,158,117,0.15);border-color:rgba(29,158,117,0.45);color:var(--teal);font-weight:700}
 
@@ -177,8 +121,7 @@ select.finput{cursor:pointer}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:8px 15px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;border:none;transition:.18s;user-select:none;text-decoration:none;white-space:nowrap;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 .btn:active{transform:scale(.97)}
 .btn-block{width:100%}
-.btn-primary{background:var(--text);color:var(--bg-body,#fff);box-shadow:0 2px 8px rgba(0,0,0,0.18)}
-.btn-primary{background:#1a1a2e;color:#fff}
+.btn-primary{background:#1a1a2e;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.18)}
 @media(prefers-color-scheme:dark){.btn-primary{background:#e8f0ff;color:#0d1b2a}}
 .btn-primary:hover{opacity:.85}
 .btn-outline{background:rgba(255,255,255,0.35);color:var(--text);border:1px solid var(--border)}
@@ -188,8 +131,6 @@ select.finput{cursor:pointer}
 .btn-teal:hover{background:rgba(29,158,117,0.22)}
 .btn-sm{padding:6px 11px;font-size:11px;border-radius:8px}
 .btn-danger{background:var(--red-bg);color:var(--red);border:1px solid rgba(226,75,74,0.25)}
-.btn-ai{background:rgba(127,119,221,0.15);color:var(--purple);border:1px solid rgba(127,119,221,0.30)}
-.btn-ai:hover{background:rgba(127,119,221,0.22)}
 .btn-row{display:flex;gap:7px;flex-wrap:wrap}
 .btn-row .btn{flex:1;min-width:0}
 
@@ -201,16 +142,7 @@ select.finput{cursor:pointer}
 .b-selesai{background:var(--blue-bg);color:var(--blue)}
 
 /* PROJECT CARD */
-.pj-card{
-  background:var(--glass);
-  backdrop-filter:var(--blur-sm);
-  -webkit-backdrop-filter:var(--blur-sm);
-  border:1px solid var(--glass-border);
-  border-radius:var(--radius-lg);
-  padding:16px;margin-bottom:10px;
-  box-shadow:var(--glass-shadow);
-  border-left:3px solid var(--border);
-}
+.pj-card{background:var(--glass);backdrop-filter:var(--blur-sm);-webkit-backdrop-filter:var(--blur-sm);border:1px solid var(--glass-border);border-radius:var(--radius-lg);padding:16px;margin-bottom:10px;box-shadow:var(--glass-shadow);border-left:3px solid var(--border)}
 .pj-name{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.2px}
 .pj-meta{font-size:11px;color:var(--text3);margin-top:2px}
 .pj-footer{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:10px}
@@ -220,20 +152,67 @@ select.finput{cursor:pointer}
 .repo-link{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--blue);text-decoration:none;padding:3px 8px;border-radius:6px;background:var(--blue-bg);border:1px solid rgba(55,138,221,0.2)}
 .repo-link:hover{opacity:.8}
 
-/* TODO */
-.todo-item{
-  background:var(--glass);
-  backdrop-filter:var(--blur-sm);
-  -webkit-backdrop-filter:var(--blur-sm);
-  border:1px solid var(--glass-border);
-  border-radius:var(--radius);padding:11px 13px;margin-bottom:7px;
-  display:flex;align-items:flex-start;gap:9px;
-  box-shadow:var(--glass-shadow);
+/* TODO - IMPROVED CHECKBOX */
+.todo-item{background:var(--glass);backdrop-filter:var(--blur-sm);-webkit-backdrop-filter:var(--blur-sm);border:1px solid var(--glass-border);border-radius:var(--radius);padding:11px 13px;margin-bottom:7px;display:flex;align-items:flex-start;gap:9px;box-shadow:var(--glass-shadow);transition:all .25s ease}
+.todo-item.is-done{opacity:.5;background:rgba(29,158,117,0.06);border-color:rgba(29,158,117,0.2)}
+
+/* Checkbox yang lebih jelas */
+.chk{
+  width:20px;height:20px;border-radius:6px;
+  border:2px solid var(--text3);
+  flex-shrink:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s cubic-bezier(.34,1.56,.64,1);
+  margin-top:1px;
+  background:rgba(255,255,255,0.4);
+  position:relative;
+  overflow:hidden;
 }
-.todo-item.is-done{opacity:.45}
-.chk{width:18px;height:18px;border-radius:6px;border:1.5px solid var(--border);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.18s;margin-top:1px;background:rgba(255,255,255,0.3)}
-.chk.on{background:var(--teal-mid);border-color:var(--teal-mid)}
-.chk.on::after{content:'';width:4px;height:8px;border:1.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);display:block;margin-top:-1px}
+.chk:hover{border-color:var(--teal-mid);background:rgba(29,158,117,0.08);transform:scale(1.05)}
+.chk.on{
+  background:var(--teal-mid);
+  border-color:var(--teal-mid);
+  box-shadow:0 0 0 3px rgba(29,158,117,0.2), 0 2px 8px rgba(29,158,117,0.35);
+  transform:scale(1.05);
+}
+.chk.on::after{
+  content:'';
+  width:5px;height:9px;
+  border:2px solid #fff;
+  border-top:none;border-left:none;
+  transform:rotate(45deg);
+  display:block;
+  margin-top:-2px;
+}
+/* Talenta checkbox kecil */
+.chk-sm{
+  width:16px;height:16px;border-radius:5px;
+  border:2px solid var(--text3);
+  flex-shrink:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s cubic-bezier(.34,1.56,.64,1);
+  background:rgba(255,255,255,0.3);
+}
+.chk-sm:hover{border-color:var(--teal-mid);transform:scale(1.1)}
+.chk-sm.on{
+  background:var(--teal-mid);
+  border-color:var(--teal-mid);
+  box-shadow:0 0 0 2px rgba(29,158,117,0.2),0 2px 6px rgba(29,158,117,0.3);
+  transform:scale(1.1);
+}
+.chk-sm.on::after{
+  content:'✓';
+  color:#fff;
+  font-size:9px;
+  font-weight:700;
+  line-height:1;
+}
+.talenta-done{
+  background:rgba(29,158,117,0.08) !important;
+  border-color:rgba(29,158,117,0.25) !important;
+}
+.talenta-done .talenta-label{color:var(--teal) !important;font-weight:700 !important}
+
 .todo-body{flex:1;min-width:0}
 .todo-text{font-size:13px;color:var(--text);line-height:1.4}
 .is-done .todo-text{text-decoration:line-through;color:var(--text3)}
@@ -241,11 +220,11 @@ select.finput{cursor:pointer}
 .meta-pill{font-size:10px;padding:2px 7px;border-radius:5px;background:var(--surface2);color:var(--text2);font-weight:500;border:1px solid var(--border2)}
 .meta-proj{font-size:10px;color:var(--blue);font-weight:700}
 .meta-late{font-size:10px;color:var(--red);font-weight:700}
-.prio-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:7px}
+.prio-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:8px}
 .pr-high{background:var(--red-mid)}.pr-med{background:var(--amber-mid)}.pr-low{background:var(--blue-mid)}
 .del-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:17px;padding:1px;transition:.15s;flex-shrink:0;line-height:1}
 .del-btn:hover{color:var(--red)}
-.edit-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px;padding:1px;transition:.15s;flex-shrink:0;line-height:1;margin-right:4px;}
+.edit-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px;padding:1px;transition:.15s;flex-shrink:0;line-height:1;margin-right:4px}
 .edit-btn:hover{color:var(--teal)}
 
 /* FILTER */
@@ -255,45 +234,69 @@ select.finput{cursor:pointer}
 .ftag:hover{border-color:rgba(29,158,117,0.4);color:var(--teal)}
 .ftag.active{background:rgba(29,158,117,0.15);border-color:rgba(29,158,117,0.4);color:var(--teal)}
 
-/* PRESENSI */
+/* PRESENSI - COLLAPSIBLE */
 .abs-date-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
 .abs-date-label{font-size:13px;font-weight:700;color:var(--text)}
 .abs-nav{display:flex;gap:4px}
 .abs-nav-btn{height:30px;padding:0 11px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);cursor:pointer;font-size:12px;color:var(--text2);transition:.15s;user-select:none;font-family:inherit;backdrop-filter:blur(6px)}
 .abs-nav-btn:hover{background:var(--surface)}
-.abs-entry{background:var(--surface2);border-radius:8px;padding:8px 12px;margin-bottom:6px;display:flex;align-items:flex-start;gap:9px;border-left:3px solid var(--border);backdrop-filter:blur(6px)}
+
+/* Day block dengan collapse */
+.day-block{margin-bottom:10px;border-radius:12px;overflow:hidden;border:1px solid var(--border2);background:var(--glass);backdrop-filter:var(--blur-sm);-webkit-backdrop-filter:var(--blur-sm);box-shadow:var(--glass-shadow)}
+.day-header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;user-select:none;transition:.18s}
+.day-header:hover{background:rgba(255,255,255,0.15)}
+.day-header-left{display:flex;align-items:center;gap:9px}
+.day-title{font-size:12px;font-weight:700;color:var(--text)}
+.day-count{font-size:10px;color:var(--text3);font-weight:500}
+.day-toggle{font-size:14px;color:var(--text3);transition:transform .2s;display:flex;align-items:center;justify-content:center;width:20px;height:20px}
+.day-toggle.collapsed{transform:rotate(-90deg)}
+.day-body{padding:0 14px 12px;animation:slideDown .2s ease}
+.day-body.hidden{display:none}
+@keyframes slideDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+
+.abs-entry{background:var(--surface2);border-radius:8px;padding:8px 11px;margin-bottom:5px;display:flex;align-items:flex-start;gap:9px;border-left:3px solid var(--border);backdrop-filter:blur(6px)}
 .abs-time{font-size:11px;color:var(--text2);font-weight:700;white-space:nowrap;min-width:44px;margin-top:2px}
 .abs-act{font-size:11.5px;color:var(--text);font-weight:500}
 .abs-proj{font-size:10px;color:var(--blue);margin-top:1px}
 
-/* LAPORAN 3P */
-.rp-tabs{display:flex;gap:6px;margin-bottom:13px}
-.rptab{flex:1;padding:8px 5px;border-radius:10px;font-size:11px;font-weight:700;color:var(--text2);background:var(--glass);border:1px solid var(--glass-border);cursor:pointer;text-align:center;transition:.18s;user-select:none;backdrop-filter:blur(8px)}
-.rptab.active{color:#fff;border-color:transparent}
-.rptab.rt-p.active{background:linear-gradient(135deg,var(--teal-mid),#1d8c6a)}
-.rptab.rt-b.active{background:linear-gradient(135deg,var(--red-mid),#c43b3b)}
-.rptab.rt-n.active{background:linear-gradient(135deg,var(--blue-mid),#2872cc)}
-.rp-panel{display:none}.rp-panel.active{display:block}
-.rp-group{background:var(--surface2);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid var(--border2)}
-.rp-grp-head{display:flex;align-items:center;gap:6px;margin-bottom:8px}
-.rp-grp-name{flex:1;background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;padding:7px 10px;font-size:12px;font-weight:600;color:var(--text);font-family:inherit;outline:none}
-.rp-grp-name::placeholder{color:var(--text3);font-weight:400}
-.rp-grp-name:focus{border-color:rgba(29,158,117,0.4)}
-.rp-item-row{display:flex;align-items:center;gap:6px;margin-bottom:5px}
-.rp-dot{width:4px;height:4px;border-radius:50%;background:var(--text3);flex-shrink:0}
-.rp-item-input{flex:1;background:var(--glass);border:1px solid var(--glass-border);border-radius:7px;padding:6px 9px;font-size:12px;color:var(--text);font-family:inherit;outline:none}
-.rp-item-input::placeholder{color:var(--text3)}
-.rp-item-input:focus{border-color:rgba(29,158,117,0.4)}
-.add-item-btn{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text3);background:none;border:none;cursor:pointer;padding:3px 0;font-family:inherit;font-weight:700;transition:.15s}
-.add-item-btn:hover{color:var(--teal)}
+/* Talenta chip */
+.talenta-chip{display:flex;align-items:center;gap:5px;cursor:pointer;background:var(--surface2);padding:3px 9px;border-radius:6px;border:1px solid var(--border);transition:all .2s ease;user-select:none}
+.talenta-chip.on{background:rgba(29,158,117,0.1);border-color:rgba(29,158,117,0.3)}
+.talenta-label{font-size:10px;font-weight:600;color:var(--text2);transition:.15s}
+.talenta-chip.on .talenta-label{color:var(--teal)}
 
-/* AI BOX */
-.ai-box{background:rgba(127,119,221,0.10);border:1px solid rgba(127,119,221,0.22);border-radius:var(--radius);padding:13px;margin-top:10px;backdrop-filter:blur(8px)}
-.ai-box-label{font-size:9px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.09em;margin-bottom:8px;display:flex;align-items:center;gap:5px}
-
-/* SECTION DIVIDER inside laporan form */
-.ai-section-head{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;padding:8px 0 4px;border-top:1px solid var(--border2);margin-top:8px}
-.ai-section-head:first-child{border-top:none;margin-top:0;padding-top:0}
+/* LAPORAN 3P - MANUAL TEXT AREA MODE */
+.rp-section{margin-bottom:14px}
+.rp-section-head{
+  display:flex;align-items:center;gap:9px;
+  padding:10px 14px;
+  border-radius:12px 12px 0 0;
+  font-size:12px;font-weight:700;
+  letter-spacing:.04em;text-transform:uppercase;
+}
+.rp-section-head.ph{background:linear-gradient(135deg,rgba(29,158,117,0.18),rgba(29,158,117,0.08));color:var(--teal);border:1px solid rgba(29,158,117,0.25);border-bottom:none}
+.rp-section-head.pb{background:linear-gradient(135deg,rgba(226,75,74,0.15),rgba(226,75,74,0.06));color:var(--red);border:1px solid rgba(226,75,74,0.22);border-bottom:none}
+.rp-section-head.pn{background:linear-gradient(135deg,rgba(55,138,221,0.15),rgba(55,138,221,0.06));color:var(--blue);border:1px solid rgba(55,138,221,0.22);border-bottom:none}
+.rp-textarea{
+  width:100%;min-height:140px;
+  background:rgba(255,255,255,0.5);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid var(--glass-border);
+  border-radius:0 0 12px 12px;
+  padding:12px 14px;
+  font-size:13px;color:var(--text);
+  font-family:inherit;
+  outline:none;
+  resize:vertical;
+  line-height:1.65;
+  transition:border-color .18s, box-shadow .18s;
+}
+@media(prefers-color-scheme:dark){.rp-textarea{background:rgba(40,55,75,0.5)}}
+.rp-textarea:focus{border-color:rgba(29,158,117,0.45);box-shadow:0 0 0 3px rgba(29,158,117,0.12)}
+.rp-textarea.rb:focus{border-color:rgba(226,75,74,0.4);box-shadow:0 0 0 3px rgba(226,75,74,0.1)}
+.rp-textarea.rn:focus{border-color:rgba(55,138,221,0.4);box-shadow:0 0 0 3px rgba(55,138,221,0.1)}
+.rp-textarea::placeholder{color:var(--text3);font-style:italic}
 
 /* PREV BOX */
 .prev-box{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:15px;margin-top:13px;display:none}
@@ -345,15 +348,9 @@ select.finput{cursor:pointer}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 @media(min-width:768px){.toast{bottom:20px}}
 
-.spinner{width:13px;height:13px;border:2px solid rgba(127,119,221,0.25);border-top-color:var(--purple-mid);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
-@keyframes spin{to{transform:rotate(360deg)}}
 .empty{text-align:center;padding:22px;color:var(--text3);font-size:12px;background:var(--surface2);border-radius:var(--radius);border:1px dashed var(--border)}
 @keyframes fadein{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
-.pj-card,.todo-item,.abs-entry{animation:fadein .22s ease}
-
-/* SECTION LABEL */
-.sec-divider{display:flex;align-items:center;gap:8px;margin:10px 0 6px;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.07em}
-.sec-divider::before,.sec-divider::after{content:'';flex:1;height:1px;background:var(--border2)}
+.pj-card,.todo-item,.day-block{animation:fadein .22s ease}
 
 @media(max-width:1100px){.dash-grid{grid-template-columns:1fr}}
 @media(max-width:767px){
@@ -405,6 +402,7 @@ select.finput{cursor:pointer}
 
 <main class="main">
 
+<!-- DASHBOARD -->
 <div id="page-dashboard" class="page active">
   <div class="section-header">
     <div>
@@ -420,40 +418,20 @@ select.finput{cursor:pointer}
   </div>
   <div class="dash-grid">
     <div class="dash-col">
-      <div class="card">
-        <div class="card-title">Aktivitas Hari Ini</div>
-        <div id="dash-today"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Progress Proyek</div>
-        <div id="dash-proyek"></div>
-      </div>
-      <div class="card">
-        <div class="card-title"><span>Ringkasan Minggu Ini</span><span id="dash-week-badge" style="font-size:10px;color:var(--text3);font-weight:500"></span></div>
-        <div id="dash-week"></div>
-      </div>
+      <div class="card"><div class="card-title">Aktivitas Hari Ini</div><div id="dash-today"></div></div>
+      <div class="card"><div class="card-title">Progress Proyek</div><div id="dash-proyek"></div></div>
+      <div class="card"><div class="card-title"><span>Ringkasan Minggu Ini</span><span id="dash-week-badge" style="font-size:10px;color:var(--text3);font-weight:500"></span></div><div id="dash-week"></div></div>
     </div>
     <div class="dash-col">
-      <div class="card">
-        <div class="card-title">Deadline Mendatang</div>
-        <div id="dash-deadline"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Workload Minggu Ini</div>
-        <div id="dash-workload"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Prioritas Tinggi</div>
-        <div id="dash-high-todos"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Repository Proyek</div>
-        <div id="dash-repos"></div>
-      </div>
+      <div class="card"><div class="card-title">Deadline Mendatang</div><div id="dash-deadline"></div></div>
+      <div class="card"><div class="card-title">Workload Minggu Ini</div><div id="dash-workload"></div></div>
+      <div class="card"><div class="card-title">Prioritas Tinggi</div><div id="dash-high-todos"></div></div>
+      <div class="card"><div class="card-title">Repository Proyek</div><div id="dash-repos"></div></div>
     </div>
   </div>
 </div>
 
+<!-- PROYEK -->
 <div id="page-proyek" class="page">
   <div class="section-header">
     <div><div class="section-title">Proyek</div></div>
@@ -498,6 +476,7 @@ select.finput{cursor:pointer}
   <div id="proj-list"></div>
 </div>
 
+<!-- TO-DO -->
 <div id="page-todo" class="page">
   <div class="section-header">
     <div><div class="section-title">To-Do</div></div>
@@ -534,19 +513,19 @@ select.finput{cursor:pointer}
   <div id="todo-list"></div>
 </div>
 
+<!-- PRESENSI -->
 <div id="page-Presensi" class="page">
   <div class="section-header"><div><div class="section-title">Presensi & Aktivitas</div></div></div>
   
   <div class="card">
     <div class="abs-date-head">
-      <div class="abs-date-label" id="abs-date-label" style="font-size:13px">—</div>
+      <div class="abs-date-label" id="abs-date-label">—</div>
       <div class="abs-nav">
         <button class="abs-nav-btn" onclick="moveAbsWeek(-1)">‹ Mg</button>
         <button class="abs-nav-btn" onclick="moveAbsWeek(0)">Minggu Ini</button>
         <button class="abs-nav-btn" onclick="moveAbsWeek(1)">Mg ›</button>
       </div>
     </div>
-
     <div class="fgrow">
       <div><div class="flabel">Tanggal Aktivitas</div><input class="finput" type="date" id="abs-input-date"></div>
       <div><div class="flabel">Waktu (opsional)</div><input class="finput" type="time" id="abs-time"></div>
@@ -564,11 +543,15 @@ select.finput{cursor:pointer}
   </div>
 
   <div class="card">
-    <div class="card-title">Rekap Mingguan</div>
+    <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
+      <span>Rekap Mingguan</span>
+      <button class="btn btn-outline btn-sm" onclick="toggleAllDays()" id="btn-toggle-all">Sembunyikan Semua</button>
+    </div>
     <div id="abs-list"></div>
   </div>
 </div>
 
+<!-- LAPORAN 3P -->
 <div id="page-laporan" class="page">
   <div class="section-header"><div><div class="section-title">Laporan 3P</div></div></div>
   <div class="card">
@@ -584,31 +567,49 @@ select.finput{cursor:pointer}
         <button class="mood-btn" data-m="blocked" onclick="pickMood('blocked')">Blocked</button>
       </div>
     </div>
+  </div>
 
-    <div class="ai-section-head">Auto-isi Laporan</div>
-    <p style="font-size:11px;color:var(--text2);margin-bottom:8px;line-height:1.5">Tombol di bawah akan menarik data <strong>mundur 8 hari</strong> terhitung dari Tanggal Laporan yang kamu pilih di atas.</p>
-    <div class="btn-row">
-      <button class="btn btn-ai" id="btn-ai-fill" onclick="autoFillAI()">
-        <svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 1l1.4 3.8H13l-3.4 2.4 1.3 3.8L7 8.8l-3.9 2.2 1.3-3.8L1 4.8h4.6z"/></svg>
-        Auto-isi AI (3P)
-      </button>
-      <button class="btn btn-outline" onclick="manualFill()">Isi Manual (3P)</button>
+  <!-- PROGRES -->
+  <div class="rp-section">
+    <div class="rp-section-head ph">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 10l3-3 3 3 6-7"/></svg>
+      Progres — Apa yang sudah dikerjakan minggu ini?
     </div>
-    <div id="ai-status" style="display:none;padding:8px 0 0;font-size:12px;color:var(--text2);display:flex;align-items:center;gap:6px"></div>
-    <div id="ai-result"></div>
+    <textarea class="rp-textarea" id="rp-progres" placeholder="Contoh:
+• Proyek A: Selesai digitasi peta jaringan jalan Blora (25 km)
+• Proyek B: Koordinasi dengan tim klien untuk review data lapangan
+• Finalisasi metodologi analisis isochrone untuk proposal Banjarmasin"></textarea>
   </div>
-  <div class="rp-tabs">
-    <button class="rptab rt-p active" onclick="switchRp('p',this)">Progres <span id="rc-p" style="font-size:10px;opacity:.65">0</span></button>
-    <button class="rptab rt-b" onclick="switchRp('b',this)">Problem <span id="rc-b" style="font-size:10px;opacity:.65">0</span></button>
-    <button class="rptab rt-n" onclick="switchRp('n',this)">Plan <span id="rc-n" style="font-size:10px;opacity:.65">0</span></button>
+
+  <!-- PROBLEM -->
+  <div class="rp-section">
+    <div class="rp-section-head pb">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="6"/><line x1="7" y1="4" x2="7" y2="7.5"/><circle cx="7" cy="10" r=".7" fill="currentColor"/></svg>
+      Problem — Hambatan atau kendala yang ditemui
+    </div>
+    <textarea class="rp-textarea rb" id="rp-problem" placeholder="Contoh:
+• Data citra satelit resolusi rendah, perlu pengadaan data baru
+• Klien belum mengirimkan data atribut untuk layer kelurahan
+• (Kosongkan jika tidak ada kendala)"></textarea>
   </div>
-  <div id="rp-panel-p" class="rp-panel active"></div>
-  <div id="rp-panel-b" class="rp-panel"></div>
-  <div id="rp-panel-n" class="rp-panel"></div>
-  <div class="btn-row" style="margin-top:13px">
+
+  <!-- PLAN -->
+  <div class="rp-section">
+    <div class="rp-section-head pn">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="3" width="12" height="10" rx="1.5"/><path d="M5 1v4M9 1v4M1 7h12"/></svg>
+      Plan — Rencana minggu depan
+    </div>
+    <textarea class="rp-textarea rn" id="rp-plan" placeholder="Contoh:
+• Proyek A: Upload hasil digitasi ke GeoServer & review bersama tim
+• Proyek B: Field survey titik kontrol tanggal 28 April
+• Selesaikan draft laporan antara untuk Proyek C"></textarea>
+  </div>
+
+  <div class="btn-row" style="margin-top:6px">
     <button class="btn btn-primary" onclick="previewLaporan()">Preview</button>
     <button class="btn btn-outline" onclick="copyLaporan()">Salin</button>
     <button class="btn btn-outline" onclick="emailLaporan()">Email ↗</button>
+    <button class="btn btn-outline" onclick="clearLaporan()" style="color:var(--red)">Bersihkan</button>
   </div>
   <div class="prev-box" id="rp-prev">
     <div class="flabel" style="margin-bottom:9px">Preview Laporan</div>
@@ -616,6 +617,7 @@ select.finput{cursor:pointer}
   </div>
 </div>
 
+<!-- KONTRIBUSI -->
 <div id="page-kontribusi" class="page">
   <div class="section-header">
     <div>
@@ -628,13 +630,12 @@ select.finput{cursor:pointer}
     <div class="kontrib-period">
       <button class="kp-btn" onclick="setKontribPeriod('week',this)">Minggu Ini</button>
       <button class="kp-btn" onclick="setKontribPeriod('month',this)">Bulan Ini</button>
-      <button class="kp-btn active" id="btn-kp-custom" onclick="setKontribPeriod('custom',this)">Custom (Tgl 20)</button>
+      <button class="kp-btn active" id="btn-kp-custom" onclick="setKontribPeriod('custom',this)">Tgl 21–20</button>
     </div>
     <div class="fgrow" id="kp-custom-dates" style="display:none;margin-bottom:13px">
       <div><div class="flabel">Dari Tanggal</div><input type="date" class="finput" id="kp-start" onchange="renderKontribusi()"></div>
       <div><div class="flabel">Sampai Tanggal</div><input type="date" class="finput" id="kp-end" onchange="renderKontribusi()"></div>
     </div>
-    
     <div id="kontrib-chart"></div>
     <div id="kontrib-total" style="margin-top:8px;font-size:11px;color:var(--text3);text-align:right"></div>
   </div>
@@ -678,7 +679,6 @@ select.finput{cursor:pointer}
 <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database-compat.js"></script>
 
 <script>
-// INISIALISASI FIREBASE REALTIME DATABASE
 const firebaseConfig = {
   apiKey: "AIzaSyAbuxXjRygUR0fRvBZASAn54MyvSxVsn5Q",
   authDomain: "gis-projectmanager1.firebaseapp.com",
@@ -686,29 +686,20 @@ const firebaseConfig = {
   projectId: "gis-projectmanager1",
   storageBucket: "gis-projectmanager1.firebasestorage.app",
   messagingSenderId: "55740115890",
-  appId: "1:55740115890:web:f32c57e2a3ab66d19892ab",
-  measurementId: "G-TE44MN26KZ"
+  appId: "1:55740115890:web:f32c57e2a3ab66d19892ab"
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// STATE LOKAL & EDIT TRACKER
 let data = {projects:[], todos:[], Presensi:[], talenta:{}};
-let todoFilter='all', moodVal='', rpData={p:[],b:[],n:[]}, kontribPeriod='custom';
+let todoFilter='all', moodVal='', kontribPeriod='custom';
 let uid=Date.now();
+let editProjId=null, editTodoId=null, editAbsId=null;
+// Track collapsed state per day (key = date string, value = bool collapsed)
+let dayCollapsed = {};
 
-// Track id untuk update data (Fitur Edit)
-let editProjId = null;
-let editTodoId = null;
-let editAbsId = null;
-
-// Fungsi untuk mendapatkan hari Senin minggu ini
-function getMonday(d) {
-  d = new Date(d);
-  var day = d.getDay(), diff = d.getDate() - day + (day == 0 ? -6:1);
-  return new Date(d.setDate(diff));
-}
-let currentWeekStart = getMonday(new Date());
+function getMonday(d){d=new Date(d);var day=d.getDay(),diff=d.getDate()-day+(day==0?-6:1);return new Date(d.setDate(diff))}
+let currentWeekStart=getMonday(new Date());
 currentWeekStart.setHours(0,0,0,0);
 
 function gid(){return 'i'+(uid++)}
@@ -717,46 +708,31 @@ function ds(d){return(d instanceof Date?d:new Date(d)).toISOString().split('T')[
 function fmtDate(s){if(!s)return'';try{return new Date(s+'T00:00:00').toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})}catch(e){return s}}
 function fmtDateLong(s){if(!s)return'';try{return new Date(s+'T00:00:00').toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'short'})}catch(e){return s}}
 
-// FUNGSI SAVE KE REALTIME DATABASE
 async function save(){
-  try {
-    await db.ref("gpm_data/main_state").set(data);
-  } catch(e) {
-    console.error("Error saving data:", e);
-    toast('Gagal sinkronisasi data!');
-  }
+  try{await db.ref("gpm_data/main_state").set(data)}
+  catch(e){console.error(e);toast('Gagal sinkronisasi!')}
 }
 
-// FUNGSI LOAD DARI REALTIME DATABASE
-async function loadData() {
-  return new Promise((resolve) => {
-    db.ref("gpm_data/main_state").on('value', (snapshot) => {
-      if (snapshot.exists()) {
-        data = snapshot.val();
-      } else {
-        data = {projects:[], todos:[], Presensi:[], talenta:{}};
-      }
-      
-      const activePage = document.querySelector('.page.active');
-      if(activePage) {
-         const p = activePage.id.replace('page-', '');
-         if(p === 'dashboard') renderDash();
-         if(p === 'proyek') renderProyek();
-         if(p === 'todo') { fillProjSelect('td-proj'); renderTodo(); }
-         if(p === 'Presensi') { fillProjSelect('abs-proj'); renderPresensi(); }
-         if(p === 'laporan') { initRpIfEmpty(); renderRpAll(); }
-         if(p === 'kontribusi') renderKontribusi();
+async function loadData(){
+  return new Promise(resolve=>{
+    db.ref("gpm_data/main_state").on('value',snap=>{
+      if(snap.exists()) data=snap.val();
+      else data={projects:[],todos:[],Presensi:[],talenta:{}};
+      const ap=document.querySelector('.page.active');
+      if(ap){const p=ap.id.replace('page-','');
+        if(p==='dashboard')renderDash();
+        if(p==='proyek')renderProyek();
+        if(p==='todo'){fillProjSelect('td-proj');renderTodo()}
+        if(p==='Presensi'){fillProjSelect('abs-proj');renderPresensi()}
+        if(p==='laporan'){}
+        if(p==='kontribusi')renderKontribusi();
       }
       resolve();
-    }, (error) => {
-      console.error("Gagal load Firebase:", error);
-      resolve(); 
-    });
+    },err=>{console.error(err);resolve()});
   });
 }
 
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400)}
-function toggleEl(id){const el=document.getElementById(id);el.style.display=el.style.display==='none'||el.style.display===''?'block':'none'}
 
 function goPage(p){
   document.querySelectorAll('.nav-link').forEach(el=>el.classList.toggle('active',el.dataset.p===p));
@@ -767,7 +743,6 @@ function goPage(p){
   if(p==='proyek')renderProyek();
   if(p==='todo'){fillProjSelect('td-proj');renderTodo()}
   if(p==='Presensi'){fillProjSelect('abs-proj');renderPresensi()}
-  if(p==='laporan'){initRpIfEmpty();renderRpAll()}
   if(p==='kontribusi')renderKontribusi();
 }
 
@@ -789,99 +764,82 @@ function pickMood(m){
 function fillProjSelect(id){
   const s=document.getElementById(id);if(!s)return;
   const cur=s.value;
-  s.innerHTML='<option value="">— Pilih —</option>'+(data.projects || []).filter(p=>p.status!=='Selesai').map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
+  s.innerHTML='<option value="">— Pilih —</option>'+(data.projects||[]).filter(p=>p.status!=='Selesai').map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
   s.value=cur;
 }
 
-/* ======= PROYEK ======= */
-function resetProyekForm() {
-  editProjId = null;
-  document.getElementById('pj-name').value = '';
-  document.getElementById('pj-client').value = '';
-  document.getElementById('pj-deadline').value = '';
-  document.getElementById('pj-repo').value = '';
-  document.getElementById('pj-prog').value = 0;
-  document.getElementById('pj-prog-lbl').textContent = '0%';
-  document.querySelector('#add-proyek-card .btn-primary').textContent = 'Simpan';
-  document.getElementById('add-proyek-card').style.display = 'none';
+/* ===== PROYEK ===== */
+function resetProyekForm(){
+  editProjId=null;
+  ['pj-name','pj-client','pj-repo'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('pj-deadline').value='';
+  document.getElementById('pj-prog').value=0;
+  document.getElementById('pj-prog-lbl').textContent='0%';
+  document.querySelector('#add-proyek-card .btn-primary').textContent='Simpan';
+  document.getElementById('add-proyek-card').style.display='none';
 }
 
-function editProyek(id) {
-  const p = (data.projects || []).find(x => x.id === id);
-  if(!p) return;
-  editProjId = id;
-  document.getElementById('pj-name').value = p.name || '';
-  document.getElementById('pj-client').value = p.client || '';
-  document.getElementById('pj-deadline').value = p.deadline || '';
-  document.getElementById('pj-repo').value = p.repo || '';
-  document.getElementById('pj-prog').value = p.progress || 0;
-  document.getElementById('pj-prog-lbl').textContent = (p.progress || 0) + '%';
-  
-  document.querySelectorAll('#pj-status .pill').forEach(el => el.classList.remove('on'));
-  const sPill = document.querySelector(`#pj-status .pill[data-v="${p.status}"]`);
-  if(sPill) sPill.classList.add('on');
-  else document.querySelector('#pj-status .pill').classList.add('on');
-  
-  document.querySelectorAll('#pj-color .pill').forEach(el => el.classList.remove('on'));
-  const cPill = document.querySelector(`#pj-color .pill[data-v="${p.color}"]`);
-  if(cPill) cPill.classList.add('on');
-
-  document.getElementById('add-proyek-card').style.display = 'block';
-  document.querySelector('#add-proyek-card .btn-primary').textContent = 'Update';
-  window.scrollTo({top:0, behavior:'smooth'});
+function editProyek(id){
+  const p=(data.projects||[]).find(x=>x.id===id);if(!p)return;
+  editProjId=id;
+  document.getElementById('pj-name').value=p.name||'';
+  document.getElementById('pj-client').value=p.client||'';
+  document.getElementById('pj-deadline').value=p.deadline||'';
+  document.getElementById('pj-repo').value=p.repo||'';
+  document.getElementById('pj-prog').value=p.progress||0;
+  document.getElementById('pj-prog-lbl').textContent=(p.progress||0)+'%';
+  document.querySelectorAll('#pj-status .pill').forEach(el=>el.classList.remove('on'));
+  const sp=document.querySelector(`#pj-status .pill[data-v="${p.status}"]`);
+  if(sp)sp.classList.add('on'); else document.querySelector('#pj-status .pill').classList.add('on');
+  document.querySelectorAll('#pj-color .pill').forEach(el=>el.classList.remove('on'));
+  const cp=document.querySelector(`#pj-color .pill[data-v="${p.color}"]`);
+  if(cp)cp.classList.add('on');
+  document.getElementById('add-proyek-card').style.display='block';
+  document.querySelector('#add-proyek-card .btn-primary').textContent='Update';
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function addProyek(){
   const name=document.getElementById('pj-name').value.trim();
   if(!name){toast('Nama proyek wajib diisi!');return}
-  const statusVal=getPillVal('pj-status')||'Aktif';
-  const progressVal=statusVal==='Selesai'?100:parseInt(document.getElementById('pj-prog').value)||0;
-  
-  if(!data.projects) data.projects = [];
-  
-  if(editProjId) {
-    const p = data.projects.find(x => x.id === editProjId);
-    if(p) {
-      p.name = name;
-      p.client = document.getElementById('pj-client').value.trim();
-      p.deadline = document.getElementById('pj-deadline').value;
-      p.repo = document.getElementById('pj-repo').value.trim();
-      p.status = statusVal;
-      p.color = getPillVal('pj-color')||'#1d9e75';
-      p.progress = progressVal;
-    }
+  const sv=getPillVal('pj-status')||'Aktif';
+  const pv=sv==='Selesai'?100:parseInt(document.getElementById('pj-prog').value)||0;
+  if(!data.projects)data.projects=[];
+  if(editProjId){
+    const p=data.projects.find(x=>x.id===editProjId);
+    if(p){p.name=name;p.client=document.getElementById('pj-client').value.trim();p.deadline=document.getElementById('pj-deadline').value;p.repo=document.getElementById('pj-repo').value.trim();p.status=sv;p.color=getPillVal('pj-color')||'#1d9e75';p.progress=pv}
     toast('Proyek diperbarui!');
-  } else {
-    data.projects.push({id:gid(),name,client:document.getElementById('pj-client').value.trim(),deadline:document.getElementById('pj-deadline').value,repo:document.getElementById('pj-repo').value.trim(),status:statusVal,color:getPillVal('pj-color')||'#1d9e75',progress:progressVal,createdAt:Date.now()});
+  }else{
+    data.projects.push({id:gid(),name,client:document.getElementById('pj-client').value.trim(),deadline:document.getElementById('pj-deadline').value,repo:document.getElementById('pj-repo').value.trim(),status:sv,color:getPillVal('pj-color')||'#1d9e75',progress:pv,createdAt:Date.now()});
     toast('Proyek ditambahkan!');
   }
-  save(); renderProyek(); resetProyekForm();
+  save();renderProyek();resetProyekForm();
 }
 
-function setProgres(id,v){const p=(data.projects || []).find(x=>x.id===id);if(!p)return;p.progress=parseInt(v);save();const f=document.getElementById('pf-'+id);if(f)f.style.width=v+'%'}
+function setProgres(id,v){const p=(data.projects||[]).find(x=>x.id===id);if(!p)return;p.progress=parseInt(v);save();const f=document.getElementById('pf-'+id);if(f)f.style.width=v+'%'}
 function setStatus(id,v){
-  const p=(data.projects || []).find(x=>x.id===id);if(!p)return;
-  p.status=v;
-  if(v==='Selesai'){p.progress=100;const f=document.getElementById('pf-'+id),lbl=document.getElementById('pp-'+id),sl=document.getElementById('ps-'+id);if(f)f.style.width='100%';if(lbl)lbl.textContent='100%';if(sl){sl.value=100;sl.disabled=true;}}
-  else{const sl=document.getElementById('ps-'+id);if(sl)sl.disabled=false;}
+  const p=(data.projects||[]).find(x=>x.id===id);if(!p)return;p.status=v;
+  if(v==='Selesai'){p.progress=100;const f=document.getElementById('pf-'+id),lbl=document.getElementById('pp-'+id),sl=document.getElementById('ps-'+id);if(f)f.style.width='100%';if(lbl)lbl.textContent='100%';if(sl){sl.value=100;sl.disabled=true}}
+  else{const sl=document.getElementById('ps-'+id);if(sl)sl.disabled=false}
   save();renderProyek();
 }
-function setRepoInline(id,v){const p=(data.projects || []).find(x=>x.id===id);if(p){p.repo=v;save();renderDashRepos()}}
+function setRepoInline(id,v){const p=(data.projects||[]).find(x=>x.id===id);if(p){p.repo=v;save();renderDashRepos()}}
 function delProyek(id){
-  if(!confirm('Hapus proyek ini beserta semua to-do terkait?'))return;
-  if(data.projects) data.projects=data.projects.filter(p=>p.id!==id);
-  if(data.todos) data.todos=data.todos.filter(t=>t.projId!==id);
-  if(data.Presensi) data.Presensi=data.Presensi.filter(a=>a.projId!==id);
+  if(!confirm('Hapus proyek ini beserta semua data terkait?'))return;
+  if(data.projects)data.projects=data.projects.filter(p=>p.id!==id);
+  if(data.todos)data.todos=data.todos.filter(t=>t.projId!==id);
+  if(data.Presensi)data.Presensi=data.Presensi.filter(a=>a.projId!==id);
   save();renderProyek();fillProjSelect('td-proj');fillProjSelect('abs-proj');toast('Proyek dihapus');
 }
+
 function renderProyek(){
   const el=document.getElementById('proj-list');
-  if(!data.projects || !data.projects.length){el.innerHTML='<div class="empty">Belum ada proyek. Klik "+ Tambah" di atas.</div>';return}
+  if(!data.projects||!data.projects.length){el.innerHTML='<div class="empty">Belum ada proyek. Klik "+ Tambah" di atas.</div>';return}
   const BADGE={Aktif:'b-aktif',Urgent:'b-urgent','On Hold':'b-hold',Selesai:'b-selesai'};
   el.innerHTML=data.projects.map(p=>{
-    const todos=(data.todos || []).filter(t=>t.projId===p.id);
+    const todos=(data.todos||[]).filter(t=>t.projId===p.id);
     const doneT=todos.filter(t=>t.done).length;
-    const effProg=p.status==='Selesai'?100:p.progress;
+    const ep=p.status==='Selesai'?100:p.progress;
     return`<div class="pj-card" style="border-left-color:${p.color}">
       <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
         <div style="flex:1;min-width:0">
@@ -896,10 +854,10 @@ function renderProyek(){
       <div style="margin-top:11px">
         <div style="display:flex;justify-content:space-between;margin-bottom:4px">
           <span style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;font-weight:600">Progress</span>
-          <span style="font-size:11px;color:var(--text2);font-weight:700" id="pp-${p.id}">${effProg}%</span>
+          <span style="font-size:11px;color:var(--text2);font-weight:700" id="pp-${p.id}">${ep}%</span>
         </div>
-        <input type="range" min="0" max="100" value="${effProg}" step="5" id="ps-${p.id}" class="finput" style="margin-bottom:5px" ${p.status==='Selesai'?'disabled':''} oninput="document.getElementById('pp-${p.id}').textContent=this.value+'%';setProgres('${p.id}',this.value)">
-        <div class="prog-bar"><div class="prog-fill" style="width:${effProg}%;background:${p.color}" id="pf-${p.id}"></div></div>
+        <input type="range" min="0" max="100" value="${ep}" step="5" id="ps-${p.id}" class="finput" style="margin-bottom:5px" ${p.status==='Selesai'?'disabled':''} oninput="document.getElementById('pp-${p.id}').textContent=this.value+'%';setProgres('${p.id}',this.value)">
+        <div class="prog-bar"><div class="prog-fill" style="width:${ep}%;background:${p.color}" id="pf-${p.id}"></div></div>
       </div>
       <div style="margin-top:11px">
         <div class="flabel" style="margin-bottom:4px">Link Repository / Drive</div>
@@ -920,82 +878,69 @@ function renderProyek(){
   }).join('');
 }
 
-/* ======= TODO ======= */
-function resetTodoForm() {
-  editTodoId = null;
-  document.getElementById('td-text').value = '';
-  document.getElementById('td-proj').value = '';
-  document.getElementById('td-date').value = '';
-  document.querySelector('#add-todo-card .btn-primary').textContent = 'Simpan';
-  document.getElementById('add-todo-card').style.display = 'none';
+/* ===== TODO ===== */
+function resetTodoForm(){
+  editTodoId=null;
+  document.getElementById('td-text').value='';
+  document.getElementById('td-proj').value='';
+  document.getElementById('td-date').value='';
+  document.querySelector('#add-todo-card .btn-primary').textContent='Simpan';
+  document.getElementById('add-todo-card').style.display='none';
 }
 
-function editTodo(id) {
-  const t = (data.todos || []).find(x => x.id === id);
-  if(!t) return;
-  editTodoId = id;
-  document.getElementById('td-text').value = t.text || '';
-  document.getElementById('td-proj').value = t.projId || '';
-  document.getElementById('td-date').value = t.deadline || '';
-  
-  document.querySelectorAll('#td-prio .pill').forEach(el => el.classList.remove('on'));
-  const pPill = document.querySelector(`#td-prio .pill[data-v="${t.priority}"]`);
-  if(pPill) pPill.classList.add('on');
-  
-  document.getElementById('add-todo-card').style.display = 'block';
-  document.querySelector('#add-todo-card .btn-primary').textContent = 'Update';
-  window.scrollTo({top:0, behavior:'smooth'});
+function editTodo(id){
+  const t=(data.todos||[]).find(x=>x.id===id);if(!t)return;
+  editTodoId=id;
+  document.getElementById('td-text').value=t.text||'';
+  document.getElementById('td-proj').value=t.projId||'';
+  document.getElementById('td-date').value=t.deadline||'';
+  document.querySelectorAll('#td-prio .pill').forEach(el=>el.classList.remove('on'));
+  const pp=document.querySelector(`#td-prio .pill[data-v="${t.priority}"]`);
+  if(pp)pp.classList.add('on');
+  document.getElementById('add-todo-card').style.display='block';
+  document.querySelector('#add-todo-card .btn-primary').textContent='Update';
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function addTodo(){
   const text=document.getElementById('td-text').value.trim();
   if(!text){toast('Isi tugas terlebih dahulu!');return}
   const projId=document.getElementById('td-proj').value;
-  const proj=(data.projects || []).find(p=>p.id===projId);
-  const deadline = document.getElementById('td-date').value;
-  const priority = getPillVal('td-prio')||'med';
-  
-  if(!data.todos) data.todos = [];
-  
-  if(editTodoId) {
-    const t = data.todos.find(x => x.id === editTodoId);
-    if(t) {
-      t.text = text; t.projId = projId; t.projName = proj?proj.name:'';
-      t.deadline = deadline; t.priority = priority;
-    }
+  const proj=(data.projects||[]).find(p=>p.id===projId);
+  const deadline=document.getElementById('td-date').value;
+  const priority=getPillVal('td-prio')||'med';
+  if(!data.todos)data.todos=[];
+  if(editTodoId){
+    const t=data.todos.find(x=>x.id===editTodoId);
+    if(t){t.text=text;t.projId=projId;t.projName=proj?proj.name:'';t.deadline=deadline;t.priority=priority}
     toast('To-do diperbarui!');
-  } else {
+  }else{
     data.todos.push({id:gid(),text,projId,projName:proj?proj.name:'',deadline,priority,done:false,doneAt:null,createdAt:Date.now()});
     toast('To-do ditambahkan!');
   }
-  save();renderTodo();renderDash();updateTodoBadge(); resetTodoForm();
+  save();renderTodo();renderDash();updateTodoBadge();resetTodoForm();
 }
 
-function toggleTodo(id){const t=(data.todos || []).find(x=>x.id===id);if(t){t.done=!t.done;t.doneAt=t.done?Date.now():null;save();renderTodo();renderDash();updateTodoBadge()}}
-function delTodo(id){if(data.todos) data.todos=data.todos.filter(t=>t.id!==id);save();renderTodo();renderDash();updateTodoBadge();toast('Dihapus')}
-function updateTodoBadge(){const n=(data.todos || []).filter(t=>!t.done).length;const b=document.getElementById('todo-badge');if(b){b.textContent=n;b.style.display=n?'inline-block':'none'}}
+function toggleTodo(id){const t=(data.todos||[]).find(x=>x.id===id);if(t){t.done=!t.done;t.doneAt=t.done?Date.now():null;save();renderTodo();renderDash();updateTodoBadge()}}
+function delTodo(id){if(data.todos)data.todos=data.todos.filter(t=>t.id!==id);save();renderTodo();renderDash();updateTodoBadge();toast('Dihapus')}
+function updateTodoBadge(){const n=(data.todos||[]).filter(t=>!t.done).length;const b=document.getElementById('todo-badge');if(b){b.textContent=n;b.style.display=n?'inline-block':'none'}}
 function setFilter(el){todoFilter=el.dataset.f;document.querySelectorAll('.ftag').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderTodo()}
+
 function renderTodo(){
   const el=document.getElementById('todo-list');
   const today=ds(new Date());
-  let list=[...(data.todos || [])];
+  let list=[...(data.todos||[])];
   if(todoFilter==='pending')list=list.filter(t=>!t.done);
   else if(todoFilter==='done')list=list.filter(t=>t.done);
   else if(todoFilter==='high')list=list.filter(t=>t.priority==='high');
   else if(todoFilter==='late')list=list.filter(t=>!t.done&&t.deadline&&t.deadline<today);
   else if(todoFilter==='today')list=list.filter(t=>t.deadline===today||(!t.done&&t.deadline&&t.deadline<today));
-  
-  list.sort((a,b) => {
-    if (a.done !== b.done) return a.done ? 1 : -1;
-    if (a.deadline && b.deadline && a.deadline !== b.deadline) {
-      return new Date(a.deadline) - new Date(b.deadline);
-    }
-    if (a.deadline && !b.deadline) return -1;
-    if (!a.deadline && b.deadline) return 1;
-    const o = {high:0, med:1, low:2};
-    return (o[a.priority]||1) - (o[b.priority]||1);
+  list.sort((a,b)=>{
+    if(a.done!==b.done)return a.done?1:-1;
+    if(a.deadline&&b.deadline&&a.deadline!==b.deadline)return new Date(a.deadline)-new Date(b.deadline);
+    if(a.deadline&&!b.deadline)return -1;if(!a.deadline&&b.deadline)return 1;
+    const o={high:0,med:1,low:2};return(o[a.priority]||1)-(o[b.priority]||1);
   });
-
   if(!list.length){el.innerHTML='<div class="empty">Tidak ada to-do</div>';return}
   el.innerHTML=list.map(t=>{
     const pc=t.priority==='high'?'pr-high':t.priority==='low'?'pr-low':'pr-med';
@@ -1017,33 +962,81 @@ function renderTodo(){
   }).join('');
 }
 
-/* ======= PRESENSI (MINGGUAN) ======= */
-function resetPresensiForm() {
-  editAbsId = null;
-  document.getElementById('abs-act').value = '';
-  document.getElementById('abs-time').value = '';
-  document.getElementById('btn-submit-abs').textContent = 'Catat Aktivitas';
-  document.getElementById('btn-cancel-abs').style.display = 'none';
+/* ===== PRESENSI dengan COLLAPSE ===== */
+function resetPresensiForm(){
+  editAbsId=null;
+  document.getElementById('abs-act').value='';
+  document.getElementById('abs-time').value='';
+  document.getElementById('btn-submit-abs').textContent='Catat Aktivitas';
+  document.getElementById('btn-cancel-abs').style.display='none';
 }
 
-function editPresensi(id) {
-  const a = (data.Presensi || []).find(x => x.id === id);
-  if(!a) return;
-  editAbsId = id;
-  document.getElementById('abs-input-date').value = a.date || '';
-  document.getElementById('abs-time').value = a.time || '';
-  document.getElementById('abs-proj').value = a.projId || '';
-  document.getElementById('abs-act').value = a.act || '';
-  
-  document.getElementById('btn-submit-abs').textContent = 'Update Aktivitas';
-  document.getElementById('btn-cancel-abs').style.display = 'block';
-  window.scrollTo({top:0, behavior:'smooth'});
+function editPresensi(id){
+  const a=(data.Presensi||[]).find(x=>x.id===id);if(!a)return;
+  editAbsId=id;
+  document.getElementById('abs-input-date').value=a.date||'';
+  document.getElementById('abs-time').value=a.time||'';
+  document.getElementById('abs-proj').value=a.projId||'';
+  document.getElementById('abs-act').value=a.act||'';
+  document.getElementById('btn-submit-abs').textContent='Update Aktivitas';
+  document.getElementById('btn-cancel-abs').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function moveAbsWeek(d){
-  if(d===0) currentWeekStart = getMonday(new Date());
-  else currentWeekStart.setDate(currentWeekStart.getDate() + (d * 7));
+  if(d===0)currentWeekStart=getMonday(new Date());
+  else currentWeekStart.setDate(currentWeekStart.getDate()+(d*7));
   renderPresensi();
+}
+
+function toggleDay(dStr){
+  dayCollapsed[dStr]=!dayCollapsed[dStr];
+  const body=document.getElementById('day-body-'+dStr);
+  const toggle=document.getElementById('day-toggle-'+dStr);
+  if(body){body.classList.toggle('hidden',dayCollapsed[dStr])}
+  if(toggle){toggle.classList.toggle('collapsed',dayCollapsed[dStr])}
+  // Update tombol toggle all
+  updateToggleAllBtn();
+}
+
+function updateToggleAllBtn(){
+  const btn=document.getElementById('btn-toggle-all');
+  if(!btn)return;
+  // Hitung berapa yang collapsed
+  let wEnd=new Date(currentWeekStart);wEnd.setDate(wEnd.getDate()+6);
+  let allCollapsed=true;
+  for(let i=0;i<7;i++){
+    let d=new Date(currentWeekStart);d.setDate(d.getDate()+i);
+    if(!dayCollapsed[ds(d)]){allCollapsed=false;break}
+  }
+  btn.textContent=allCollapsed?'Tampilkan Semua':'Sembunyikan Semua';
+}
+
+function toggleAllDays(){
+  const btn=document.getElementById('btn-toggle-all');
+  let allCollapsed=true;
+  for(let i=0;i<7;i++){
+    let d=new Date(currentWeekStart);d.setDate(d.getDate()+i);
+    if(!dayCollapsed[ds(d)]){allCollapsed=false;break}
+  }
+  // Jika ada yang terbuka → tutup semua; jika semua tertutup → buka semua
+  for(let i=0;i<7;i++){
+    let d=new Date(currentWeekStart);d.setDate(d.getDate()+i);
+    const dStr=ds(d);
+    dayCollapsed[dStr]=!allCollapsed;
+    const body=document.getElementById('day-body-'+dStr);
+    const toggle=document.getElementById('day-toggle-'+dStr);
+    if(body)body.classList.toggle('hidden',dayCollapsed[dStr]);
+    if(toggle)toggle.classList.toggle('collapsed',dayCollapsed[dStr]);
+  }
+  if(btn)btn.textContent=allCollapsed?'Sembunyikan Semua':'Tampilkan Semua';
+}
+
+function toggleTalentaDate(d){
+  if(!data.talenta)data.talenta={};
+  data.talenta[d]=!data.talenta[d];
+  save();renderPresensi();
+  if(data.talenta[d])toast('Talenta ' + fmtDateLong(d) + ' ✓');
 }
 
 function addPresensi(){
@@ -1052,283 +1045,157 @@ function addPresensi(){
   const dateVal=document.getElementById('abs-input-date').value;
   if(!dateVal){toast('Pilih tanggal aktivitas!');return}
   const projId=document.getElementById('abs-proj').value;
-  const proj=(data.projects || []).find(p=>p.id===projId);
-  const timeVal = document.getElementById('abs-time').value||'';
-
-  if(!data.Presensi) data.Presensi = [];
-  
-  if(editAbsId) {
-    const a = data.Presensi.find(x => x.id === editAbsId);
-    if(a) {
-      a.act = act; a.projId = projId; a.projName = proj?proj.name:'';
-      a.time = timeVal; a.date = dateVal;
-    }
+  const proj=(data.projects||[]).find(p=>p.id===projId);
+  const timeVal=document.getElementById('abs-time').value||'';
+  if(!data.Presensi)data.Presensi=[];
+  if(editAbsId){
+    const a=data.Presensi.find(x=>x.id===editAbsId);
+    if(a){a.act=act;a.projId=projId;a.projName=proj?proj.name:'';a.time=timeVal;a.date=dateVal}
     toast('Aktivitas diperbarui!');
-  } else {
+  }else{
     data.Presensi.push({id:gid(),act,projId,projName:proj?proj.name:'',time:timeVal,date:dateVal,createdAt:Date.now()});
     toast('Aktivitas dicatat!');
   }
-  
-  save();renderPresensi();renderDash(); resetPresensiForm();
+  save();renderPresensi();renderDash();resetPresensiForm();
 }
 
-function delPresensi(id){if(data.Presensi) data.Presensi=data.Presensi.filter(a=>a.id!==id);save();renderPresensi();renderDash();toast('Dihapus')}
-
-// FUNGSI BARU: Toggle Talenta Per Tanggal
-function toggleTalentaDate(d) {
-  if (!data.talenta) data.talenta = {};
-  data.talenta[d] = !data.talenta[d];
-  save(); 
-  renderPresensi(); 
-  if (data.talenta[d]) toast('Presensi Talenta ' + fmtDateLong(d) + ' ditandai selesai!');
-}
+function delPresensi(id){if(data.Presensi)data.Presensi=data.Presensi.filter(a=>a.id!==id);save();renderPresensi();renderDash();toast('Dihapus')}
 
 function renderPresensi(){
-  const we = new Date(currentWeekStart);
-  we.setDate(we.getDate() + 6);
+  const we=new Date(currentWeekStart);we.setDate(we.getDate()+6);
+  document.getElementById('abs-date-label').textContent=fmtDate(ds(currentWeekStart))+' – '+fmtDate(ds(we));
   
-  // Format Tanggal di Atas: 13 Apr - 19 Apr 2026
-  document.getElementById('abs-date-label').textContent = fmtDate(ds(currentWeekStart)) + " - " + fmtDate(ds(we));
+  const el=document.getElementById('abs-list');
+  let html='';
+  const today=ds(new Date());
   
-  const el = document.getElementById('abs-list');
-  let html = '';
-  
-  // Render 7 hari sekaligus (Senin - Minggu)
-  for(let i=0; i<7; i++) {
-    let d = new Date(currentWeekStart);
-    d.setDate(d.getDate() + i);
-    let dStr = ds(d);
+  for(let i=0;i<7;i++){
+    let d=new Date(currentWeekStart);d.setDate(d.getDate()+i);
+    let dStr=ds(d);
+    let acts=(data.Presensi||[]).filter(a=>a.date===dStr).sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99')||a.createdAt-b.createdAt);
+    let talentaOn=data.talenta&&data.talenta[dStr];
+    let isToday=dStr===today;
+    let isCollapsed=dayCollapsed[dStr]||false;
     
-    let acts = (data.Presensi || []).filter(a=>a.date === dStr).sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99')||a.createdAt-b.createdAt);
-    let talentaOn = data.talenta && data.talenta[dStr] ? 'on' : '';
-    
-    let actsHtml = acts.length ? acts.map(a=>{
-      const color=((data.projects || []).find(p=>p.id===a.projId)||{}).color||'var(--border)';
-      return `<div class="abs-entry" style="border-left-color:${color}; margin-bottom:5px; padding:8px 11px;">
+    let actsHtml=acts.length?acts.map(a=>{
+      const color=((data.projects||[]).find(p=>p.id===a.projId)||{}).color||'var(--border)';
+      return`<div class="abs-entry" style="border-left-color:${color}">
         <div class="abs-time">${a.time||'—'}</div>
-        <div style="flex:1;min-width:0"><div class="abs-act" style="font-size:11.5px">${esc(a.act)}</div>${a.projName?`<div class="abs-proj" style="font-size:10px">${esc(a.projName)}</div>`:''}</div>
+        <div style="flex:1;min-width:0"><div class="abs-act">${esc(a.act)}</div>${a.projName?`<div class="abs-proj">${esc(a.projName)}</div>`:''}</div>
         <button class="edit-btn" onclick="editPresensi('${a.id}')">✎</button>
         <button class="del-btn" onclick="delPresensi('${a.id}')">×</button>
       </div>`
-    }).join('') : `<div style="font-size:11px;color:var(--text3);padding:4px 0 8px;">Tidak ada aktivitas dicatat</div>`;
+    }).join(''):`<div style="font-size:11px;color:var(--text3);padding:6px 0 10px;font-style:italic">Tidak ada aktivitas dicatat</div>`;
 
-    html += `
-    <div style="margin-top:${i===0?'0':'18px'}">
-      <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border2);padding-bottom:6px;margin-bottom:8px">
-        <div style="font-size:12px;font-weight:700;color:var(--text)">${fmtDateLong(dStr)}</div>
-        <div style="display:flex;align-items:center;gap:6px;cursor:pointer;background:var(--surface2);padding:3px 8px;border-radius:6px;border:1px solid var(--border)" onclick="toggleTalentaDate('${dStr}')">
-          <span style="font-size:10px;font-weight:600;color:var(--text2)">Talenta HR</span>
-          <div class="chk ${talentaOn}" style="width:14px;height:14px;border-radius:4px;margin-top:0"></div>
+    html+=`<div class="day-block">
+      <div class="day-header" onclick="toggleDay('${dStr}')">
+        <div class="day-header-left">
+          <div style="display:flex;flex-direction:column;gap:1px">
+            <div class="day-title" style="${isToday?'color:var(--teal)':''}">
+              ${fmtDateLong(dStr)}${isToday?' <span style="font-size:9px;background:var(--teal-bg);color:var(--teal);padding:1px 5px;border-radius:4px;font-weight:700">Hari Ini</span>':''}
+            </div>
+            <div class="day-count" style="${isCollapsed?'':''}">
+              ${acts.length?`${acts.length} aktivitas`:'kosong'}
+              ${talentaOn?' · <span style="color:var(--teal);font-size:10px;font-weight:700">Talenta ✓</span>':''}
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <div class="talenta-chip ${talentaOn?'on':''}" onclick="event.stopPropagation();toggleTalentaDate('${dStr}')">
+            <span class="talenta-label">Talenta HR</span>
+            <div class="chk-sm ${talentaOn?'on':''}"></div>
+          </div>
+          <div class="day-toggle ${isCollapsed?'collapsed':''}">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,4 6,8 10,4"/></svg>
+          </div>
         </div>
       </div>
-      ${actsHtml}
-    </div>
-    `;
-  }
-  el.innerHTML = html;
-}
-
-/* ======= LAPORAN 3P ======= */
-function initRpIfEmpty(){
-  if(!rpData.p.length)rpData.p=[['','']];
-  if(!rpData.b.length)rpData.b=[['','']];
-  if(!rpData.n.length)rpData.n=[['','']];
-}
-
-function getReportRange(){
-  const dtVal = document.getElementById('rp-date').value;
-  const baseDate = dtVal ? new Date(dtVal) : new Date();
-  
-  const end = new Date(baseDate);
-  end.setHours(23,59,59,999);
-  
-  const start = new Date(baseDate);
-  start.setDate(baseDate.getDate() - 7); // MUNDUR 8 HARI (inclusive 0 to 7)
-  start.setHours(0,0,0,0);
-  
-  return { start: start.getTime(), end: end.getTime(), today: ds(baseDate) };
-}
-
-function buildReportData(){
-  const{start, end, today}=getReportRange();
-  const weekDone=(data.todos || []).filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end);
-  const weekAbs=(data.Presensi || []).filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
-  const weekPending=(data.todos || []).filter(t=>!t.done);
-  const weekLate=(data.todos || []).filter(t=>!t.done&&t.deadline&&t.deadline<today);
-  return{weekDone,weekAbs,weekPending,weekLate};
-}
-
-async function autoFillAI(){
-  const{weekDone,weekAbs,weekPending,weekLate}=buildReportData();
-  if(!weekDone.length&&!weekAbs.length&&!weekPending.length){toast('Belum ada data untuk periode ini!');return}
-  const statusEl=document.getElementById('ai-status'),resultEl=document.getElementById('ai-result');
-  statusEl.style.cssText='display:flex;padding:8px 0 0;font-size:12px;color:var(--text2);align-items:center;gap:6px';
-  statusEl.innerHTML='<div class="spinner"></div> AI sedang merangkum ketiga bagian 3P…';
-  resultEl.innerHTML='';
-  document.getElementById('btn-ai-fill').disabled=true;
-
-  const absText=weekAbs.map(a=>`- [${a.date}${a.time?' '+a.time:''}] ${a.act}${a.projName?' ('+a.projName+')':''}`).join('\n');
-  const doneText=weekDone.map(t=>`- ${t.text}${t.projName?' ('+t.projName+')':''}`).join('\n');
-  const pendingText=weekPending.map(t=>`- ${t.text}${t.projName?' ('+t.projName+')':''}${t.deadline?' [deadline:'+t.deadline+']':''}`).join('\n');
-  const lateText=weekLate.map(t=>`- ${t.text}${t.projName?' ('+t.projName+')':''} [TERLAMBAT, deadline:${t.deadline}]`).join('\n');
-
-  const prompt=`Kamu asisten laporan mingguan tim GIS/Geospasial. Buat laporan 3P lengkap (Progres, Problem, Plan).
-
-DATA PERIODE INI:
-Presensi/AKTIVITAS:
-${absText||'(kosong)'}
-TUGAS SELESAI:
-${doneText||'(kosong)'}
-TUGAS PENDING (belum selesai):
-${pendingText||'(kosong)'}
-TUGAS TERLAMBAT:
-${lateText||'(kosong)'}
-SEMUA PROYEK AKTIF:
-${(data.projects || []).filter(p=>p.status!=='Selesai').map(p=>`- ${p.name} (progress ${p.progress}%)`).join('\n')||'(kosong)'}
-
-Balas HANYA JSON valid tanpa markdown, tanpa penjelasan. Format PERSIS:
-{
-  "progres": [{"proyek":"nama proyek","items":["item 1","item 2"]}],
-  "problem": [{"kategori":"nama kategori/proyek","items":["masalah 1","masalah 2"]}],
-  "plan": [{"kategori":"nama kategori/proyek","items":["rencana 1","rencana 2"]}],
-  "ringkasan": "1-2 kalimat ringkasan eksekutif"
-}
-
-Panduan:
-- progres: tugas/aktivitas yang sudah selesai minggu ini, dikelompokkan per proyek
-- problem: hambatan/kendala yang teridentifikasi dari tugas terlambat, pending, atau konteks pekerjaan
-- plan: rencana minggu depan berdasarkan tugas pending, deadline mendatang, dan progress proyek
-- Jika tidak ada data untuk suatu bagian, tetap isi dengan item generik yang relevan`;
-
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,messages:[{role:'user',content:prompt}]})});
-    const json=await res.json();
-    let raw=json.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim();
-    const parsed=JSON.parse(raw);
-
-    if(parsed.progres&&parsed.progres.length){
-      rpData.p=parsed.progres.map(g=>[g.proyek||'',...(g.items||[])]);
-    } else rpData.p=[['','']];
-
-    if(parsed.problem&&parsed.problem.length){
-      rpData.b=parsed.problem.map(g=>[g.kategori||'',...(g.items||[])]);
-    } else rpData.b=[['Tidak ada kendala signifikan pada periode ini','']];
-
-    if(parsed.plan&&parsed.plan.length){
-      rpData.n=parsed.plan.map(g=>[g.kategori||'',...(g.items||[])]);
-    } else rpData.n=[['','']];
-
-    renderRpAll();countRp();
-    document.querySelector('.rptab.rt-p').click();
-
-    statusEl.style.display='none';
-    resultEl.innerHTML=`<div class="ai-box">
-      <div class="ai-box-label"><svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 1l1.4 3.8H13l-3.4 2.4 1.3 3.8L7 8.8l-3.9 2.2 1.3-3.8L1 4.8h4.6z"/></svg> Ringkasan AI — Ketiga bagian 3P sudah terisi</div>
-      <div style="font-size:12px;color:var(--text);line-height:1.6">${esc(parsed.ringkasan||'')}</div>
-      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
-        <span style="font-size:10px;padding:2px 8px;border-radius:5px;background:rgba(29,158,117,0.12);color:var(--teal);font-weight:700">Progres ✓</span>
-        <span style="font-size:10px;padding:2px 8px;border-radius:5px;background:rgba(226,75,74,0.12);color:var(--red);font-weight:700">Problem ✓</span>
-        <span style="font-size:10px;padding:2px 8px;border-radius:5px;background:rgba(55,138,221,0.12);color:var(--blue);font-weight:700">Plan ✓</span>
+      <div class="day-body ${isCollapsed?'hidden':''}" id="day-body-${dStr}">
+        ${actsHtml}
       </div>
     </div>`;
-    toast('Laporan 3P berhasil diisi AI!');
-  }catch(err){
-    statusEl.innerHTML='<span style="color:var(--red);font-size:12px">Gagal meringkas. Cek koneksi atau coba lagi.</span>';
-    console.error(err);
   }
-  document.getElementById('btn-ai-fill').disabled=false;
+  el.innerHTML=html;
+  updateToggleAllBtn();
 }
 
-function manualFill(){
-  const{weekDone,weekAbs,weekPending,weekLate}=buildReportData();
-
-  const grpP={};
-  weekDone.forEach(t=>{const k=t.projName||'Umum';if(!grpP[k])grpP[k]=[];grpP[k].push(t.text)});
-  weekAbs.forEach(a=>{const k=a.projName||'Umum';if(!grpP[k])grpP[k]=[];const txt=a.time?`[${a.time}] ${a.act}`:a.act;if(!grpP[k].includes(txt))grpP[k].push(txt)});
-  const progresEntries=Object.entries(grpP);
-
-  const grpB={};
-  weekLate.forEach(t=>{const k=t.projName||'Umum';if(!grpB[k])grpB[k]=[];grpB[k].push(`Tugas terlambat: ${t.text} (deadline ${fmtDate(t.deadline)})`)});
-  (data.projects || []).filter(p=>p.status==='Urgent').forEach(p=>{if(!grpB[p.name])grpB[p.name]=[];grpB[p.name].push(`Proyek berstatus Urgent, progress ${p.progress}%`)});
-  const problemEntries=Object.entries(grpB);
-
-  const grpN={};
-  weekPending.slice(0,10).forEach(t=>{const k=t.projName||'Umum';if(!grpN[k])grpN[k]=[];grpN[k].push(t.text+(t.deadline?` (target: ${fmtDate(t.deadline)})`:''))});
-  const planEntries=Object.entries(grpN);
-
-  if(!progresEntries.length&&!problemEntries.length&&!planEntries.length){toast('Tidak ada data yang cukup');return}
-
-  rpData.p=progresEntries.length?progresEntries.map(([k,items])=>[k,...items]):[['','']];
-  rpData.b=problemEntries.length?problemEntries.map(([k,items])=>[k,...items]):[['Tidak ada kendala signifikan','']];
-  rpData.n=planEntries.length?planEntries.map(([k,items])=>[k,...items]):[['','']];
-
-  renderRpAll();countRp();
-  document.querySelector('.rptab.rt-p').click();
-  toast('Laporan 3P berhasil diisi dari data lokal!');
-}
-
-function renderRpAll(){['p','b','n'].forEach(k=>renderRpPanel(k));countRp()}
-function renderRpPanel(k){
-  const el=document.getElementById('rp-panel-'+k);el.innerHTML='';
-  rpData[k].forEach((grp,gi)=>{
-    const div=document.createElement('div');div.className='rp-group';
-    const items=grp.slice(1);
-    div.innerHTML=`<div class="rp-grp-head">
-      <input class="rp-grp-name" placeholder="Nama proyek / kategori" value="${esc(grp[0]||'')}" oninput="rpData['${k}'][${gi}][0]=this.value;countRp()">
-      <button class="del-btn" onclick="delRpGrp('${k}',${gi})">×</button>
-    </div>
-    <div id="ri-${k}-${gi}">${items.map((it,ii)=>`<div class="rp-item-row"><div class="rp-dot"></div><input class="rp-item-input" placeholder="Keterangan..." value="${esc(it)}" oninput="rpData['${k}'][${gi}][${ii+1}]=this.value;countRp()">${items.length>1?`<button class="del-btn" style="font-size:13px" onclick="delRpItem('${k}',${gi},${ii+1})">×</button>`:''}</div>`).join('')}</div>
-    <button class="add-item-btn" onclick="addRpItem('${k}',${gi})">+ item</button>`;
-    el.appendChild(div);
-  });
-  const ab=document.createElement('button');ab.className='btn btn-outline btn-sm';ab.style.marginTop='6px';ab.textContent='+ Grup';ab.onclick=()=>{rpData[k].push(['','']);renderRpPanel(k);countRp()};
-  el.appendChild(ab);
-}
-function delRpGrp(k,gi){rpData[k].length>1?rpData[k].splice(gi,1):rpData[k]=[['','']];renderRpPanel(k);countRp()}
-function addRpItem(k,gi){rpData[k][gi].push('');renderRpPanel(k);countRp()}
-function delRpItem(k,gi,ii){rpData[k][gi].splice(ii,1);renderRpPanel(k);countRp()}
-function countRp(){['p','b','n'].forEach(k=>{const n=rpData[k].reduce((a,g)=>a+g.slice(1).filter(x=>x.trim()).length,0);document.getElementById('rc-'+k).textContent=n})}
-function switchRp(k,btn){document.querySelectorAll('.rptab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.rp-panel').forEach(p=>p.classList.remove('active'));document.getElementById('rp-panel-'+k).classList.add('active')}
-
+/* ===== LAPORAN 3P - MANUAL ===== */
 function genRpText(){
-  const team=document.getElementById('rp-team').value||'Tim',date=document.getElementById('rp-date').value;
+  const team=document.getElementById('rp-team').value||'Tim';
+  const date=document.getElementById('rp-date').value;
   const ml=moodVal?` | ${moodVal==='on-track'?'On Track':moodVal==='at-risk'?'At Risk':'Blocked'}`:'';
+  const progres=(document.getElementById('rp-progres').value||'').trim();
+  const problem=(document.getElementById('rp-problem').value||'').trim();
+  const plan=(document.getElementById('rp-plan').value||'').trim();
   let txt=`Laporan 3P ${team}\n${date?fmtDate(date):''}${ml}\n${'─'.repeat(36)}\n\n`;
-  const lb={p:'PROGRES',b:'PROBLEM',n:'PLAN'};
-  ['p','b','n'].forEach(k=>{
-    txt+=lb[k]+'\n';
-    const has=rpData[k].some(g=>g.slice(1).some(x=>x.trim()));
-    if(!has)txt+='-\n';
-    else rpData[k].forEach(g=>{const items=g.slice(1).filter(x=>x.trim());if(!items.length)return;if(g[0].trim()){txt+=`${g[0]}:\n`;items.forEach(i=>txt+=`  - ${i}\n`)}else items.forEach(i=>txt+=`- ${i}\n`)});
-    txt+='\n';
-  });
+  txt+=`PROGRES\n${progres||'-'}\n\n`;
+  txt+=`PROBLEM\n${problem||'-'}\n\n`;
+  txt+=`PLAN\n${plan||'-'}`;
   return txt.trim();
 }
-function previewLaporan(){const pv=document.getElementById('rp-prev');document.getElementById('rp-prev-text').textContent=genRpText();pv.style.display='block';setTimeout(()=>pv.scrollIntoView({behavior:'smooth',block:'nearest'}),60)}
-function copyLaporan(){const txt=genRpText();navigator.clipboard.writeText(txt).then(()=>toast('Laporan disalin!')).catch(()=>{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('Laporan disalin!')})}
-function emailLaporan(){const team=document.getElementById('rp-team').value||'Tim';const date=document.getElementById('rp-date').value;window.open(`mailto:?subject=${encodeURIComponent('Laporan 3P '+team+' - '+(date?fmtDate(date):''))}&body=${encodeURIComponent(genRpText())}`,'_blank')}
 
-/* ======= KONTRIBUSI ======= */
+function previewLaporan(){
+  const pv=document.getElementById('rp-prev');
+  document.getElementById('rp-prev-text').textContent=genRpText();
+  pv.style.display='block';
+  setTimeout(()=>pv.scrollIntoView({behavior:'smooth',block:'nearest'}),60);
+}
+
+function copyLaporan(){
+  const txt=genRpText();
+  navigator.clipboard.writeText(txt)
+    .then(()=>toast('Laporan disalin!'))
+    .catch(()=>{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('Laporan disalin!')});
+}
+
+function emailLaporan(){
+  const team=document.getElementById('rp-team').value||'Tim';
+  const date=document.getElementById('rp-date').value;
+  window.open(`mailto:?subject=${encodeURIComponent('Laporan 3P '+team+' - '+(date?fmtDate(date):''))}&body=${encodeURIComponent(genRpText())}`,'_blank');
+}
+
+function clearLaporan(){
+  if(!confirm('Bersihkan semua isi laporan 3P?'))return;
+  document.getElementById('rp-progres').value='';
+  document.getElementById('rp-problem').value='';
+  document.getElementById('rp-plan').value='';
+  document.getElementById('rp-prev').style.display='none';
+  toast('Laporan dibersihkan');
+}
+
+/* ===== KONTRIBUSI - Default tgl 21-20 ===== */
+function getCustomPeriod21(){
+  const now=new Date();
+  let startMonth, startYear, endMonth, endYear;
+  if(now.getDate()>=21){
+    // Tgl 21 bulan ini → tgl 20 bulan depan
+    startMonth=now.getMonth();startYear=now.getFullYear();
+    endMonth=now.getMonth()+1;endYear=now.getFullYear();
+    if(endMonth>11){endMonth=0;endYear++}
+  }else{
+    // Belum tgl 21 → tgl 21 bulan lalu → tgl 20 bulan ini
+    startMonth=now.getMonth()-1;startYear=now.getFullYear();
+    if(startMonth<0){startMonth=11;startYear--}
+    endMonth=now.getMonth();endYear=now.getFullYear();
+  }
+  const s=new Date(startYear,startMonth,21);
+  const e=new Date(endYear,endMonth,20);
+  return{s:ds(s),e:ds(e)};
+}
+
 function setKontribPeriod(p,btn){
   kontribPeriod=p;
   document.querySelectorAll('.kp-btn').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  
-  const customBox = document.getElementById('kp-custom-dates');
-  if(p === 'custom') {
-    customBox.style.display = 'grid'; 
-    const now = new Date();
-    // Logika tanggal 20: Jika hari ini tanggal < 20, periode dimulai tanggal 20 bulan lalu. Jika >= 20, periode dimulai tanggal 20 bulan ini.
-    let startMonth = now.getDate() >= 20 ? now.getMonth() : now.getMonth() - 1;
-    let s = new Date(now.getFullYear(), startMonth, 20);
-    let e = new Date(now.getFullYear(), startMonth + 1, 19);
-
-    document.getElementById('kp-start').value = ds(s);
-    document.getElementById('kp-end').value = ds(e);
-  } else {
-    customBox.style.display = 'none';
+  if(btn)btn.classList.add('active');
+  const customBox=document.getElementById('kp-custom-dates');
+  if(p==='custom'){
+    customBox.style.display='grid';
+    const{s,e}=getCustomPeriod21();
+    document.getElementById('kp-start').value=s;
+    document.getElementById('kp-end').value=e;
+  }else{
+    customBox.style.display='none';
   }
-  
   renderKontribusi();
 }
 
@@ -1336,50 +1203,42 @@ function getDashWeekRange(){
   const now=new Date(),day=now.getDay();
   const mon=new Date(now);mon.setDate(now.getDate()-(day===0?6:day-1));mon.setHours(0,0,0,0);
   const sun=new Date(mon);sun.setDate(mon.getDate()+6);sun.setHours(23,59,59,999);
-  return{start:mon.getTime(),end:sun.getTime()};
+  return{start:mon.getTime(),end:sun.getTime()}
 }
 
 function getKontribRange(){
   if(kontribPeriod==='week'){const{start,end}=getDashWeekRange();return{start,end}}
   if(kontribPeriod==='month'){const now=new Date();const s=new Date(now.getFullYear(),now.getMonth(),1,0,0,0,0);const e=new Date(now.getFullYear(),now.getMonth()+1,0,23,59,59,999);return{start:s.getTime(),end:e.getTime()}}
   if(kontribPeriod==='custom'){
-    const s = document.getElementById('kp-start').value;
-    const e = document.getElementById('kp-end').value;
-    if(!s || !e) return {start:0, end:Infinity};
-    return {
-      start: new Date(s+'T00:00:00').getTime(),
-      end: new Date(e+'T23:59:59').getTime()
-    };
+    const s=document.getElementById('kp-start').value;
+    const e=document.getElementById('kp-end').value;
+    if(!s||!e)return{start:0,end:Infinity};
+    return{start:new Date(s+'T00:00:00').getTime(),end:new Date(e+'T23:59:59').getTime()}
   }
   return{start:0,end:Infinity}
 }
 
 function renderKontribusi(){
   const{start,end}=getKontribRange();
-  const fAbs=(data.Presensi || []).filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
-  const fDone=(data.todos || []).filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end);
+  const fAbs=(data.Presensi||[]).filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
+  const fDone=(data.todos||[]).filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end);
   const chartEl=document.getElementById('kontrib-chart'),totalEl=document.getElementById('kontrib-total'),detailEl=document.getElementById('kontrib-detail');
   const grpA={};fAbs.forEach(a=>{const k=a.projName||'Tanpa Proyek';grpA[k]=(grpA[k]||0)+1});
   const grpD={};fDone.forEach(t=>{const k=t.projName||'Tanpa Proyek';grpD[k]=(grpD[k]||0)+1});
   const allKeys=[...new Set([...Object.keys(grpA),...Object.keys(grpD)])];
-  
   if(!allKeys.length){chartEl.innerHTML='<div class="empty">Belum ada data pada periode ini</div>';totalEl.textContent='';detailEl.innerHTML='';return}
-  
   const scores={};allKeys.forEach(k=>{scores[k]=(grpA[k]||0)+(grpD[k]||0)});
   const total=Object.values(scores).reduce((a,b)=>a+b,0);
   const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
-  const colorMap={};(data.projects || []).forEach(p=>{colorMap[p.name]=p.color});
+  const colorMap={};(data.projects||[]).forEach(p=>{colorMap[p.name]=p.color});
   const fallback=['#1d9e75','#378add','#e24b4a','#ba7517','#7f77dd','#639922'];
-  
   chartEl.innerHTML=sorted.map(([name,score],i)=>{
     const pct=total>0?Math.round(score/total*100):0;
     const color=colorMap[name]||fallback[i%fallback.length];
     return`<div class="kontrib-row"><div class="kontrib-name" title="${esc(name)}">${esc(name)}</div><div class="kontrib-track"><div class="kontrib-fill" style="width:${pct}%;background:${color}"></div></div><div class="kontrib-pct" style="color:${color}">${pct}%</div></div>`;
   }).join('');
-  
   const lbl=kontribPeriod==='week'?'minggu ini':kontribPeriod==='month'?'bulan ini':'periode ini';
   totalEl.textContent=`${fAbs.length} aktivitas + ${fDone.length} tugas selesai (${lbl})`;
-  
   detailEl.innerHTML=sorted.map(([name,score],i)=>{
     const color=colorMap[name]||fallback[i%fallback.length];
     const pct=total>0?Math.round(score/total*100):0;
@@ -1397,49 +1256,46 @@ function renderKontribusi(){
   }).join('');
 }
 
-/* ======= DASHBOARD ======= */
+/* ===== DASHBOARD ===== */
 function renderDashRepos(){
   const reposEl=document.getElementById('dash-repos');if(!reposEl)return;
-  const withRepo=(data.projects || []).filter(p=>p.repo);
+  const withRepo=(data.projects||[]).filter(p=>p.repo);
   if(!withRepo.length){reposEl.innerHTML='<div class="empty">Belum ada link repository. Tambahkan di halaman Proyek.</div>';return}
   reposEl.innerHTML=withRepo.map(p=>`<div class="sum-item"><div class="sum-dot" style="background:${p.color}"></div><div class="sum-text"><strong style="font-size:12px">${esc(p.name)}</strong><br><a href="${esc(p.repo)}" target="_blank" rel="noopener" style="font-size:11px;color:var(--blue);word-break:break-all">${esc(p.repo)}</a></div></div>`).join('');
 }
 
 function renderDash(){
   const today=ds(new Date());
-  const aktif=(data.projects || []).filter(p=>p.status!=='Selesai').length;
-  const pending=(data.todos || []).filter(t=>!t.done).length;
-  const late=(data.todos || []).filter(t=>!t.done&&t.deadline&&t.deadline<today).length;
-  
+  const aktif=(data.projects||[]).filter(p=>p.status!=='Selesai').length;
+  const pending=(data.todos||[]).filter(t=>!t.done).length;
+  const late=(data.todos||[]).filter(t=>!t.done&&t.deadline&&t.deadline<today).length;
   const{start,end}=getDashWeekRange();
-  const doneWeek=(data.todos || []).filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end).length;
-  
+  const doneWeek=(data.todos||[]).filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end).length;
   document.getElementById('d-aktif').textContent=aktif;
   document.getElementById('d-todo').textContent=pending;
   document.getElementById('d-late').textContent=late;
   document.getElementById('d-done').textContent=doneWeek;
-
   const wn=Math.ceil((((new Date()-new Date(new Date().getFullYear(),0,1))/86400000)+1)/7);
   document.getElementById('dash-week-badge').textContent='W'+wn;
 
-  const todayAbs=(data.Presensi || []).filter(a=>a.date===today).sort((a,b)=>(a.time||'').localeCompare(b.time||'')||a.createdAt-b.createdAt);
-  const todayTodos=(data.todos || []).filter(t=>t.done&&t.doneAt&&ds(new Date(t.doneAt))===today);
+  const todayAbs=(data.Presensi||[]).filter(a=>a.date===today).sort((a,b)=>(a.time||'').localeCompare(b.time||'')||a.createdAt-b.createdAt);
+  const todayTodos=(data.todos||[]).filter(t=>t.done&&t.doneAt&&ds(new Date(t.doneAt))===today);
   const dtEl=document.getElementById('dash-today');
   if(!todayAbs.length&&!todayTodos.length)dtEl.innerHTML='<div class="empty">Belum ada aktivitas hari ini</div>';
   else{
     let html='';
-    todayAbs.forEach(a=>{const c=((data.projects || []).find(p=>p.id===a.projId)||{}).color||'var(--teal-mid)';html+=`<div class="sum-item"><div class="sum-dot" style="background:${c}"></div><div class="sum-text">${a.time?`<strong>${a.time}</strong> · `:''}${esc(a.act)}${a.projName?` <span style="color:var(--blue);font-size:10px">(${esc(a.projName)})</span>`:''}</div></div>`});
+    todayAbs.forEach(a=>{const c=((data.projects||[]).find(p=>p.id===a.projId)||{}).color||'var(--teal-mid)';html+=`<div class="sum-item"><div class="sum-dot" style="background:${c}"></div><div class="sum-text">${a.time?`<strong>${a.time}</strong> · `:''}${esc(a.act)}${a.projName?` <span style="color:var(--blue);font-size:10px">(${esc(a.projName)})</span>`:''}</div></div>`});
     todayTodos.forEach(t=>{html+=`<div class="sum-item"><div class="sum-dot" style="opacity:.4"></div><div class="sum-text">✓ ${esc(t.text)}${t.projName?` <span style="color:var(--blue);font-size:10px">(${esc(t.projName)})</span>`:''}</div></div>`});
     dtEl.innerHTML=html;
   }
 
-  const topProj=(data.projects || []).filter(p=>p.status!=='Selesai').slice(0,5);
+  const topProj=(data.projects||[]).filter(p=>p.status!=='Selesai').slice(0,5);
   const dpEl=document.getElementById('dash-proyek');
   if(!topProj.length)dpEl.innerHTML='<div class="empty">Belum ada proyek aktif</div>';
   else dpEl.innerHTML=topProj.map(p=>`<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:210px" title="${esc(p.name)}">${esc(p.name)}</span><span style="font-size:10px;color:var(--text3);font-weight:600">${p.progress}%</span></div><div class="prog-bar"><div class="prog-fill" style="width:${p.progress}%;background:${p.color}"></div></div></div>`).join('');
 
-  const wAbs=(data.Presensi || []).filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
-  const wDone=(data.todos || []).filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end);
+  const wAbs=(data.Presensi||[]).filter(a=>{try{const d=new Date(a.date+'T00:00:00').getTime();return d>=start&&d<=end}catch(e){return false}});
+  const wDone=(data.todos||[]).filter(t=>t.done&&t.doneAt&&t.doneAt>=start&&t.doneAt<=end);
   const wEl=document.getElementById('dash-week');
   if(!wDone.length&&!wAbs.length)wEl.innerHTML='<div class="empty">Belum ada aktivitas minggu ini</div>';
   else{
@@ -1452,8 +1308,8 @@ function renderDash(){
   const dlEl=document.getElementById('dash-deadline');
   const nowTs=Date.now();
   const upcoming=[
-    ...(data.projects || []).filter(p=>p.deadline&&p.status!=='Selesai').map(p=>({name:p.name,color:p.color,deadline:p.deadline,diff:Math.ceil((new Date(p.deadline+'T00:00:00').getTime()-nowTs)/86400000)})),
-    ...(data.todos || []).filter(t=>!t.done&&t.deadline).map(t=>({name:t.text,color:'var(--text3)',deadline:t.deadline,diff:Math.ceil((new Date(t.deadline+'T00:00:00').getTime()-nowTs)/86400000)}))
+    ...(data.projects||[]).filter(p=>p.deadline&&p.status!=='Selesai').map(p=>({name:p.name,color:p.color,deadline:p.deadline,diff:Math.ceil((new Date(p.deadline+'T00:00:00').getTime()-nowTs)/86400000)})),
+    ...(data.todos||[]).filter(t=>!t.done&&t.deadline).map(t=>({name:t.text,color:'var(--text3)',deadline:t.deadline,diff:Math.ceil((new Date(t.deadline+'T00:00:00').getTime()-nowTs)/86400000)}))
   ].filter(x=>x.diff<=14).sort((a,b)=>a.diff-b.diff).slice(0,6);
   if(!upcoming.length)dlEl.innerHTML='<div class="empty">Tidak ada deadline dalam 14 hari ke depan</div>';
   else dlEl.innerHTML=upcoming.map(x=>{
@@ -1467,7 +1323,7 @@ function renderDash(){
   const wlTotal=Object.values(wlGrp).reduce((a,b)=>a+b,0);
   if(!wlTotal)wlEl.innerHTML='<div class="empty">Belum ada Presensi minggu ini</div>';
   else{
-    const cm={};(data.projects || []).forEach(p=>{cm[p.name]=p.color});
+    const cm={};(data.projects||[]).forEach(p=>{cm[p.name]=p.color});
     const fb=['#1d9e75','#378add','#e24b4a','#ba7517','#7f77dd'];
     wlEl.innerHTML=Object.entries(wlGrp).sort((a,b)=>b[1]-a[1]).map(([name,cnt],i)=>{
       const pct=Math.round(cnt/wlTotal*100),color=cm[name]||fb[i%fb.length];
@@ -1475,7 +1331,7 @@ function renderDash(){
     }).join('');
   }
 
-  const highTodos=(data.todos || []).filter(t=>!t.done&&t.priority==='high').slice(0,5);
+  const highTodos=(data.todos||[]).filter(t=>!t.done&&t.priority==='high').slice(0,5);
   const htEl=document.getElementById('dash-high-todos');
   if(!highTodos.length)htEl.innerHTML='<div class="empty">Tidak ada to-do prioritas tinggi</div>';
   else htEl.innerHTML=highTodos.map(t=>`<div class="sum-item"><div class="sum-dot" style="background:var(--red-mid)"></div><div class="sum-text">${esc(t.text)}${t.projName?` <span style="color:var(--blue);font-size:10px">(${esc(t.projName)})</span>`:''}</div></div>`).join('');
@@ -1483,22 +1339,16 @@ function renderDash(){
   renderDashRepos();
 }
 
-/* ======= INIT ======= */
+/* ===== INIT ===== */
 async function init(){
-  await loadData(); 
-  
+  await loadData();
   const now=new Date();
   document.getElementById('nav-date').textContent=now.toLocaleDateString('id-ID',{weekday:'short',day:'numeric',month:'short'});
   document.getElementById('rp-date').value=ds(now);
-  
-  // Set default input tanggal presensi ke hari ini
   document.getElementById('abs-input-date').value=ds(now);
-  
   document.getElementById('dash-date-sub').textContent=now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-
-  // Inisialisasi Kontribusi Default Custom Tgl 20
-  setKontribPeriod('custom', document.getElementById('btn-kp-custom'));
-
+  // Default kontribusi ke tgl 21-20
+  setKontribPeriod('custom',document.getElementById('btn-kp-custom'));
   renderDash();
   updateTodoBadge();
 }

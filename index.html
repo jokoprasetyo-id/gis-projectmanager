@@ -69,6 +69,26 @@
 body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif; background: var(--bg-body); color: var(--text); min-height: 100vh; font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em; overflow-x: hidden; transition: background-color 0.3s, color 0.3s; }
 .layout { display: block; padding-bottom: 120px; width: 100%; max-width: 100vw;}
 
+/* SDC MODAL (MAC STYLE) */
+.sdc-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: all 0.3s ease; }
+.sdc-overlay.show { opacity: 1; pointer-events: auto; }
+.sdc-window { width: 92vw; max-width: 1200px; height: 85vh; background: var(--card-bg); border-radius: 16px; box-shadow: 0 24px 48px rgba(0,0,0,0.2), 0 0 0 0.5px var(--border); display: flex; flex-direction: column; transform: translateY(30px) scale(0.97); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); overflow: hidden; }
+.sdc-overlay.show .sdc-window { transform: translateY(0) scale(1); }
+.sdc-header { height: 44px; background: var(--bg-body); border-bottom: 0.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; user-select: none; }
+.mac-dots { display: flex; gap: 8px; }
+.mac-dot { width: 12px; height: 12px; border-radius: 50%; cursor: pointer; transition: 0.2s; box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.1); }
+.mac-close { background: #FF5F56; } .mac-close:hover { filter: brightness(0.8); }
+.mac-min { background: #FFBD2E; } .mac-min:hover { filter: brightness(0.8); }
+.mac-max { background: #27C93F; display:flex; align-items:center; justify-content:center; } .mac-max:hover { filter: brightness(0.8); }
+.mac-max::after { content: '↗'; font-size: 8px; color: rgba(0,0,0,0.5); opacity: 0; transition: 0.2s; font-weight: bold;}
+.mac-max:hover::after { opacity: 1; }
+.sdc-title-text { font-size: 13px; font-weight: 600; color: var(--text2); letter-spacing: -0.01em; position: absolute; left: 50%; transform: translateX(-50%); pointer-events: none;}
+.sdc-body { flex: 1; width: 100%; position: relative; background: var(--bg-body); }
+.sdc-iframe { width: 100%; height: 100%; border: none; display: block; }
+.sdc-loader { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 12px; color: var(--text3); font-weight: 500; font-size: 14px; pointer-events: none; transition: opacity 0.3s; }
+.spinner { width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--teal-mid); border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
 /* FLOATING TOP BAR */
 .top-bar { position: fixed; top: 20px; left: 24px; background: var(--glass-bg); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border: 0.5px solid var(--border); border-radius: 100px; padding: 6px 20px 6px 6px; display: flex; align-items: center; gap: 12px; z-index: 100; box-shadow: var(--float-shadow); transition: all 0.3s ease; }
 .logo-badge { width: 36px; height: 36px; border-radius: 50%; background: var(--blue-mid); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
@@ -298,6 +318,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
     <div class="logo-title">GIS Project Manager</div>
     <div class="logo-sub">Shirvano Consulting • <span id="nav-date">—</span></div>
   </div>
+  
+  <button onclick="openSDCModal()" class="btn btn-teal btn-sm" style="box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3); border-radius: 10px; display:flex; align-items:center; gap:6px;">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    <span style="white-space:nowrap;font-weight:600">Buka SDC</span>
+  </button>
+  
   <button class="theme-toggle-btn" onclick="toggleTheme()" title="Ganti Tema">🌓</button>
 </header>
 
@@ -638,6 +664,29 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
 </main>
 </div>
 
+<!-- SDC MAC-STYLE MODAL -->
+<div id="sdc-modal" class="sdc-overlay" onclick="if(event.target===this) closeSDCModal()">
+  <div class="sdc-window">
+    <div class="sdc-header">
+      <div class="mac-dots">
+        <div class="mac-dot mac-close" onclick="closeSDCModal()" title="Tutup Jendela"></div>
+        <div class="mac-dot mac-min" onclick="closeSDCModal()" title="Sembunyikan"></div>
+        <div class="mac-dot mac-max" onclick="window.open('https://spatial-data-center.vercel.app/', '_blank'); closeSDCModal();" title="Buka di Tab Baru"></div>
+      </div>
+      <div class="sdc-title-text">Spatial Data Center (Shirvano)</div>
+      <div style="width: 44px;"></div> <!-- Spacer -->
+    </div>
+    <div class="sdc-body">
+      <div class="sdc-loader" id="sdc-loader">
+        <div class="spinner"></div>
+        <span>Menghubungkan ke SDC...</span>
+      </div>
+      <!-- Iframe akan di-inject src-nya lewat JS agar tidak loading di background -->
+      <iframe id="sdc-iframe" src="" class="sdc-iframe" onload="document.getElementById('sdc-loader').style.opacity='0'"></iframe>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <!-- LOGIC JAVASCRIPT -->
@@ -709,6 +758,28 @@ function toggleTheme() {
     root.setAttribute('data-theme', next);
     localStorage.setItem('gpm-theme', next);
     toast(next === 'dark' ? 'Mode Gelap Aktif 🌙' : 'Mode Terang Aktif ☀️');
+}
+
+// --- SDC MODAL LOGIC ---
+function openSDCModal() {
+    const modal = document.getElementById('sdc-modal');
+    const iframe = document.getElementById('sdc-iframe');
+    const loader = document.getElementById('sdc-loader');
+    
+    // Lazy load iframe: Hanya set src jika belum diatur (menghemat bandwidth awal)
+    if (!iframe.src || iframe.src === window.location.href) {
+        loader.style.opacity = '1';
+        iframe.src = 'https://spatial-data-center.vercel.app/';
+    }
+    
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden'; // Mencegah scrolling halaman belakang saat modal terbuka
+}
+
+function closeSDCModal() {
+    const modal = document.getElementById('sdc-modal');
+    modal.classList.remove('show');
+    document.body.style.overflow = ''; // Mengembalikan scrolling halaman belakang
 }
 
 // --- BRAINDUMP / CATATAN CEPAT ---

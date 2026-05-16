@@ -1,0 +1,23 @@
+{
+"name": "GIS Project Manager",
+"short_name": "GPM",
+"start_url": "./",
+"display": "standalone",
+"background_color": "#F2F2F7",
+"theme_color": "#007AFF",
+"description": "Aplikasi Manajemen Proyek dan Presensi GIS",
+"icons": [
+{
+"src": "logo.png",
+"sizes": "192x192",
+"type": "image/png",
+"purpose": "any maskable"
+},
+{
+"src": "logo.png",
+"sizes": "512x512",
+"type": "image/png",
+"purpose": "any maskable"
+}
+]
+}

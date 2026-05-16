@@ -345,23 +345,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
 <body>
 <div class="layout">
 
-<!-- SDC FLOATING MODAL -->
-<div class="sdc-modal" id="sdc-modal">
-  <div class="sdc-modal-header">
-     <div class="sdc-modal-controls">
-       <button class="sdc-btn-mac sdc-mac-close" onclick="closeSDCModal()" title="Tutup">×</button>
-       <button class="sdc-btn-mac sdc-mac-min" onclick="closeSDCModal()" title="Minimize">-</button>
-       <a href="https://spatial-data-center.vercel.app/" target="_blank" class="sdc-btn-mac sdc-mac-max" title="Buka SDC di Tab Baru">↗</a>
-     </div>
-     <div class="sdc-modal-title">Spatial Data Center</div>
-     <div style="width: 42px;"></div> <!-- Spacer -->
-  </div>
-  <div class="sdc-iframe-container">
-    <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; z-index:0; color:var(--text3); font-weight: 500;">Memuat Spatial Data Center...</div>
-    <iframe id="sdc-iframe" src="" style="width: 100%; height: 100%; border: none; position:relative; z-index:1;"></iframe>
-  </div>
-</div>
-
 <!-- APP HUB MODAL -->
 <div class="app-hub-modal" id="app-hub">
   <button class="app-hub-close" onclick="closeAppHub()">×</button>
@@ -1849,7 +1832,7 @@ function initPWA() {
   try {
     const manifestStr = JSON.stringify({
       name: "GIS Project Manager",
-      short_name: "GIS PM",
+      short_name: "GIS Project Manager",
       start_url: window.location.pathname,
       display: "standalone",
       background_color: "#F2F2F7",

@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>GIS Project Manager</title>
+
+<!-- Favicon & Apple Touch Icon (Arahkan ke nama file yang diupload ke Github) -->
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+
 <style>
 /* APPLE FLOATING HIG THEME - FULLY RESPONSIVE */
 :root {
@@ -69,26 +74,6 @@
 body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif; background: var(--bg-body); color: var(--text); min-height: 100vh; font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em; overflow-x: hidden; transition: background-color 0.3s, color 0.3s; }
 .layout { display: block; padding-bottom: 120px; width: 100%; max-width: 100vw;}
 
-/* SDC MODAL (MAC STYLE) */
-.sdc-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: all 0.3s ease; }
-.sdc-overlay.show { opacity: 1; pointer-events: auto; }
-.sdc-window { width: 92vw; max-width: 1200px; height: 85vh; background: var(--card-bg); border-radius: 16px; box-shadow: 0 24px 48px rgba(0,0,0,0.2), 0 0 0 0.5px var(--border); display: flex; flex-direction: column; transform: translateY(30px) scale(0.97); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); overflow: hidden; }
-.sdc-overlay.show .sdc-window { transform: translateY(0) scale(1); }
-.sdc-header { height: 44px; background: var(--bg-body); border-bottom: 0.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; user-select: none; }
-.mac-dots { display: flex; gap: 8px; }
-.mac-dot { width: 12px; height: 12px; border-radius: 50%; cursor: pointer; transition: 0.2s; box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.1); }
-.mac-close { background: #FF5F56; } .mac-close:hover { filter: brightness(0.8); }
-.mac-min { background: #FFBD2E; } .mac-min:hover { filter: brightness(0.8); }
-.mac-max { background: #27C93F; display:flex; align-items:center; justify-content:center; } .mac-max:hover { filter: brightness(0.8); }
-.mac-max::after { content: '↗'; font-size: 8px; color: rgba(0,0,0,0.5); opacity: 0; transition: 0.2s; font-weight: bold;}
-.mac-max:hover::after { opacity: 1; }
-.sdc-title-text { font-size: 13px; font-weight: 600; color: var(--text2); letter-spacing: -0.01em; position: absolute; left: 50%; transform: translateX(-50%); pointer-events: none;}
-.sdc-body { flex: 1; width: 100%; position: relative; background: var(--bg-body); }
-.sdc-iframe { width: 100%; height: 100%; border: none; display: block; }
-.sdc-loader { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 12px; color: var(--text3); font-weight: 500; font-size: 14px; pointer-events: none; transition: opacity 0.3s; }
-.spinner { width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--teal-mid); border-radius: 50%; animation: spin 1s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
 /* FLOATING TOP BAR */
 .top-bar { position: fixed; top: 20px; left: 24px; background: var(--glass-bg); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border: 0.5px solid var(--border); border-radius: 100px; padding: 6px 20px 6px 6px; display: flex; align-items: center; gap: 12px; z-index: 100; box-shadow: var(--float-shadow); transition: all 0.3s ease; }
 .logo-badge { width: 36px; height: 36px; border-radius: 50%; background: var(--blue-mid); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
@@ -101,7 +86,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
 /* FLOATING DOCK */
 .floating-dock { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--glass-bg); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border: 0.5px solid var(--border); border-radius: 32px; padding: 8px 12px; display: flex; align-items: center; gap: 6px; z-index: 100; box-shadow: var(--float-shadow); overflow-x: auto; max-width: calc(100vw - 32px); scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
 .floating-dock::-webkit-scrollbar { display: none; }
-.dock-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 60px; height: 56px; border-radius: 20px; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); user-select: none; position: relative; flex-shrink: 0; }
+.dock-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 65px; height: 56px; border-radius: 20px; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); user-select: none; position: relative; flex-shrink: 0; }
 .dock-item:hover { background: var(--border2); }
 .dock-item.active { background: var(--text); color: var(--bg-body); box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: scale(1.05); }
 .dock-icon { width: 22px; height: 22px; color: var(--text2); transition: 0.2s; }
@@ -247,7 +232,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
 .chk-sm.on { background: var(--teal-mid); border-color: var(--teal-mid); }
 .chk-sm.on::after { content: ''; width: 3px; height: 7px; border: 1.5px solid #fff; border-top: none; border-left: none; transform: rotate(45deg); display: block; margin-top: -2px; }
 
-/* LAPORAN 3P */
+/* LAPORAN & KONTRIBUSI (SEGMENTED TABS) */
+.segmented-control { display: flex; background: var(--border2); padding: 4px; border-radius: 12px; margin-bottom: 24px; width: fit-content; max-width: 100%; overflow-x: auto; }
+.seg-btn { padding: 8px 24px; font-size: 14px; font-weight: 600; border-radius: 10px; border: none; background: transparent; color: var(--text2); cursor: pointer; transition: 0.3s; white-space: nowrap;}
+.seg-btn.active { background: var(--card-bg); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.stat-tab-content { display: none; animation: fadein 0.3s ease; }
+
 .rp-section { margin-bottom: 20px; border-radius: var(--radius-lg); overflow: hidden; border: 0.5px solid var(--border); box-shadow: var(--card-shadow); }
 .rp-section-head { display: flex; align-items: center; gap: 10px; padding: 14px 20px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; background: var(--bg-body); }
 .rp-section-head.ph { color: var(--teal-mid); }
@@ -262,7 +252,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
 .mood-risk { background: var(--amber-bg); color: var(--amber-mid); }
 .mood-block { background: var(--red-bg); color: var(--red-mid); }
 
-/* KONTRIBUSI */
 .kontrib-period { display: flex; gap: 8px; margin-bottom: 20px; background: var(--bg-body); padding: 6px; border-radius: 14px; overflow-x: auto;}
 .kp-btn { flex: 1; padding: 10px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; border: none; background: transparent; color: var(--text2); cursor: pointer; transition: 0.2s; white-space: nowrap;}
 .kp-btn.active { background: var(--card-bg); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
@@ -285,6 +274,29 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
 .sum-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal-mid); flex-shrink: 0; margin-top: 6px; }
 .sum-text { font-size: 15px; color: var(--text); line-height: 1.4; word-break: break-word;}
 
+/* APP HUB MODAL (NEW DESIGN) */
+.app-hub-modal { position: fixed; inset: 0; background: var(--glass-bg); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); z-index: 1000; display: none; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; padding: 24px;}
+.app-hub-modal.show { display: flex; opacity: 1; }
+.app-hub-close { position: absolute; top: 30px; right: 30px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 50%; width: 44px; height: 44px; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text); transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.1);}
+.app-hub-close:hover { transform: scale(1.1); }
+.app-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; max-width: 800px; width: 100%; justify-items: center;}
+.app-card { display: flex; flex-direction: column; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; transition: 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); user-select: none;}
+.app-card:hover { transform: scale(1.08); }
+.app-card:active { transform: scale(0.95); }
+.app-icon { width: 84px; height: 84px; border-radius: 22px; display: flex; align-items: center; justify-content: center; color: white; position: relative;}
+.app-icon svg { width: 44px; height: 44px; }
+.app-icon::after { content: ''; position: absolute; inset: 0; border-radius: 22px; box-shadow: inherit; z-index: -1; filter: blur(14px); opacity: 0.6;}
+.app-label { font-size: 14px; font-weight: 600; color: var(--text); text-align: center;}
+
+/* Specific App Gradients */
+.bg-sdc { background: linear-gradient(135deg, #34C759, #28a745); box-shadow: 0 8px 24px rgba(52,199,89,0.4); }
+.bg-basecamp { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 8px 24px rgba(16,185,129,0.4); }
+.bg-talenta { background: linear-gradient(135deg, #6366f1, #4f46e5); box-shadow: 0 8px 24px rgba(99,102,241,0.4); }
+.bg-gee { background: linear-gradient(135deg, #4b5563, #1f2937); box-shadow: 0 8px 24px rgba(31,41,55,0.4); }
+.bg-chatgpt { background: linear-gradient(135deg, #10a37f, #0d8a6b); box-shadow: 0 8px 24px rgba(16,163,127,0.4); }
+.bg-claude { background: linear-gradient(135deg, #d97757, #bc5d3f); box-shadow: 0 8px 24px rgba(217,119,87,0.4); }
+.bg-gemini { background: linear-gradient(135deg, #4285f4, #9b72cb, #d96570); box-shadow: 0 8px 24px rgba(155,114,203,0.4); }
+
 /* TOAST */
 .toast { position: fixed; top: 90px; left: 50%; transform: translateX(-50%) translateY(-20px); background: rgba(28, 28, 30, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 20px; padding: 12px 24px; font-size: 14px; font-weight: 500; color: #fff; opacity: 0; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; z-index: 1000; white-space: nowrap; box-shadow: 0 8px 24px rgba(0,0,0,0.15); max-width: 90vw; overflow: hidden; text-overflow: ellipsis;}
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -304,12 +316,56 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
   .pj-card-header, .todo-item, .abs-entry { gap: 10px; }
   .kontrib-name { min-width: 80px; }
   .kanban-col { min-width: 260px; }
+  .app-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .app-icon { width: 72px; height: 72px; border-radius: 18px; }
+  .app-icon svg { width: 36px; height: 36px; }
+}
+@media(max-width: 480px){
+  .app-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
+@keyframes fadein { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
 <div class="layout">
+
+<!-- APP HUB MODAL -->
+<div class="app-hub-modal" id="app-hub">
+  <button class="app-hub-close" onclick="closeAppHub()">×</button>
+  <div class="app-grid">
+    <a href="https://spatial-data-center.vercel.app/" target="_blank" class="app-card">
+      <div class="app-icon bg-sdc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+      <div class="app-label">Spatial Data Center</div>
+    </a>
+    <a href="https://3.basecamp.com/5310360/projects" target="_blank" class="app-card">
+      <div class="app-icon bg-basecamp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
+      <div class="app-label">Basecamp</div>
+    </a>
+    <a href="https://hr.talenta.co/employee/dashboard" target="_blank" class="app-card">
+      <div class="app-icon bg-talenta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="app-label">Talenta HR</div>
+    </a>
+    <a href="https://code.earthengine.google.com/" target="_blank" class="app-card">
+      <div class="app-icon bg-gee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+      <div class="app-label">Google Earth Engine</div>
+    </a>
+    <!-- AI Tools -->
+    <a href="https://chatgpt.com/" target="_blank" class="app-card">
+      <div class="app-icon bg-chatgpt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10H12V2zM21.18 8.02c-1-2.3-2.85-4.17-5.16-5.18"/></svg></div>
+      <div class="app-label">ChatGPT</div>
+    </a>
+    <a href="https://claude.ai/" target="_blank" class="app-card">
+      <div class="app-icon bg-claude"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M8 12h8"/><path d="M12 8v8"/></svg></div>
+      <div class="app-label">Claude AI</div>
+    </a>
+    <a href="https://gemini.google.com/" target="_blank" class="app-card">
+      <div class="app-icon bg-gemini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+      <div class="app-label">Gemini</div>
+    </a>
+  </div>
+</div>
 
 <!-- FLOATING TOP BAR -->
 <header class="top-bar">
@@ -318,12 +374,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
     <div class="logo-title">GIS Project Manager</div>
     <div class="logo-sub">Shirvano Consulting • <span id="nav-date">—</span></div>
   </div>
-  
-  <button onclick="openSDCModal()" class="btn btn-teal btn-sm" style="box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3); border-radius: 10px; display:flex; align-items:center; gap:6px;">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-    <span style="white-space:nowrap;font-weight:600">Buka SDC</span>
+  <button class="btn btn-sm btn-outline" style="border:none; background:var(--text); color:var(--bg-body); border-radius:14px; padding:6px 12px;" onclick="openAppHub()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg> App Hub
   </button>
-  
   <button class="theme-toggle-btn" onclick="toggleTheme()" title="Ganti Tema">🌓</button>
 </header>
 
@@ -342,21 +395,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
     <span class="dock-label">To-Do</span>
     <span class="nav-badge-count" id="todo-badge" style="display:none">0</span>
   </div>
-  <div class="dock-item" data-p="meeting" onclick="goPage('meeting')" title="Meeting">
-    <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-    <span class="dock-label">Meet</span>
-  </div>
   <div class="dock-item" data-p="Presensi" onclick="goPage('Presensi')" title="Presensi">
     <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
     <span class="dock-label">Absen</span>
   </div>
-  <div class="dock-item" data-p="laporan" onclick="goPage('laporan')" title="Laporan 3P">
-    <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-    <span class="dock-label">Lapor</span>
-  </div>
-  <div class="dock-item" data-p="kontribusi" onclick="goPage('kontribusi')" title="Kontribusi">
+  <div class="dock-item" data-p="laporstat" onclick="goPage('laporstat')" title="Lapor & Stat">
     <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-    <span class="dock-label">Stat</span>
+    <span class="dock-label">Lapor</span>
   </div>
 </nav>
 
@@ -396,7 +441,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
 
 <div id="page-proyek" class="page">
   <div class="section-header">
-    <div><div class="section-title">Daftar Proyek</div></div>
+    <div>
+      <div class="section-title">Daftar Proyek</div>
+      <a href="https://3.basecamp.com/5310360/projects" target="_blank" class="section-sub" style="display:inline-flex; align-items:center; gap:6px; color:var(--text); text-decoration:none; background:var(--card-bg); padding:4px 10px; border-radius:10px; border:0.5px solid var(--border); font-size:12px; font-weight:600; margin-top:8px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg> Buka Basecamp Workspace
+      </a>
+    </div>
     <button class="btn btn-primary" onclick="resetProyekForm(); document.getElementById('add-proyek-card').style.display='block';">+ Proyek Baru</button>
   </div>
   <div class="card" id="add-proyek-card" style="display:none; background:var(--bg-body); box-shadow:none;">
@@ -493,38 +543,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
   <div id="todo-kanban" class="kanban-board" style="display:none;"></div>
 </div>
 
-<div id="page-meeting" class="page">
-  <div class="section-header">
-    <div><div class="section-title">Catatan Meeting</div></div>
-    <button class="btn btn-primary" onclick="resetMeetingForm(); document.getElementById('add-meet-card').style.display='block';">+ Catatan Baru</button>
-  </div>
-  <div class="card" id="add-meet-card" style="display:none; background:var(--bg-body); box-shadow:none;">
-    <div class="card-title">Form Catatan Meeting</div>
-    <div class="fgrow">
-      <div><div class="flabel">Proyek</div><select class="finput" id="mt-proj"></select></div>
-      <div><div class="flabel">Tanggal</div><input class="finput" type="date" id="mt-date"></div>
-    </div>
-    <div class="frow"><div class="flabel">Agenda / Judul</div><input class="finput" id="mt-title" placeholder="Kickoff Meeting..."></div>
-    <div class="frow"><div class="flabel">Hasil / Catatan</div><textarea class="rp-textarea" id="mt-notes" style="border-radius:12px; background:var(--card-bg)" placeholder="Tulis poin-poin hasil meeting..."></textarea></div>
-    <div class="btn-row" style="margin-top: 24px;">
-      <button class="btn btn-primary" onclick="addMeeting()">Simpan</button>
-      <button class="btn btn-outline" onclick="resetMeetingForm()">Batal</button>
-    </div>
-  </div>
-
-  <div class="search-container">
-    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input class="finput finput-search" id="mt-search" placeholder="Cari judul meeting atau isi catatan..." oninput="renderMeeting()">
-  </div>
-  
-  <div class="frow">
-    <select class="finput" id="filter-mt-proj" onchange="renderMeeting()">
-      <option value="all">Semua Proyek (Filter)</option>
-    </select>
-  </div>
-  <div id="meet-list" class="grid-container"></div>
-</div>
-
 <div id="page-Presensi" class="page">
   <div class="section-header"><div><div class="section-title">Presensi & Aktivitas</div></div></div>
   
@@ -582,7 +600,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
       </div>
       <div style="display:flex; gap: 8px; flex-wrap:wrap;">
         <button class="btn btn-outline btn-sm" onclick="exportCSV()">Unduh CSV</button>
-        <button class="btn btn-primary btn-sm" onclick="copyForTalenta()">Salin Hari Ini</button>
+        <button class="btn btn-primary btn-sm" onclick="copyAndOpenTalenta()" style="background:var(--teal-mid); border:none;">Salin & Buka Talenta ↗</button>
         <button class="btn btn-outline btn-sm" onclick="toggleAllDays()" id="btn-toggle-all">Sembunyikan</button>
       </div>
     </div>
@@ -590,101 +608,82 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
   </div>
 </div>
 
-<div id="page-laporan" class="page">
-  <div class="section-header"><div><div class="section-title">Laporan 3P</div></div></div>
-  <div class="card" style="background:var(--bg-body); box-shadow:none;">
-    <div class="fgrow">
-      <div><div class="flabel">Tim / Divisi</div><input class="finput" id="rp-team" value="GIS" style="background:var(--card-bg)"></div>
-      <div><div class="flabel">Tanggal Laporan</div><input class="finput" type="date" id="rp-date" style="background:var(--card-bg)"></div>
-    </div>
-    <div class="frow">
-      <div class="flabel">Status Minggu</div>
-      <div class="mood-row">
-        <button class="mood-btn" data-m="on-track" onclick="pickMood('on-track')">On Track</button>
-        <button class="mood-btn" data-m="at-risk" onclick="pickMood('at-risk')">At Risk</button>
-        <button class="mood-btn" data-m="blocked" onclick="pickMood('blocked')">Blocked</button>
+<div id="page-laporstat" class="page">
+  <div class="section-header"><div><div class="section-title">Laporan & Statistik</div></div></div>
+  
+  <div class="segmented-control">
+    <button class="seg-btn active" onclick="switchStatTab('3p', this)">Laporan 3P</button>
+    <button class="seg-btn" onclick="switchStatTab('kontribusi', this)">Kontribusi Tim</button>
+  </div>
+
+  <!-- TAB: LAPORAN 3P -->
+  <div id="tab-3p" class="stat-tab-content" style="display:block;">
+    <div class="card" style="background:var(--bg-body); box-shadow:none;">
+      <div class="fgrow">
+        <div><div class="flabel">Tim / Divisi</div><input class="finput" id="rp-team" value="GIS" style="background:var(--card-bg)"></div>
+        <div><div class="flabel">Tanggal Laporan</div><input class="finput" type="date" id="rp-date" style="background:var(--card-bg)"></div>
+      </div>
+      <div class="frow">
+        <div class="flabel">Status Minggu</div>
+        <div class="mood-row">
+          <button class="mood-btn" data-m="on-track" onclick="pickMood('on-track')">On Track</button>
+          <button class="mood-btn" data-m="at-risk" onclick="pickMood('at-risk')">At Risk</button>
+          <button class="mood-btn" data-m="blocked" onclick="pickMood('blocked')">Blocked</button>
+        </div>
       </div>
     </div>
+
+    <div class="rp-section">
+      <div class="rp-section-head ph" style="justify-content: space-between;">
+        <span>Progres</span>
+        <button class="btn-icon" onclick="autoFillProgres()" title="Tarik data otomatis dari To-Do dan Absen" style="width:auto; padding:0 12px; font-size:12px; height:26px; background:var(--teal-bg); color:var(--teal-mid); font-weight:700;">⚡ Auto-Fill</button>
+      </div>
+      <textarea class="rp-textarea" id="rp-progres" placeholder="Apa yang dikerjakan minggu ini? Klik Auto-Fill untuk menarik data otomatis..."></textarea>
+    </div>
+    <div class="rp-section">
+      <div class="rp-section-head pb">Problem</div>
+      <textarea class="rp-textarea rb" id="rp-problem" placeholder="Hambatan atau kendala..."></textarea>
+    </div>
+    <div class="rp-section">
+      <div class="rp-section-head pn">Plan</div>
+      <textarea class="rp-textarea rn" id="rp-plan" placeholder="Rencana minggu depan..."></textarea>
+    </div>
+
+    <div class="btn-row" style="margin-top:24px">
+      <button class="btn btn-primary" onclick="previewLaporan()">Preview</button>
+      <button class="btn btn-outline" onclick="copyLaporan()">Salin</button>
+      <button class="btn btn-outline" onclick="emailLaporan()">Email ↗</button>
+      <button class="btn btn-outline" onclick="clearLaporan()" style="color:var(--red-mid)">Bersihkan</button>
+    </div>
+    <div class="prev-box" id="rp-prev">
+      <div class="flabel" style="margin-bottom:9px">Preview Laporan</div>
+      <div class="prev-text" id="rp-prev-text"></div>
+    </div>
   </div>
 
-  <div class="rp-section">
-    <div class="rp-section-head ph" style="justify-content: space-between;">
-      <span>Progres</span>
-      <button class="btn-icon" onclick="autoFillProgres()" title="Tarik data otomatis dari To-Do dan Absen" style="width:auto; padding:0 12px; font-size:12px; height:26px; background:var(--teal-bg); color:var(--teal-mid); font-weight:700;">⚡ Auto-Fill</button>
+  <!-- TAB: KONTRIBUSI -->
+  <div id="tab-kontribusi" class="stat-tab-content" style="display:none;">
+    <div class="card">
+      <div class="kontrib-period">
+        <button class="kp-btn" onclick="setKontribPeriod('week',this)">Minggu Ini</button>
+        <button class="kp-btn" onclick="setKontribPeriod('month',this)">Bulan Ini</button>
+        <button class="kp-btn active" id="btn-kp-custom" onclick="setKontribPeriod('custom',this)">Tgl 21–20 (HR Default)</button>
+      </div>
+      <div class="fgrow" id="kp-custom-dates" style="display:none;margin-bottom:16px">
+        <div><div class="flabel">Dari Tanggal</div><input type="date" class="finput" id="kp-start" onchange="renderKontribusi()"></div>
+        <div><div class="flabel">Sampai Tanggal</div><input type="date" class="finput" id="kp-end" onchange="renderKontribusi()"></div>
+      </div>
+      <div id="kontrib-chart" style="margin-top: 24px;"></div>
+      <div id="kontrib-total" style="margin-top:12px;font-size:12px;color:var(--text3);text-align:right;font-weight:500;"></div>
     </div>
-    <textarea class="rp-textarea" id="rp-progres" placeholder="Apa yang dikerjakan minggu ini? Klik Auto-Fill untuk menarik data otomatis..."></textarea>
-  </div>
-  <div class="rp-section">
-    <div class="rp-section-head pb">Problem</div>
-    <textarea class="rp-textarea rb" id="rp-problem" placeholder="Hambatan atau kendala..."></textarea>
-  </div>
-  <div class="rp-section">
-    <div class="rp-section-head pn">Plan</div>
-    <textarea class="rp-textarea rn" id="rp-plan" placeholder="Rencana minggu depan..."></textarea>
-  </div>
-
-  <div class="btn-row" style="margin-top:24px">
-    <button class="btn btn-primary" onclick="previewLaporan()">Preview</button>
-    <button class="btn btn-outline" onclick="copyLaporan()">Salin</button>
-    <button class="btn btn-outline" onclick="emailLaporan()">Email ↗</button>
-    <button class="btn btn-outline" onclick="clearLaporan()" style="color:var(--red-mid)">Bersihkan</button>
-  </div>
-  <div class="prev-box" id="rp-prev">
-    <div class="flabel" style="margin-bottom:9px">Preview Laporan</div>
-    <div class="prev-text" id="rp-prev-text"></div>
-  </div>
-</div>
-
-<div id="page-kontribusi" class="page">
-  <div class="section-header">
-    <div>
-      <div class="section-title">Kontribusi per Proyek</div>
-      <div class="section-sub">Persentase waktu dan penyelesaian tugas</div>
+    <div class="card">
+      <div class="card-title">Detail per Proyek</div>
+      <div id="kontrib-detail"></div>
     </div>
-  </div>
-  <div class="card">
-    <div class="kontrib-period">
-      <button class="kp-btn" onclick="setKontribPeriod('week',this)">Minggu Ini</button>
-      <button class="kp-btn" onclick="setKontribPeriod('month',this)">Bulan Ini</button>
-      <button class="kp-btn active" id="btn-kp-custom" onclick="setKontribPeriod('custom',this)">Tgl 21–20 (HR Default)</button>
-    </div>
-    <div class="fgrow" id="kp-custom-dates" style="display:none;margin-bottom:16px">
-      <div><div class="flabel">Dari Tanggal</div><input type="date" class="finput" id="kp-start" onchange="renderKontribusi()"></div>
-      <div><div class="flabel">Sampai Tanggal</div><input type="date" class="finput" id="kp-end" onchange="renderKontribusi()"></div>
-    </div>
-    <div id="kontrib-chart" style="margin-top: 24px;"></div>
-    <div id="kontrib-total" style="margin-top:12px;font-size:12px;color:var(--text3);text-align:right;font-weight:500;"></div>
-  </div>
-  <div class="card">
-    <div class="card-title">Detail per Proyek</div>
-    <div id="kontrib-detail"></div>
   </div>
 </div>
 
 </main>
-</div>
-
-<!-- SDC MAC-STYLE MODAL -->
-<div id="sdc-modal" class="sdc-overlay" onclick="if(event.target===this) closeSDCModal()">
-  <div class="sdc-window">
-    <div class="sdc-header">
-      <div class="mac-dots">
-        <div class="mac-dot mac-close" onclick="closeSDCModal()" title="Tutup Jendela"></div>
-        <div class="mac-dot mac-min" onclick="closeSDCModal()" title="Sembunyikan"></div>
-        <div class="mac-dot mac-max" onclick="window.open('https://spatial-data-center.vercel.app/', '_blank'); closeSDCModal();" title="Buka di Tab Baru"></div>
-      </div>
-      <div class="sdc-title-text">Spatial Data Center (Shirvano)</div>
-      <div style="width: 44px;"></div> <!-- Spacer -->
-    </div>
-    <div class="sdc-body">
-      <div class="sdc-loader" id="sdc-loader">
-        <div class="spinner"></div>
-        <span>Menghubungkan ke SDC...</span>
-      </div>
-      <!-- Iframe akan di-inject src-nya lewat JS agar tidak loading di background -->
-      <iframe id="sdc-iframe" src="" class="sdc-iframe" onload="document.getElementById('sdc-loader').style.opacity='0'"></iframe>
-    </div>
-  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -708,11 +707,12 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 // --- STATE & VARIABEL ---
-let data = {projects:[], todos:[], Presensi:[], meetings:[], talenta:{}, quickNotes:""};
+// Removed meetings from data init to keep it clean.
+let data = {projects:[], todos:[], Presensi:[], talenta:{}, quickNotes:""};
 let projFilter='all', todoFilter='all', moodVal='', kontribPeriod='custom';
 let uid=Date.now();
-let editProjId=null, editTodoId=null, editAbsId=null, editMeetId=null;
-let projOpen={}, meetOpen={}, dayCollapsed={};
+let editProjId=null, editTodoId=null, editAbsId=null;
+let projOpen={}, dayCollapsed={};
 let isKanbanView = false; 
 
 function getMonday(d){d=new Date(d);var day=d.getDay(),diff=d.getDate()-day+(day==0?-6:1);return new Date(d.setDate(diff))}
@@ -723,7 +723,6 @@ currentWeekStart.setHours(0,0,0,0);
 function gid(){return 'i'+(uid++)}
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
-// FIX ZONA WAKTU (Mencegah tanggal bergeser ke UTC)
 function ds(d){
   let date = d instanceof Date ? d : new Date(d);
   return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
@@ -760,28 +759,6 @@ function toggleTheme() {
     toast(next === 'dark' ? 'Mode Gelap Aktif 🌙' : 'Mode Terang Aktif ☀️');
 }
 
-// --- SDC MODAL LOGIC ---
-function openSDCModal() {
-    const modal = document.getElementById('sdc-modal');
-    const iframe = document.getElementById('sdc-iframe');
-    const loader = document.getElementById('sdc-loader');
-    
-    // Lazy load iframe: Hanya set src jika belum diatur (menghemat bandwidth awal)
-    if (!iframe.src || iframe.src === window.location.href) {
-        loader.style.opacity = '1';
-        iframe.src = 'https://spatial-data-center.vercel.app/';
-    }
-    
-    modal.classList.add('show');
-    document.body.style.overflow = 'hidden'; // Mencegah scrolling halaman belakang saat modal terbuka
-}
-
-function closeSDCModal() {
-    const modal = document.getElementById('sdc-modal');
-    modal.classList.remove('show');
-    document.body.style.overflow = ''; // Mengembalikan scrolling halaman belakang
-}
-
 // --- BRAINDUMP / CATATAN CEPAT ---
 function saveBraindump() {
     const el = document.getElementById('dash-braindump');
@@ -793,13 +770,12 @@ async function save(){ try{await db.ref("gpm_data/main_state").set(data)}catch(e
 async function loadData(){
   db.ref("gpm_data/main_state").on('value',snap=>{
     if(snap.exists()) {
-      data=snap.val();
-      if(!data.projects) data.projects=[];
-      if(!data.todos) data.todos=[];
-      if(!data.Presensi) data.Presensi=[];
-      if(!data.meetings) data.meetings=[];
-      if(!data.talenta) data.talenta={};
-      if(!data.quickNotes) data.quickNotes="";
+      let remoteData = snap.val();
+      data.projects = remoteData.projects || [];
+      data.todos = remoteData.todos || [];
+      data.Presensi = remoteData.Presensi || [];
+      data.talenta = remoteData.talenta || {};
+      data.quickNotes = remoteData.quickNotes || "";
     }
     const ap=document.querySelector('.page.active');
     if(ap){
@@ -807,15 +783,14 @@ async function loadData(){
       if(p==='dashboard') renderDash();
       if(p==='proyek') renderProyek();
       if(p==='todo'){ fillProjSelects(); renderTodo(); }
-      if(p==='meeting'){ fillProjSelects(); fillMeetFilter(); renderMeeting(); }
       if(p==='Presensi'){ fillProjSelects(); renderPresensi(); }
-      if(p==='kontribusi') renderKontribusi();
+      if(p==='laporstat'){ renderKontribusi(); }
     }
     updateTodoBadge();
   });
 }
 
-// --- NAVIGASI ---
+// --- NAVIGASI & MODAL ---
 function goPage(p){
   document.querySelectorAll('.dock-item').forEach(el=>el.classList.toggle('active',el.dataset.p===p));
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
@@ -825,28 +800,36 @@ function goPage(p){
   if(p==='dashboard') renderDash();
   if(p==='proyek') renderProyek();
   if(p==='todo'){ fillProjSelects(); renderTodo(); }
-  if(p==='meeting'){ fillProjSelects(); fillMeetFilter(); renderMeeting(); }
   if(p==='Presensi'){ fillProjSelects(); renderPresensi(); }
-  if(p==='kontribusi') renderKontribusi();
+  if(p==='laporstat') {
+    // Make sure correct tab is active inside laporstat
+    const activeTab = document.querySelector('.seg-btn.active').textContent.includes('3P') ? '3p' : 'kontribusi';
+    if(activeTab === 'kontribusi') renderKontribusi();
+  }
 }
+
+function switchStatTab(tabId, btn) {
+    document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.stat-tab-content').forEach(el => el.style.display = 'none');
+    document.getElementById('tab-' + tabId).style.display = 'block';
+    if(tabId === 'kontribusi') renderKontribusi();
+}
+
+function openAppHub() { document.getElementById('app-hub').classList.add('show'); }
+function closeAppHub() { document.getElementById('app-hub').classList.remove('show'); }
 
 function fillProjSelects(){
   const opts = '<option value="">— Pilih Proyek —</option>'+data.projects.filter(p=>p.status!=='Selesai').map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
-  ['td-proj','mt-proj','abs-proj','pomo-proj'].forEach(id=>{
+  ['td-proj','abs-proj','pomo-proj'].forEach(id=>{
     const s=document.getElementById(id); if(s){ const cur=s.value; s.innerHTML=opts; s.value=cur; }
   });
 }
 
-function fillMeetFilter(){
-  const s=document.getElementById('filter-mt-proj'); if(!s)return;
-  const cur=s.value;
-  s.innerHTML='<option value="all">Semua Proyek (Filter)</option>'+data.projects.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
-  s.value=cur||'all';
-}
-
 function moveItem(type, id, dir, event) {
   if(event) event.stopPropagation();
-  let list = type === 'proj' ? data.projects : data.meetings;
+  let list = type === 'proj' ? data.projects : [];
+  if(list.length===0) return;
   const idx = list.findIndex(x => x.id === id);
   if (dir === -1 && idx > 0) [list[idx], list[idx-1]] = [list[idx-1], list[idx]];
   if (dir === 1 && idx < list.length - 1) [list[idx], list[idx+1]] = [list[idx+1], list[idx]];
@@ -906,7 +889,7 @@ function addProyek(){
     projOpen[newId] = true;
     toast('Proyek ditambahkan!');
   }
-  save(); resetProyekForm();
+  save(); resetProyekForm(); renderProyek();
 }
 
 function setProgres(id,v){
@@ -934,8 +917,7 @@ function delProyek(id){
   data.projects=data.projects.filter(p=>p.id!==id);
   data.todos=data.todos.filter(t=>t.projId!==id);
   data.Presensi=data.Presensi.filter(a=>a.projId!==id);
-  data.meetings=data.meetings.filter(m=>m.projId!==id);
-  save(); fillProjSelects(); fillMeetFilter(); toast('Proyek dihapus');
+  save(); fillProjSelects(); toast('Proyek dihapus'); renderProyek();
 }
 
 function setProjFilter(el){
@@ -1178,113 +1160,13 @@ function renderTodo(){
   }).join('');
 }
 
-// ======================
-// FITUR: MEETING
-// ======================
-function resetMeetingForm(){
-  editMeetId=null;
-  document.getElementById('mt-proj').value='';
-  document.getElementById('mt-date').value=ds(new Date());
-  document.getElementById('mt-title').value='';
-  document.getElementById('mt-notes').value='';
-  document.querySelector('#add-meet-card .btn-primary').textContent='Simpan Catatan';
-  document.getElementById('add-meet-card').style.display='none';
+// Function to add event to Google Calendar
+function addToGCal(title, date, details = '') {
+  const [y, m, d] = date.split('-');
+  const gcalDate = `${y}${m}${d}T000000Z/${y}${m}${d}T235959Z`; // All day event
+  const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${gcalDate}&details=${encodeURIComponent(details)}`;
+  window.open(url, '_blank');
 }
-
-function editMeeting(id){
-  const m=data.meetings.find(x=>x.id===id);if(!m)return;
-  editMeetId=id;
-  document.getElementById('mt-proj').value=m.projId||'';
-  document.getElementById('mt-date').value=m.date||'';
-  document.getElementById('mt-title').value=m.title||'';
-  document.getElementById('mt-notes').value=m.notes||'';
-  document.getElementById('add-meet-card').style.display='block';
-  document.querySelector('#add-meet-card .btn-primary').textContent='Update Catatan';
-  window.scrollTo({top:0,behavior:'smooth'});
-  if(!meetOpen[id]){ meetOpen[id]=true; renderMeeting(); }
-}
-
-function addMeeting(){
-  const title=document.getElementById('mt-title').value.trim();
-  const projId=document.getElementById('mt-proj').value;
-  const date=document.getElementById('mt-date').value;
-  const notes=document.getElementById('mt-notes').value.trim();
-
-  if(!title || !projId){toast('Judul agenda dan proyek wajib diisi!');return}
-  const proj=data.projects.find(p=>p.id===projId);
-
-  if(editMeetId){
-    const m=data.meetings.find(x=>x.id===editMeetId);
-    if(m){m.title=title;m.projId=projId;m.projName=proj?proj.name:'';m.date=date;m.notes=notes}
-    toast('Catatan meeting diperbarui!');
-  }else{
-    const newId=gid();
-    data.meetings.push({id:newId,title,projId,projName:proj?proj.name:'',date,notes,createdAt:Date.now()});
-    meetOpen[newId]=true;
-    toast('Catatan meeting ditambahkan!');
-  }
-  save(); resetMeetingForm(); renderMeeting();
-}
-
-function delMeeting(id){
-  if(confirm('Hapus catatan meeting ini?')){
-    data.meetings=data.meetings.filter(m=>m.id!==id);
-    save();renderMeeting();toast('Dihapus')
-  }
-}
-
-function toggleMeet(id, event){
-  if(event && event.target.tagName.match(/BUTTON|SELECT|INPUT|A/i)) return;
-  meetOpen[id]=!meetOpen[id]; renderMeeting();
-}
-
-function renderMeeting(){
-  const el=document.getElementById('meet-list');
-  const filterProj=document.getElementById('filter-mt-proj').value;
-  const search=document.getElementById('mt-search').value.toLowerCase();
-  
-  let list=data.meetings.filter(m=>{
-    const matchF = filterProj==='all' || m.projId===filterProj;
-    const matchS = m.title.toLowerCase().includes(search) || m.notes.toLowerCase().includes(search);
-    return matchF && matchS;
-  });
-
-  if(!list.length){el.innerHTML='<div class="empty" style="grid-column:1/-1">Belum ada catatan meeting.</div>';return}
-
-  el.innerHTML=list.map(m=>{
-    const proj=data.projects.find(p=>p.id===m.projId);
-    let pcolor = proj ? proj.color : 'var(--blue-mid)';
-    const isOpen=meetOpen[m.id];
-    
-    return `<div class="pj-card">
-      <style>#meetcard-${m.id}::before { background: ${pcolor}; }</style>
-      <div id="meetcard-${m.id}"></div>
-      <div class="pj-card-header" onclick="toggleMeet('${m.id}', event)">
-        <div style="flex:1;min-width:0">
-          <div class="pj-name" style="margin-bottom:4px">${esc(m.title)}</div>
-          <div class="pj-meta"><span style="color:var(--blue-mid);font-weight:600">${esc(m.projName)}</span> • ${fmtDate(m.date)}</div>
-        </div>
-        <div class="action-box">
-          <button class="btn-icon up-down" onclick="moveItem('meet','${m.id}',-1, event)">▲</button>
-          <button class="btn-icon up-down" onclick="moveItem('meet','${m.id}',1, event)">▼</button>
-        </div>
-        <div class="pj-toggle-icon" style="transform:${isOpen?'rotate(180deg)':'rotate(0deg)'}">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </div>
-      </div>
-      
-      <div class="pj-body ${isOpen?'open':''}">
-        ${m.notes ? `<div style="font-size:14px;color:var(--text);white-space:pre-wrap;background:var(--bg-body);padding:16px;border-radius:12px;line-height:1.6;margin-bottom:16px; border: 0.5px solid var(--border)">${esc(m.notes)}</div>` : '<div style="font-size:13px;color:var(--text3);font-style:italic;margin-bottom:16px">Tidak ada catatan...</div>'}
-        <div class="pj-footer">
-           <button class="edit-btn" onclick="editMeeting('${m.id}')">Edit</button>
-           <button class="edit-btn" onclick="addToGCal('${esc(m.title)}', '${m.date}', '${esc(m.notes)}')">GCal</button>
-           <button class="del-btn" onclick="delMeeting('${m.id}')" style="margin-left:auto">Hapus</button>
-        </div>
-      </div>
-    </div>`
-  }).join('');
-}
-
 
 // ======================
 // FITUR: PRESENSI & EXPORT
@@ -1468,12 +1350,15 @@ function renderPresensi(){
   updateToggleAllBtn();
 }
 
-function copyForTalenta(){
+function copyAndOpenTalenta() {
   const today = ds(new Date());
   const todayActs = data.Presensi.filter(a => a.date === today)
                                  .sort((a,b) => (a.time||'99:99').localeCompare(b.time||'99:99'));
   
-  if(!todayActs.length) { toast('Belum ada aktivitas hari ini!'); return; }
+  if(!todayActs.length) { 
+      toast('Belum ada aktivitas hari ini!'); 
+      return; 
+  }
 
   let textExport = `Laporan Aktivitas Harian - ${fmtDate(today)}:\n`;
   todayActs.forEach(a => {
@@ -1482,14 +1367,24 @@ function copyForTalenta(){
     textExport += `- ${waktu}${a.act}${proyek}\n`;
   });
 
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(textExport).then(() => toast('Tersalin!')).catch(() => toast('Gagal menyalin.'));
-  } else {
-    const ta = document.createElement('textarea'); ta.value = textExport; ta.style.position = 'fixed'; 
-    document.body.appendChild(ta); ta.focus(); ta.select();
-    try { document.execCommand('copy'); toast('Tersalin!'); } catch (err) { toast('Gagal menyalin.'); }
-    document.body.removeChild(ta);
+  // Salin langsung dan buka tab baru secara serentak (synchronous fallback jika clipboard api diblokir)
+  const ta = document.createElement('textarea'); 
+  ta.value = textExport; 
+  ta.style.position = 'fixed'; 
+  document.body.appendChild(ta); 
+  ta.focus(); 
+  ta.select();
+  
+  try { 
+      document.execCommand('copy'); 
+      toast('Tersalin! Membuka Talenta...'); 
+  } catch (err) { 
+      toast('Teks disiapkan. Membuka Talenta...'); 
   }
+  document.body.removeChild(ta);
+  
+  // Langsung buka tab agar tidak dianggap Pop-up Blocked oleh browser
+  window.open('https://hr.talenta.co/employee/dashboard', '_blank');
 }
 
 function exportCSV() {
@@ -1809,9 +1704,8 @@ function renderDash(){
   }).join('');
 }
 
-
 // ======================
-// FITUR: POMODORO & AUTO-ABSEN
+// FITUR: POMODORO
 // ======================
 let pomoTime = 25 * 60;
 let pomoInterval = null;
@@ -1929,7 +1823,6 @@ async function init(){
   document.getElementById('nav-date').textContent=now.toLocaleDateString('id-ID',{weekday:'short',day:'numeric',month:'short'});
   document.getElementById('rp-date').value=ds(now);
   document.getElementById('abs-input-date').value=ds(now);
-  document.getElementById('mt-date').value=ds(now);
   document.getElementById('dash-date-sub').textContent=now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   
   // Default Kontribusi = Custom (21 - 20)

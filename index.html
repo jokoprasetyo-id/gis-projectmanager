@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>GIS Project Manager</title>
+<!-- Panggil file manifest.json -->
+<link rel="manifest" href="manifest.json">
 <!-- Favicon dari GitHub -->
 <link rel="icon" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
@@ -1826,34 +1828,16 @@ async function init(){
 }
 
 function initPWA() {
-  try {
-    const manifestBlob = new Blob([JSON.stringify({
-      "name": "GIS Project Manager",
-      "short_name": "GPM",
-      "start_url": ".",
-      "display": "standalone",
-      "background_color": "#F2F2F7",
-      "theme_color": "#007AFF",
-      "icons": [
-        { "src": "logo.png", "sizes": "192x192", "type": "image/png" },
-        { "src": "logo.png", "sizes": "512x512", "type": "image/png" }
-      ]
-    })], {type: 'application/json'});
-    
-    const manifestURL = URL.createObjectURL(manifestBlob);
-    const link = document.createElement('link');
-    link.rel = 'manifest';
-    link.href = manifestURL;
-    document.head.appendChild(link);
-
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-         // Harap pastikan file sw.js benar-benar sudah ada di GitHub Anda!
-         navigator.serviceWorker.register('sw.js').catch(err => console.log('PWA Service Worker belum aktif (sw.js tidak ditemukan).', err));
-      });
-    }
-  } catch (err) {
-    console.warn('PWA Manifest setup skipped.');
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(registration => {
+          console.log('ServiceWorker PWA berhasil didaftarkan dengan scope: ', registration.scope);
+        })
+        .catch(err => {
+          console.log('ServiceWorker PWA gagal didaftarkan: ', err);
+        });
+    });
   }
 }
 

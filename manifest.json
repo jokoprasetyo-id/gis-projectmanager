@@ -1,7 +1,7 @@
 {
 "name": "GIS Project Manager",
 "short_name": "GPM",
-"start_url": "./",
+"start_url": "index.html",
 "display": "standalone",
 "background_color": "#F2F2F7",
 "theme_color": "#007AFF",

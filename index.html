@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>GIS Project Manager</title>
-<!-- Panggil file manifest.json -->
 <link rel="manifest" href="manifest.json">
-<!-- Favicon dari GitHub -->
 <link rel="icon" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
 <style>
@@ -56,16 +54,11 @@
   --amber: #FF9F0A; --amber-bg: rgba(255, 159, 10, 0.15); --amber-mid: #FF9F0A;
   --purple: #BF5AF2; --purple-bg: rgba(191, 90, 242, 0.15); --purple-mid: #BF5AF2;
 }
+
 @media(prefers-color-scheme: dark) {
   html:not([data-theme="light"]) {
     --bg-body: #000000; --card-bg: #1C1C1E; --glass-bg: rgba(28, 28, 30, 0.65);
-    --border: #38383A; --border2: #2C2C2E; --card-shadow: 0 8px 24px rgba(0,0,0,0.4); --float-shadow: 0 12px 32px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.1);
-    --text: #FFFFFF; --text2: #EBEBF5; --text3: #8E8E93;
-    --blue: #0A84FF; --blue-bg: rgba(10, 132, 255, 0.15); --blue-mid: #0A84FF;
-    --teal: #30D158; --teal-bg: rgba(48, 209, 88, 0.15); --teal-mid: #30D158;
-    --red: #FF453A; --red-bg: rgba(255, 69, 58, 0.15); --red-mid: #FF453A;
-    --amber: #FF9F0A; --amber-bg: rgba(255, 159, 10, 0.15); --amber-mid: #FF9F0A;
-    --purple: #BF5AF2; --purple-bg: rgba(191, 90, 242, 0.15); --purple-mid: #BF5AF2;
+    --border: #38383A; --border2: #2C2C2E; --text: #FFFFFF; --text2: #EBEBF5; --text3: #8E8E93;
   }
 }
 
@@ -73,7 +66,6 @@
 body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif; background: var(--bg-body); color: var(--text); min-height: 100vh; font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em; overflow-x: hidden; transition: background-color 0.3s, color 0.3s; }
 .layout { display: block; padding-bottom: 120px; width: 100%; max-width: 100vw;}
 
-/* FLOATING TOP BAR */
 .top-bar { position: fixed; top: 20px; left: 24px; background: var(--glass-bg); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border: 0.5px solid var(--border); border-radius: 100px; padding: 6px 20px 6px 6px; display: flex; align-items: center; gap: 12px; z-index: 100; box-shadow: var(--float-shadow); transition: all 0.3s ease; }
 .logo-badge { width: 36px; height: 36px; border-radius: 50%; background: var(--blue-mid); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
 .top-bar-text { display: flex; flex-direction: column; justify-content: center; min-width: 0; flex: 1; padding-right: 12px;}
@@ -81,10 +73,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
 .logo-sub { font-size: 10px; color: var(--text3); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .theme-toggle-btn { width: 32px; height: 32px; border-radius: 50%; background: var(--border2); display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; border: none; transition: 0.2s; color: var(--text); }
 .theme-toggle-btn:hover { background: var(--border); transform: scale(1.05); }
-.btn-apphub { background: var(--border2); color: var(--text); border: none; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 100px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
-.btn-apphub:hover { background: var(--text); color: var(--bg-body); transform: scale(1.05); }
 
-/* FLOATING DOCK */
 .floating-dock { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--glass-bg); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border: 0.5px solid var(--border); border-radius: 32px; padding: 8px 12px; display: flex; align-items: center; gap: 6px; z-index: 100; box-shadow: var(--float-shadow); overflow-x: auto; max-width: calc(100vw - 32px); scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
 .floating-dock::-webkit-scrollbar { display: none; }
 .dock-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 60px; height: 56px; border-radius: 20px; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); user-select: none; position: relative; flex-shrink: 0; }
@@ -96,36 +85,15 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
 .dock-item.active .dock-label { color: var(--bg-body); opacity: 1; }
 .nav-badge-count { position: absolute; top: 4px; right: 8px; background: var(--red-mid); color: #fff; font-size: 9px; font-weight: 700; padding: 2px 5px; border-radius: 10px; min-width: 14px; text-align: center; box-shadow: 0 2px 4px rgba(255,59,48,0.4); border: 1.5px solid var(--card-bg); }
 
-/* MAIN CONTAINER */
 .main { max-width: 1200px; margin: 0 auto; padding: 100px 24px 40px; min-height: 100vh; width: 100%; transition: padding 0.3s ease; }
 .page { display: none; width: 100%; } .page.active { display: block; animation: fadein 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
 
-/* HEADER & CARDS */
 .section-header { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; padding: 0 8px; }
 .section-title { font-size: 32px; font-weight: 700; color: var(--text); letter-spacing: -0.03em; }
 .section-sub { font-size: 14px; color: var(--text3); font-weight: 500; margin-top: 4px; }
 .card { background: var(--card-bg); border-radius: var(--radius-lg); padding: 22px; margin-bottom: 16px; box-shadow: var(--card-shadow); border: 0.5px solid var(--border); width: 100%; transition: 0.3s background-color, 0.3s border-color;}
 .card-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; gap: 6px; letter-spacing: -0.01em; flex-wrap: wrap;}
 
-/* STATS & DASHBOARD */
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
-.stat-card { background: var(--card-bg); border-radius: var(--radius-lg); padding: 20px 16px; text-align: center; box-shadow: var(--card-shadow); border: 0.5px solid var(--border); }
-.stat-n { font-size: 36px; font-weight: 700; line-height: 1.1; margin-bottom: 6px; letter-spacing: -0.03em; }
-.stat-l { font-size: 11px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-.dash-grid { display: grid; grid-template-columns: 1fr 340px; gap: 16px; align-items: start; }
-.dash-col { display: flex; flex-direction: column; gap: 0; min-width: 0; }
-.dash-content { display: none; animation: fadein 0.3s ease; }
-.dash-content.active { display: block; }
-
-/* KANBAN BOARD */
-.kanban-board { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 16px; align-items: flex-start; scroll-snap-type: x mandatory; }
-.kanban-board::-webkit-scrollbar { height: 8px; }
-.kanban-board::-webkit-scrollbar-track { background: var(--bg-body); border-radius: 4px; }
-.kanban-board::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
-.kanban-col { min-width: 300px; flex: 1; background: var(--bg-body); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 16px; display: flex; flex-direction: column; max-height: 75vh; scroll-snap-align: start; }
-.kanban-title { font-size: 14px; font-weight: 700; color: var(--text); padding-bottom: 12px; margin-bottom: 12px; border-bottom: 2px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-
-/* FORM & INPUTS */
 .flabel { font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 6px; display: block; }
 .finput { width: 100%; background: var(--bg-body); border: 1px solid var(--border2); border-radius: 12px; padding: 12px 16px; font-size: 14px; color: var(--text); font-family: inherit; outline: none; transition: 0.2s; -webkit-appearance: none; max-width: 100%; }
 .finput:focus { background: var(--card-bg); border-color: var(--blue-mid); box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2); }
@@ -139,7 +107,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
 .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--text3); pointer-events: none; }
 .finput-search { padding-left: 44px; border-radius: 14px; background: var(--border2); border-color: transparent;}
 
-/* BUTTONS & PILLS */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 18px; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; border: none; transition: 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); user-select: none; text-decoration: none; white-space: nowrap; }
 .btn:active { transform: scale(0.95); }
 .btn-primary { background: var(--blue-mid); color: #fff; }
@@ -165,20 +132,15 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
 .seg-btn { flex: 1; padding: 10px; border-radius: 10px; font-size: 13px; font-weight: 600; text-align: center; cursor: pointer; transition: 0.2s; color: var(--text2); user-select: none;}
 .seg-btn.active { background: var(--card-bg); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
 
-/* SPATIAL KIT TABLE */
-.sk-desc-box { font-size: 14px; color: var(--text2); line-height: 1.6; margin-bottom: 24px; background: var(--card-bg); padding: 16px; border-radius: var(--radius-lg); border: 0.5px solid var(--border); box-shadow: var(--card-shadow);}
-.sk-table-wrapper { overflow-x: auto; background: var(--card-bg); border-radius: var(--radius-lg); border: 0.5px solid var(--border); box-shadow: var(--card-shadow); -webkit-overflow-scrolling: touch; }
-.sk-table { width: 100%; border-collapse: collapse; min-width: 950px; text-align: left; }
-.sk-table th { padding: 14px 16px; border-bottom: 1px solid var(--border2); font-size: 13px; font-weight: 600; color: var(--text3); background: var(--bg-body); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.05em; }
-.sk-table td { padding: 14px 16px; border-bottom: 0.5px solid var(--border); font-size: 14px; color: var(--text); vertical-align: top; line-height: 1.5;}
-.sk-table tr:last-child td { border-bottom: none; }
-.sk-table tr:hover td { background: var(--bg-body); }
-.sk-table .sk-focus { font-weight: 600; display: flex; align-items: flex-start; gap: 8px;}
-.sk-table .sk-fungsi { min-width: 200px; max-width: 300px; word-break: break-word; font-size: 13px;}
-.soft-pill { padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 600; display: inline-block; white-space: nowrap; background: rgba(175, 82, 222, 0.15); color: var(--purple-mid); }
-.sk-actions { display: flex; gap: 8px; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.stat-card { background: var(--card-bg); border-radius: var(--radius-lg); padding: 20px 16px; text-align: center; box-shadow: var(--card-shadow); border: 0.5px solid var(--border); }
+.stat-n { font-size: 36px; font-weight: 700; line-height: 1.1; margin-bottom: 6px; letter-spacing: -0.03em; }
+.stat-l { font-size: 11px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.dash-grid { display: grid; grid-template-columns: 1fr 340px; gap: 16px; align-items: start; }
+.dash-col { display: flex; flex-direction: column; gap: 0; min-width: 0; }
+.dash-content { display: none; animation: fadein 0.3s ease; }
+.dash-content.active { display: block; }
 
-/* CARDS GRID & COLLAPSIBLE */
 .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; width: 100%; }
 .pj-card { background: var(--card-bg); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--card-shadow); border: 0.5px solid var(--border); transition: all 0.2s ease; animation: fadein 0.25s ease; position: relative; overflow: hidden; width: 100%;}
 .pj-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--teal-mid); }
@@ -188,23 +150,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
 .pj-body { display: none; margin-top: 18px; padding-top: 18px; border-top: 0.5px solid var(--border); animation: slideDown 0.2s ease; }
 .pj-body.open { display: block; }
 .pj-toggle-icon { transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1); color: var(--text3); flex-shrink: 0;}
-
 .prog-bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 8px; width: 100%;}
 .prog-fill { height: 100%; border-radius: 4px; transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
 .repo-link { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--blue-mid); text-decoration: none; padding: 6px 12px; border-radius: 10px; background: var(--blue-bg); margin-top: 10px; font-weight: 500; word-break: break-all;}
-.action-box { display: flex; align-items: center; gap: 4px; margin-left: auto; flex-shrink: 0;}
-.btn-icon { width: 30px; height: 30px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; background: var(--bg-body); color: var(--text2); transition: 0.2s; }
-.btn-icon:hover { background: var(--border); color: var(--text); }
-.btn-icon.up-down { background: none; width: 26px; color: var(--text3); }
-.btn-icon.up-down:hover { color: var(--blue-mid); background: var(--blue-bg); }
-.pj-footer { display: flex; gap: 10px; align-items: center; flex-wrap: wrap;}
-.edit-btn, .del-btn { background: none; border: none; cursor: pointer; color: var(--blue-mid); font-size: 13px; font-weight: 600; transition: 0.2s; padding: 8px 12px; border-radius: 8px; flex-shrink:0;}
-.edit-btn:hover { background: var(--blue-bg); } 
-.del-btn { color: var(--red-mid); } .del-btn:hover { background: var(--red-bg); }
 
-/* TODO ITEMS */
 #todo-list { background: var(--card-bg); border-radius: var(--radius-lg); box-shadow: var(--card-shadow); overflow: hidden; border: 0.5px solid var(--border); width: 100%;}
-.todo-item { padding: 16px; border-bottom: 0.5px solid var(--border); display: flex; align-items: flex-start; gap: 14px; animation: fadein 0.2s ease; }
+.todo-item { padding: 16px; border-bottom: 0.5px solid var(--border); display: flex; align-items: flex-start; gap: 14px; animation: fadein 0.2s ease; transition: background 0.2s; }
+.todo-item:hover { background: var(--bg-body); }
 .todo-item:last-child { border-bottom: none; }
 .todo-item.is-done { opacity: 0.5; background: var(--bg-body); }
 .chk { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--border2); flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); background: var(--card-bg); margin-top: 2px; }
@@ -217,98 +169,100 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
 .todo-meta { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
 .meta-pill { font-size: 12px; color: var(--text3); font-weight: 500; }
 .meta-proj { font-size: 12px; color: var(--blue-mid); font-weight: 500; }
+.meta-pic { font-size: 12px; color: var(--purple-mid); font-weight: 600; background: var(--purple-bg); padding: 2px 8px; border-radius: 6px; }
 .meta-late { font-size: 12px; color: var(--red-mid); font-weight: 500; }
 .prio-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 8px; }
 .pr-high { background: var(--red-mid); box-shadow: 0 0 8px rgba(255, 59, 48, 0.4); }
 .pr-med { background: var(--amber-mid); }
 .pr-low { background: var(--blue-mid); }
 
-/* LAPORAN & STATISTIK */
+.kanban-board { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 16px; align-items: flex-start; scroll-snap-type: x mandatory; }
+.kanban-board::-webkit-scrollbar { height: 8px; }
+.kanban-board::-webkit-scrollbar-track { background: var(--bg-body); border-radius: 4px; }
+.kanban-board::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+.kanban-col { min-width: 300px; flex: 1; background: var(--bg-body); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 16px; display: flex; flex-direction: column; max-height: 75vh; scroll-snap-align: start; }
+.kanban-title { font-size: 14px; font-weight: 700; color: var(--text); padding-bottom: 12px; margin-bottom: 12px; border-bottom: 2px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+
+.sk-table-wrapper { overflow-x: auto; background: var(--card-bg); border-radius: var(--radius-lg); border: 0.5px solid var(--border); box-shadow: var(--card-shadow); -webkit-overflow-scrolling: touch; }
+.sk-table { width: 100%; border-collapse: collapse; min-width: 950px; text-align: left; }
+.sk-table th { padding: 14px 16px; border-bottom: 1px solid var(--border2); font-size: 13px; font-weight: 600; color: var(--text3); background: var(--bg-body); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.05em; }
+.sk-table td { padding: 14px 16px; border-bottom: 0.5px solid var(--border); font-size: 14px; color: var(--text); vertical-align: top; line-height: 1.5;}
+.sk-table tr:hover td { background: var(--bg-body); }
+.sk-table .sk-focus { font-weight: 600; display: flex; align-items: flex-start; gap: 8px;}
+
+/* UI Action Buttons yang lebih clean dan modern */
+.action-group { display: flex; gap: 4px; align-items: center; }
+.btn-action { 
+  width: 32px; 
+  height: 32px; 
+  border-radius: 50%; 
+  border: none; 
+  background: transparent; 
+  color: var(--text3); 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  cursor: pointer; 
+  transition: all 0.2s ease; 
+}
+.btn-action svg { width: 16px; height: 16px; }
+.btn-action:hover { background: var(--border2); color: var(--text); }
+.btn-action.edit:hover { background: var(--blue-bg); color: var(--blue-mid); }
+.btn-action.delete:hover { background: var(--red-bg); color: var(--red-mid); }
+
 .rp-section { margin-bottom: 20px; border-radius: var(--radius-lg); overflow: hidden; border: 0.5px solid var(--border); box-shadow: var(--card-shadow); }
 .rp-section-head { display: flex; align-items: center; gap: 10px; padding: 14px 20px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; background: var(--bg-body); }
 .rp-section-head.ph { color: var(--teal-mid); }
 .rp-section-head.pb { color: var(--red-mid); }
 .rp-section-head.pn { color: var(--blue-mid); }
 .rp-textarea { width: 100%; min-height: 140px; background: var(--card-bg); border: none; padding: 20px; font-size: 15px; color: var(--text); font-family: inherit; outline: none; resize: vertical; line-height: 1.5; }
-.prev-box { background: var(--bg-body); border-radius: var(--radius-lg); padding: 24px; margin-top: 20px; display: none; overflow-x: auto;}
-.prev-text { font-size: 14px; line-height: 1.6; color: var(--text); white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-.kontrib-period { display: flex; gap: 8px; margin-bottom: 20px; background: var(--bg-body); padding: 6px; border-radius: 14px; overflow-x: auto;}
-.kp-btn { flex: 1; padding: 10px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; border: none; background: transparent; color: var(--text2); cursor: pointer; transition: 0.2s; white-space: nowrap;}
-.kp-btn.active { background: var(--card-bg); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-.kontrib-row { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
-.kontrib-name { font-size: 14px; color: var(--text); font-weight: 500; min-width: 100px; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.kontrib-track { flex: 1; height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; }
-.kontrib-fill { height: 100%; border-radius: 5px; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-.kontrib-pct { font-size: 14px; font-weight: 600; min-width: 44px; text-align: right; }
-.sum-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 0.5px solid var(--border); }
-.sum-item:last-child { border-bottom: none; }
-.sum-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal-mid); flex-shrink: 0; margin-top: 6px; }
-.sum-text { font-size: 15px; color: var(--text); line-height: 1.4; word-break: break-word;}
-.stat-detail-btn { cursor: pointer; transition: 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); user-select: none; }
-.stat-detail-btn:hover { background: var(--border2) !important; transform: scale(1.02); }
-.stat-list-container { display: none; margin-top: 12px; padding: 12px; background: var(--bg-body); border-radius: 12px; border: 0.5px solid var(--border); animation: slideDown 0.2s ease; }
-.dl-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 0.5px solid var(--border); flex-wrap: wrap;}
-.dl-item:last-child { border-bottom: none; }
-.dl-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-.dl-name { flex: 1; font-size: 15px; color: var(--text); min-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
 
-/* PRESENSI / ABSEN */
-.abs-input-content { animation: fadein 0.3s ease; }
 .abs-date-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;}
 .abs-date-label { font-size: 18px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
 .abs-nav { display: flex; background: var(--bg-body); border-radius: 10px; padding: 3px; border: 0.5px solid var(--border); }
 .abs-nav-btn { height: 32px; padding: 0 16px; border-radius: 8px; background: transparent; border: none; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text); transition: 0.2s; white-space: nowrap;}
 .abs-nav-btn:hover { background: rgba(128,128,128,0.1); }
 .day-block { margin-bottom: 16px; border-radius: var(--radius-lg); overflow: hidden; background: var(--card-bg); border: 0.5px solid var(--border); box-shadow: var(--card-shadow); }
-.day-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; cursor: pointer; user-select: none; transition: 0.1s; background: var(--card-bg); gap: 10px;}
+.day-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 16px 20px; cursor: pointer; user-select: none; transition: 0.1s; background: var(--card-bg); gap: 10px;}
 .day-header:active { background: var(--bg-body); }
 .day-title { font-size: 15px; font-weight: 600; color: var(--text); }
 .day-count { font-size: 13px; color: var(--text3); font-weight: 400; margin-top: 3px; }
-.day-toggle { color: var(--text3); transition: transform 0.2s; flex-shrink: 0;}
+.day-toggle { color: var(--text3); transition: transform 0.2s; flex-shrink: 0; margin-top: 4px;}
 .day-toggle.collapsed { transform: rotate(-90deg); }
 .day-body { padding: 0 20px 20px; animation: slideDown 0.2s ease; }
 .day-body.hidden { display: none; }
-.abs-entry { border-top: 0.5px solid var(--border); padding: 16px 0 0; margin-top: 16px; display: flex; align-items: flex-start; gap: 14px; position: relative; }
-.abs-entry::before { content: ''; position: absolute; left: -20px; top: 16px; bottom: 0; width: 4px; background: var(--teal-mid); border-radius: 0 4px 4px 0; }
-.abs-time { font-size: 14px; color: var(--text2); font-weight: 600; min-width: 50px; }
+.abs-entry { border-top: 0.5px solid var(--border); padding: 16px 0 0; margin-top: 16px; display: flex; align-items: flex-start; gap: 14px; position: relative; transition: background 0.2s; border-radius: 8px; padding: 12px; margin-left: -12px; margin-right: -12px;}
+.abs-entry:hover { background: var(--bg-body); }
+.abs-entry::before { content: ''; position: absolute; left: 0px; top: 12px; bottom: 12px; width: 4px; background: var(--teal-mid); border-radius: 4px; }
+.abs-time { font-size: 14px; color: var(--text2); font-weight: 600; min-width: 50px; margin-left: 8px; }
 .abs-act { font-size: 15px; color: var(--text); font-weight: 400; word-break: break-word;}
-.abs-proj { font-size: 13px; color: var(--text3); margin-top: 4px; }
+
 .talenta-chip, .libur-chip { display: flex; align-items: center; gap: 8px; cursor: pointer; background: var(--bg-body); padding: 6px 12px; border-radius: 10px; transition: 0.2s; white-space: nowrap;}
 .talenta-chip.on { background: var(--teal-bg); }
 .libur-chip.on { background: var(--amber-bg); }
 .talenta-label, .libur-label { font-size: 12px; font-weight: 600; color: var(--text2); }
 .talenta-chip.on .talenta-label { color: var(--teal-mid); }
 .libur-chip.on .libur-label { color: var(--amber-mid); }
-.chk-sm { width: 16px; height: 16px; border-radius: 5px; border: 1.5px solid var(--text3); display: flex; align-items: center; justify-content: center; flex-shrink: 0;}
+.chk-sm { width: 16px; height: 16px; border-radius: 5px; border: 1.5px solid var(--text3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--card-bg);}
 .chk-sm.on { background: var(--teal-mid); border-color: var(--teal-mid); }
 .chk-sm.libur.on { background: var(--amber-mid); border-color: var(--amber-mid); }
 .chk-sm.on::after { content: ''; width: 3px; height: 7px; border: 1.5px solid #fff; border-top: none; border-left: none; transform: rotate(45deg); display: block; margin-top: -2px; }
 
-/* TOAST & CUSTOM MODALS */
-.toast { position: fixed; top: 90px; left: 50%; transform: translateX(-50%) translateY(-20px); background: rgba(28, 28, 30, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 20px; padding: 12px 24px; font-size: 14px; font-weight: 500; color: #fff; opacity: 0; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; z-index: 1000; white-space: nowrap; box-shadow: 0 8px 24px rgba(0,0,0,0.15); max-width: 90vw; overflow: hidden; text-overflow: ellipsis;}
+.toast { position: fixed; top: 90px; left: 50%; transform: translateX(-50%) translateY(-20px); background: rgba(28, 28, 30, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 20px; padding: 12px 24px; font-size: 14px; font-weight: 500; color: #fff; opacity: 0; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; z-index: 1000; white-space: nowrap; box-shadow: 0 8px 24px rgba(0,0,0,0.15);}
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 .empty { text-align: center; padding: 40px 20px; color: var(--text3); font-size: 15px; background: transparent; border-radius: var(--radius-lg); font-weight: 500; }
-.c-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 10000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); opacity: 0; pointer-events: none; transition: 0.2s ease;}
-.c-modal-overlay.show { opacity: 1; pointer-events: auto; }
-.c-modal-box { background: var(--card-bg); padding: 24px; border-radius: 20px; width: 320px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transform: scale(0.95); transition: 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); border: 1px solid var(--border);}
-.c-modal-overlay.show .c-modal-box { transform: scale(1); }
 
-/* --- CSS KHUSUS PUBLIC VIEW --- */
-body.public-view .top-bar,
-body.public-view .floating-dock,
-body.public-view .sk-actions,
-body.public-view .sk-desc-box,
-body.public-view .section-header button {
-    display: none !important;
-}
-body.public-view .main {
-    padding-top: 40px;
-    padding-bottom: 40px;
-}
-body.public-view .sk-table th:last-child,
-body.public-view .sk-table td:last-child {
-    display: none; /* Sembunyikan kolom Opsi di Public View */
-}
+/* Modal Konfirmasi yang lebih mirip iOS Alert */
+.c-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.4); z-index: 10000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);}
+.c-modal-overlay.show { opacity: 1; pointer-events: auto; }
+.c-modal-box { background: var(--glass-bg); padding: 24px; border-radius: 24px; width: 320px; text-align: center; box-shadow: 0 24px 48px rgba(0,0,0,0.2); transform: scale(0.95) translateY(10px); transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); border: 0.5px solid var(--border); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);}
+.c-modal-overlay.show .c-modal-box { transform: scale(1) translateY(0); }
+.c-modal-title { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.c-modal-msg { font-size: 14px; font-weight: 400; color: var(--text2); line-height: 1.4; margin-bottom: 24px; }
+
+body.public-view .top-bar, body.public-view .floating-dock, body.public-view .action-group, body.public-view .section-header button { display: none !important; }
+body.public-view .main { padding-top: 40px; padding-bottom: 40px; }
+body.public-view .sk-table th:last-child, body.public-view .sk-table td:last-child { display: none; }
 
 @media(max-width: 768px){
   .top-bar { left: 16px; right: 16px; top: 16px; border-radius: 20px; padding: 8px 12px; justify-content: center; }
@@ -316,14 +270,6 @@ body.public-view .sk-table td:last-child {
   .dock-item { min-width: 60px; height: 52px; }
   .dock-label { font-size: 9px; }
   .main { padding-top: 90px; padding-left: 16px; padding-right: 16px; padding-bottom: 110px; }
-  .fgrow { grid-template-columns: 1fr; gap: 12px; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .dash-grid { grid-template-columns: 1fr; }
-  .section-title { font-size: 26px; }
-  .card { padding: 16px; }
-  .pj-card-header, .todo-item, .abs-entry { gap: 10px; }
-  .kontrib-name { min-width: 80px; }
-  .kanban-col { min-width: 260px; }
 }
 
 @keyframes fadein { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -333,7 +279,6 @@ body.public-view .sk-table td:last-child {
 <body>
 <div class="layout">
 
-<!-- FLOATING TOP BAR -->
 <header class="top-bar">
   <div class="logo-badge">GIS</div>
   <div class="top-bar-text">
@@ -343,8 +288,6 @@ body.public-view .sk-table td:last-child {
   <button class="theme-toggle-btn" onclick="toggleTheme()" title="Ganti Tema">🌓</button>
 </header>
 
-<!-- FLOATING DOCK (Navigation) -->
-<!-- SEKARANG TEPAT 5 TAB -->
 <nav class="floating-dock">
   <div class="dock-item active" data-p="dashboard" onclick="goPage('dashboard')" title="Dashboard">
     <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
@@ -371,7 +314,6 @@ body.public-view .sk-table td:last-child {
 
 <main class="main">
 
-<!-- PAGE 1: DASHBOARD & LAPORAN -->
 <div id="page-dashboard" class="page active">
   <div class="section-header">
     <div>
@@ -380,14 +322,12 @@ body.public-view .sk-table td:last-child {
     </div>
   </div>
 
-  <!-- KONTROL TAB DI DALAM DASHBOARD -->
   <div class="seg-control" style="margin-bottom: 24px;">
     <div class="seg-btn active" onclick="switchDashTab('dash-overview', this)">Ringkasan</div>
     <div class="seg-btn" onclick="switchDashTab('dash-laporan', this)">Laporan 3P</div>
     <div class="seg-btn" onclick="switchDashTab('dash-statistik', this)">Statistik</div>
   </div>
 
-  <!-- KONTEN: RINGKASAN (OVERVIEW) -->
   <div id="dash-overview" class="dash-content active">
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-n" style="color:var(--teal-mid)" id="d-aktif">0</div><div class="stat-l">Proyek Aktif</div></div>
@@ -406,7 +346,6 @@ body.public-view .sk-table td:last-child {
     </div>
   </div>
 
-  <!-- KONTEN: LAPORAN 3P -->
   <div id="dash-laporan" class="dash-content">
     <div class="card" style="background:var(--bg-body); box-shadow:none;">
       <div class="fgrow" style="margin-bottom:0">
@@ -414,11 +353,10 @@ body.public-view .sk-table td:last-child {
         <div><div class="flabel">Tanggal Laporan</div><input class="finput" type="date" id="rp-date" style="background:var(--card-bg)"></div>
       </div>
     </div>
-
     <div class="rp-section">
       <div class="rp-section-head ph" style="justify-content: space-between;">
         <span>Progres</span>
-        <button class="btn-icon" onclick="autoFillProgres()" title="Tarik data otomatis" style="width:auto; padding:0 12px; font-size:12px; height:26px; background:var(--teal-bg); color:var(--teal-mid); font-weight:700;">⚡ Auto-Fill</button>
+        <button class="btn btn-outline" style="padding:4px 10px; font-size:12px; height:auto; border-radius:8px;" onclick="autoFillProgres()" title="Tarik data otomatis">⚡ Auto-Fill</button>
       </div>
       <textarea class="rp-textarea" id="rp-progres" placeholder="Apa yang dikerjakan minggu ini?..."></textarea>
     </div>
@@ -430,44 +368,39 @@ body.public-view .sk-table td:last-child {
       <div class="rp-section-head pn">Plan</div>
       <textarea class="rp-textarea" id="rp-plan" placeholder="Rencana minggu depan..."></textarea>
     </div>
-
     <div class="btn-row" style="margin-top:24px">
       <button class="btn btn-primary" onclick="previewLaporan()">Preview</button>
       <button class="btn btn-outline" onclick="copyLaporan()">Salin</button>
       <button class="btn btn-outline" onclick="emailLaporan()">Email ↗</button>
       <button class="btn btn-outline" onclick="clearLaporan()" style="color:var(--red-mid)">Bersihkan</button>
     </div>
-    <div class="prev-box" id="rp-prev">
+    <div class="prev-box" id="rp-prev" style="display:none; margin-top:24px; padding:16px; background:var(--card-bg); border-radius:var(--radius); border:0.5px solid var(--border);">
       <div class="flabel" style="margin-bottom:9px">Preview Laporan</div>
-      <div class="prev-text" id="rp-prev-text"></div>
+      <div class="prev-text" id="rp-prev-text" style="white-space: pre-wrap; font-family: monospace; font-size:13px; color:var(--text2);"></div>
     </div>
   </div>
 
-  <!-- KONTEN: STATISTIK KONTRIBUSI -->
   <div id="dash-statistik" class="dash-content">
     <div class="card">
-      <div class="kontrib-period">
-        <button class="kp-btn" onclick="setKontribPeriod('week',this)">Minggu Ini</button>
-        <button class="kp-btn" onclick="setKontribPeriod('month',this)">Bulan Ini</button>
-        <button class="kp-btn active" id="btn-kp-custom" onclick="setKontribPeriod('custom',this)">Tgl 21–20</button>
+      <div class="kontrib-period" style="display:flex; gap:8px; margin-bottom:16px; overflow-x:auto; padding-bottom:4px;">
+        <button class="pill kp-btn" onclick="setKontribPeriod('week',this)">Minggu Ini</button>
+        <button class="pill kp-btn" onclick="setKontribPeriod('month',this)">Bulan Ini</button>
+        <button class="pill kp-btn on" id="btn-kp-custom" onclick="setKontribPeriod('custom',this)">Tgl 21–20</button>
       </div>
-      <div class="fgrow" id="kp-custom-dates" style="display:none;margin-bottom:16px">
+      <div class="fgrow" id="kp-custom-dates" style="display:grid;margin-bottom:16px">
         <div><div class="flabel">Dari Tanggal</div><input type="date" class="finput" id="kp-start" onchange="renderKontribusi()"></div>
         <div><div class="flabel">Sampai Tanggal</div><input type="date" class="finput" id="kp-end" onchange="renderKontribusi()"></div>
       </div>
-      <div id="kontrib-chart" style="margin-top: 24px;"></div>
-      <div id="kontrib-total" style="margin-top:12px;font-size:12px;color:var(--text3);text-align:right;font-weight:500;"></div>
+      <div id="kontrib-chart" style="margin-top: 24px; display:flex; flex-direction:column; gap:12px;"></div>
+      <div id="kontrib-total" style="margin-top:16px;font-size:13px;color:var(--text3);text-align:right;font-weight:500;"></div>
     </div>
     <div class="card">
       <div class="card-title">Detail per Proyek</div>
       <div id="kontrib-detail"></div>
     </div>
   </div>
-
 </div>
 
-
-<!-- PAGE 2: PROYEK -->
 <div id="page-proyek" class="page">
   <div class="section-header">
     <div><div class="section-title">Daftar Proyek</div></div>
@@ -479,9 +412,12 @@ body.public-view .sk-table td:last-child {
     <div class="frow"><div class="flabel">Nama Proyek</div><input class="finput" id="pj-name" placeholder="Nama Proyek GIS"></div>
     <div class="fgrow">
       <div><div class="flabel">Klien / Instansi</div><input class="finput" id="pj-client" placeholder="Pemda Blora"></div>
+      <div><div class="flabel">PIC / Tim Utama</div><input class="finput" id="pj-pic" placeholder="Misal: Sigit, Dina"></div>
+    </div>
+    <div class="fgrow">
+      <div><div class="flabel">Link Repository (opsional)</div><input class="finput" id="pj-repo" placeholder="https://drive.google.com/..."></div>
       <div><div class="flabel">Deadline</div><input class="finput" type="date" id="pj-deadline"></div>
     </div>
-    <div class="frow"><div class="flabel">Link Repository / Drive (opsional)</div><input class="finput" id="pj-repo" placeholder="https://drive.google.com/... atau github.com/..."></div>
     <div class="frow">
       <div class="flabel">Status</div>
       <div class="pill-row" id="pj-status">
@@ -527,8 +463,6 @@ body.public-view .sk-table td:last-child {
   <div id="proj-list" class="grid-container"></div>
 </div>
 
-
-<!-- PAGE 3: TO-DO -->
 <div id="page-todo" class="page">
   <div class="section-header">
     <div><div class="section-title">Tugas / To-Do</div></div>
@@ -543,7 +477,10 @@ body.public-view .sk-table td:last-child {
     <div class="frow"><div class="flabel">Deskripsi Tugas</div><input class="finput" id="td-text" placeholder="contoh: Analisis isochrone Banjarmasin"></div>
     <div class="fgrow">
       <div><div class="flabel">Proyek</div><select class="finput" id="td-proj"><option value="">— Pilih —</option></select></div>
-      <div><div class="flabel">Deadline</div><input class="finput" type="date" id="td-date"></div>
+      <div><div class="flabel">PIC / Assignee</div><input class="finput" id="td-pic" placeholder="Misal: Budi"></div>
+    </div>
+    <div class="frow">
+      <div class="flabel">Deadline</div><input class="finput" type="date" id="td-date" style="max-width:300px">
     </div>
     <div class="frow">
       <div class="flabel">Prioritas</div>
@@ -572,8 +509,6 @@ body.public-view .sk-table td:last-child {
   <div id="todo-kanban" class="kanban-board" style="display:none;"></div>
 </div>
 
-
-<!-- PAGE 4: SPATIAL KIT -->
 <div id="page-spatial" class="page">
   <div class="section-header">
     <div>
@@ -589,11 +524,10 @@ body.public-view .sk-table td:last-child {
     </div>
   </div>
 
-  <div class="sk-desc-box">
+  <div class="sk-desc-box" style="font-size:13px; color:var(--text2); margin-bottom:24px; padding:16px; background:var(--card-bg); border-radius:var(--radius); border:0.5px solid var(--border);">
     <strong>Spatial Kit</strong> adalah sekumpulan alat, plugin, atau perangkat lunak yang digunakan untuk melakukan analisis spasial, pemrosesan data geospasial, dan visualisasi peta dalam aplikasi GIS.
   </div>
 
-  <!-- FORM SPATIAL KIT -->
   <div class="card" id="add-kit-card" style="display:none; background:var(--card-bg); border: 1.5px solid var(--purple-mid); box-shadow:0 8px 24px rgba(0,0,0,0.08); margin-bottom: 24px;">
     <div class="card-title" style="color: var(--purple-mid);">Form Entri Spatial Kit</div>
     <div class="fgrow">
@@ -626,7 +560,6 @@ body.public-view .sk-table td:last-child {
     </div>
   </div>
 
-  <!-- TABLE SPATIAL KIT -->
   <div class="sk-table-wrapper">
     <table class="sk-table">
       <thead>
@@ -639,17 +572,14 @@ body.public-view .sk-table td:last-child {
           <th>Date</th>
           <th>Status</th>
           <th>Output</th>
-          <th>Opsi</th>
+          <th style="text-align:right;">Opsi</th>
         </tr>
       </thead>
-      <tbody id="kit-tbody">
-        <!-- Diisi oleh JS -->
-      </tbody>
+      <tbody id="kit-tbody"></tbody>
     </table>
   </div>
 </div>
 
-<!-- PAGE 5: PRESENSI / ABSEN -->
 <div id="page-presensi" class="page">
   <div class="section-header">
     <div><div class="section-title">Presensi & Aktivitas</div></div>
@@ -661,7 +591,6 @@ body.public-view .sk-table td:last-child {
   </div>
 
   <div id="tab-log" class="abs-input-content active">
-    <!-- FORM INPUT LOG AKTIVITAS -->
     <div class="card" style="background:var(--bg-body); box-shadow:none; border: 1px solid var(--border);">
       <div class="card-title" style="margin-bottom: 12px;">Catat Aktivitas Baru</div>
       <div class="fgrow">
@@ -682,7 +611,6 @@ body.public-view .sk-table td:last-child {
   </div>
 
   <div id="tab-pomo" class="abs-input-content" style="display:none;">
-    <!-- POMODORO COMPACT -->
     <div class="card" style="text-align: center; padding: 24px 16px; border: 1.5px dashed var(--red-bg);">
       <div class="card-title" style="justify-content: center; margin-bottom: 20px; color: var(--red-mid); font-size: 16px;">🍅 Pomodoro & Auto-Catat</div>
       <div class="pill-row" style="justify-content: center; margin-bottom: 24px;" id="pomo-modes">
@@ -702,13 +630,39 @@ body.public-view .sk-table td:last-child {
     </div>
   </div>
 
+  <!-- Rangkuman Kalender -->
+  <div class="card" style="margin-top: 24px; margin-bottom: 16px; border: 0.5px solid var(--border); box-shadow: var(--card-shadow); padding-bottom:12px;">
+    <div class="card-title" style="display: flex; justify-content: space-between; cursor: pointer; margin-bottom:0; align-items:center;" onclick="toggleCalendarSummary()">
+        <span style="display:flex;align-items:center;gap:8px;">📅 Rangkuman Kehadiran <span id="cal-month-label" style="font-size:12px; color:var(--blue-mid); background:var(--blue-bg); padding:2px 8px; border-radius:10px;">Bulan Ini</span></span>
+        <span id="cal-toggle-icon" style="transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); color:var(--text3); display:inline-block;">▼</span>
+    </div>
+    <div id="cal-summary-body" style="display: none; margin-top: 16px; animation: slideDown 0.2s ease;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <button class="btn-action" style="background:var(--border2);" onclick="moveCalMonth(-1)">‹</button>
+            <div id="cal-month-title" style="font-weight:600; font-size:14px; color:var(--text);">Bulan</div>
+            <button class="btn-action" style="background:var(--border2);" onclick="moveCalMonth(1)">›</button>
+        </div>
+        <div id="cal-grid" style="display:grid; grid-template-columns:repeat(7, 1fr); gap:6px; text-align:center; font-size:13px;">
+            <!-- Rendered by JS -->
+        </div>
+        <div style="display:flex; gap:16px; margin-top:20px; font-size:12px; justify-content:center; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:6px; font-weight:500; color:var(--text2);"><div style="width:12px;height:12px;border-radius:3px;background:var(--teal-mid);"></div> Talenta</div>
+            <div style="display:flex; align-items:center; gap:6px; font-weight:500; color:var(--text2);"><div style="width:12px;height:12px;border-radius:3px;background:var(--amber-mid);"></div> Libur</div>
+            <div style="display:flex; align-items:center; gap:6px; font-weight:500; color:var(--text2);"><div style="width:12px;height:12px;border-radius:3px;background:var(--blue-bg);border:1px solid var(--blue-mid);"></div> Hari Ini</div>
+        </div>
+    </div>
+  </div>
+
   <div>
-    <div class="abs-date-head" style="margin-top: 32px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
+    <div class="abs-date-head" style="margin-top: 24px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
       <div class="abs-date-label" id="abs-date-label">—</div>
-      <div class="abs-nav">
-        <button class="abs-nav-btn" onclick="haptic(10); moveAbsWeek(-1)">‹ Mg</button>
-        <button class="abs-nav-btn" onclick="haptic(10); moveAbsWeek(0)">Mg Ini</button>
-        <button class="abs-nav-btn" onclick="haptic(10); moveAbsWeek(1)">Mg ›</button>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+        <button class="btn btn-outline" style="padding:4px 10px; font-size:12px; height:32px; border-radius:8px;" onclick="toggleAllDays()" id="btn-toggle-all-days">Sembunyikan Semua</button>
+        <div class="abs-nav">
+          <button class="abs-nav-btn" onclick="haptic(10); moveAbsWeek(-1)">‹ Mg</button>
+          <button class="abs-nav-btn" onclick="haptic(10); moveAbsWeek(0)">Mg Ini</button>
+          <button class="abs-nav-btn" onclick="haptic(10); moveAbsWeek(1)">Mg ›</button>
+        </div>
       </div>
     </div>
     <div id="abs-list"></div>
@@ -718,43 +672,47 @@ body.public-view .sk-table td:last-child {
 </main>
 </div>
 
-<!-- CUSTOM MODALS & TOAST -->
 <div class="toast" id="toast"></div>
+
+<!-- Modal Konfirmasi iOS Style -->
 <div class="c-modal-overlay" id="custom-modal">
   <div class="c-modal-box">
-    <div id="cm-msg" style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:24px;"></div>
+    <div class="c-modal-title">Konfirmasi</div>
+    <div class="c-modal-msg" id="cm-msg">Apakah Anda yakin ingin menghapus ini?</div>
     <div style="display:flex;gap:12px;justify-content:center;">
-      <button class="btn btn-outline" id="cm-btn-no">Batal</button>
-      <button class="btn btn-primary" id="cm-btn-yes" style="background:var(--red-mid);">Hapus</button>
+      <button class="btn btn-outline" id="cm-btn-no" style="flex:1;">Batal</button>
+      <button class="btn btn-primary" id="cm-btn-yes" style="flex:1; background:var(--red-mid); border:none;">Hapus</button>
     </div>
   </div>
 </div>
 
-<!-- SHARE MODAL UNTUK SPATIAL KIT -->
 <div class="c-modal-overlay" id="share-modal" onclick="closeShareModal()">
   <div class="c-modal-box" onclick="event.stopPropagation()">
-    <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;">Bagikan Spatial Kit</div>
-    <div style="font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.4;">Pilih bagaimana Anda ingin membagikan data Spatial Kit ini ke orang lain.</div>
-    
+    <div class="c-modal-title">Bagikan Spatial Kit</div>
+    <div class="c-modal-msg">Pilih bagaimana Anda ingin membagikan data Spatial Kit ini ke orang lain.</div>
     <div style="display:flex;flex-direction:column;gap:12px;">
       <button class="btn btn-primary" onclick="copyPublicLink()" style="padding:12px; font-size:14px; width:100%; justify-content:center;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-        Salin Link Tampilan Web
+        Salin Link Web
       </button>
-      
       <button class="btn btn-outline" onclick="shareSpatialKitText()" style="padding:12px; font-size:14px; width:100%; justify-content:center;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-        Salin Format Teks (WA)
+        Salin Format Teks
       </button>
     </div>
   </div>
 </div>
+
+<!-- SVG Icons Constants -->
+<script>
+const iconEdit = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`;
+const iconDel = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>`;
+</script>
 
 <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database-compat.js"></script>
 
 <script>
-// --- KONFIGURASI FIREBASE ---
 const firebaseConfig = {
   apiKey: "AIzaSyAbuxXjRygUR0fRvBZASAn54MyvSxVsn5Q",
   authDomain: "gis-projectmanager1.firebaseapp.com",
@@ -767,7 +725,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// --- STATE & VARIABEL ---
 let data = {projects:[], todos:[], spatialKits:[], Presensi:[], talenta:{}, libur:{}};
 let uid=Date.now();
 let editKitId=null, editProjId=null, editTodoId=null, editAbsId=null;
@@ -775,12 +732,12 @@ let projFilter='all', todoFilter='all', kontribPeriod='custom';
 let isPublicView = false;
 let projOpen={}, dayCollapsed={};
 let isKanbanView = false; 
+let allDaysCollapsed = false;
 
 function getMonday(d){d=new Date(d);var day=d.getDay(),diff=d.getDate()-day+(day==0?-6:1);return new Date(d.setDate(diff))}
 let currentWeekStart=getMonday(new Date());
 currentWeekStart.setHours(0,0,0,0);
 
-// --- UTILITIES ---
 function haptic(pattern = 15) { if(navigator.vibrate) { try { navigator.vibrate(pattern); } catch(e){} } }
 function gid(){return 'i'+(uid++)}
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
@@ -810,14 +767,6 @@ function toggleTheme() {
     toast(next === 'dark' ? 'Mode Gelap Aktif 🌙' : 'Mode Terang Aktif ☀️');
 }
 
-function toggleStatDetail(id) {
-    haptic(10);
-    const el = document.getElementById(id);
-    if(!el) return;
-    el.style.display = el.style.display === 'block' ? 'none' : 'block';
-}
-
-// --- FIREBASE SYNC ---
 async function save(){ try{await db.ref("gpm_data/main_state").set(data)}catch(e){console.error(e);toast('Gagal sinkronisasi!')} }
 async function loadData(){
   db.ref("gpm_data/main_state").on('value',snap=>{
@@ -841,7 +790,7 @@ async function loadData(){
         if(p==='proyek') renderProyek();
         if(p==='todo') { fillProjSelects(); renderTodo(); updateTodoBadge(); }
         if(p==='spatial') renderSpatialKit();
-        if(p==='presensi') { fillProjSelects(); renderPresensi(); }
+        if(p==='presensi') { fillProjSelects(); renderPresensi(); if(calSummaryOpen) renderCalendarSummary(); }
       }
       updateTodoBadge();
     }
@@ -860,7 +809,7 @@ function goPage(p){
   if(p==='proyek') renderProyek();
   if(p==='todo') { fillProjSelects(); renderTodo(); updateTodoBadge(); }
   if(p==='spatial') renderSpatialKit();
-  if(p==='presensi') { fillProjSelects(); renderPresensi(); }
+  if(p==='presensi') { fillProjSelects(); renderPresensi(); if(calSummaryOpen) renderCalendarSummary(); }
 }
 
 function switchDashTab(tabId, btn) {
@@ -890,9 +839,6 @@ function moveItem(type, id, dir, event) {
   save(); 
 }
 
-// ======================
-// FITUR: SPATIAL KIT (SHARE & PUBLIC VIEW)
-// ======================
 function openShareModal() { haptic(15); document.getElementById('share-modal').classList.add('show'); }
 function closeShareModal() { haptic(10); document.getElementById('share-modal').classList.remove('show'); }
 
@@ -901,10 +847,10 @@ function copyPublicLink() {
   const baseUrl = window.location.origin + window.location.pathname;
   const shareUrl = baseUrl + '?view=spatial-public';
   if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(shareUrl).then(() => { closeShareModal(); toast('Link Tampilan Web berhasil disalin!'); }).catch(() => toast('Gagal menyalin link.'));
+    navigator.clipboard.writeText(shareUrl).then(() => { closeShareModal(); toast('Link berhasil disalin!'); }).catch(() => toast('Gagal menyalin link.'));
   } else {
     const ta = document.createElement('textarea'); ta.value = shareUrl; document.body.appendChild(ta);
-    ta.select(); document.execCommand('copy'); document.body.removeChild(ta); closeShareModal(); toast('Link Tampilan Web berhasil disalin!');
+    ta.select(); document.execCommand('copy'); document.body.removeChild(ta); closeShareModal(); toast('Link berhasil disalin!');
   }
 }
 
@@ -924,10 +870,10 @@ function shareSpatialKitText() {
   });
 
   if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(txt).then(() => { closeShareModal(); toast('Format Teks disalin ke Clipboard!'); }).catch(() => toast('Gagal menyalin.'));
+    navigator.clipboard.writeText(txt).then(() => { closeShareModal(); toast('Format Teks disalin!'); }).catch(() => toast('Gagal menyalin.'));
   } else {
     const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta);
-    ta.select(); document.execCommand('copy'); document.body.removeChild(ta); closeShareModal(); toast('Format Teks disalin ke Clipboard!');
+    ta.select(); document.execCommand('copy'); document.body.removeChild(ta); closeShareModal(); toast('Format Teks disalin!');
   }
 }
 
@@ -981,24 +927,25 @@ function renderSpatialKit() {
   tbody.innerHTML = data.spatialKits.map(k => {
     let outputHtml = k.output ? `<a href="${k.output.startsWith('http') ? esc(k.output) : 'https://'+esc(k.output)}" target="_blank" style="color:var(--blue-mid); text-decoration:underline;">Lihat Output</a>` : '—';
     let statusCls = k.status === 'Done' ? 'b-selesai' : k.status === 'In Progress' ? 'b-aktif' : 'b-hold';
-    let softHtml = (k.software || '—').split(',').map(s => `<span class="soft-pill" style="margin:2px;">${esc(s.trim())}</span>`).join('');
+    let softHtml = (k.software || '—').split(',').map(s => `<span class="soft-pill" style="margin:2px; font-size:12px; background:var(--bg-body); padding:2px 6px; border-radius:4px; border:0.5px solid var(--border2); display:inline-block;">${esc(s.trim())}</span>`).join('');
     return `
       <tr>
         <td><div class="sk-focus"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-top:2px; flex-shrink:0;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg><span>${esc(k.focus)}</span></div></td>
         <td>${esc(k.judul || '—')}</td><td>${softHtml}</td><td class="sk-fungsi">${esc(k.fungsi || '—')}</td><td>${esc(k.scope || '—')}</td>
         <td>${k.date ? fmtDate(k.date) : '—'}</td><td><span class="badge ${statusCls}">${k.status}</span></td><td>${outputHtml}</td>
-        <td><div class="sk-actions"><button class="edit-btn" style="padding:4px 8px;" onclick="editSpatialKit('${k.id}')">✎</button><button class="del-btn" style="padding:4px 8px;" onclick="delSpatialKit('${k.id}')">×</button></div></td>
+        <td style="text-align:right;">
+          <div class="action-group" style="justify-content:flex-end;">
+            <button class="btn-action edit" title="Edit" onclick="editSpatialKit('${k.id}')">${iconEdit}</button>
+            <button class="btn-action delete" title="Hapus" onclick="delSpatialKit('${k.id}')">${iconDel}</button>
+          </div>
+        </td>
       </tr>`;
   }).join('');
 }
 
-
-// ======================
-// FITUR: PROYEK
-// ======================
 function resetProyekForm(){
   editProjId=null;
-  ['pj-name','pj-client','pj-repo'].forEach(id=>document.getElementById(id).value='');
+  ['pj-name','pj-client','pj-repo','pj-pic'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('pj-deadline').value=''; document.getElementById('pj-prog').value=0; document.getElementById('pj-prog-lbl').textContent='0%';
   document.querySelector('#add-proyek-card .btn-primary').textContent='Simpan Proyek'; document.getElementById('add-proyek-card').style.display='none';
 }
@@ -1006,8 +953,9 @@ function resetProyekForm(){
 function editProyek(id){
   haptic(15); const p=data.projects.find(x=>x.id===id);if(!p)return; editProjId=id;
   document.getElementById('pj-name').value=p.name||''; document.getElementById('pj-client').value=p.client||'';
-  document.getElementById('pj-deadline').value=p.deadline||''; document.getElementById('pj-repo').value=p.repo||'';
-  document.getElementById('pj-prog').value=p.progress||0; document.getElementById('pj-prog-lbl').textContent=(p.progress||0)+'%';
+  document.getElementById('pj-pic').value=p.pic||''; document.getElementById('pj-deadline').value=p.deadline||''; 
+  document.getElementById('pj-repo').value=p.repo||''; document.getElementById('pj-prog').value=p.progress||0; 
+  document.getElementById('pj-prog-lbl').textContent=(p.progress||0)+'%';
   
   document.querySelectorAll('#pj-status .pill').forEach(el=>el.classList.remove('on'));
   let sp=document.querySelector(`#pj-status .pill[data-v="${p.status}"]`); if(sp)sp.classList.add('on'); else document.querySelector('#pj-status .pill').classList.add('on');
@@ -1024,11 +972,11 @@ function addProyek(){
   
   if(editProjId){
     const p=data.projects.find(x=>x.id===editProjId);
-    if(p){p.name=name;p.client=document.getElementById('pj-client').value;p.deadline=document.getElementById('pj-deadline').value;p.repo=document.getElementById('pj-repo').value;p.status=sv;p.color=getPillVal('pj-color');p.progress=pv}
+    if(p){p.name=name;p.client=document.getElementById('pj-client').value;p.pic=document.getElementById('pj-pic').value;p.deadline=document.getElementById('pj-deadline').value;p.repo=document.getElementById('pj-repo').value;p.status=sv;p.color=getPillVal('pj-color');p.progress=pv}
     toast('Proyek diperbarui!');
   }else{
     const newId = gid();
-    data.projects.push({id:newId,name,client:document.getElementById('pj-client').value,deadline:document.getElementById('pj-deadline').value,repo:document.getElementById('pj-repo').value,status:sv,color:getPillVal('pj-color')||'var(--teal-mid)',progress:pv,createdAt:Date.now()});
+    data.projects.push({id:newId,name,client:document.getElementById('pj-client').value,pic:document.getElementById('pj-pic').value,deadline:document.getElementById('pj-deadline').value,repo:document.getElementById('pj-repo').value,status:sv,color:getPillVal('pj-color')||'var(--teal-mid)',progress:pv,createdAt:Date.now()});
     projOpen[newId] = true; toast('Proyek ditambahkan!');
   }
   save(); resetProyekForm(); renderProyek(); fillProjSelects();
@@ -1057,7 +1005,7 @@ function delProyek(id){
 }
 
 function setProjFilter(el){ haptic(10); projFilter=el.dataset.f; document.querySelectorAll('#proj-filter-row .ftag').forEach(t=>t.classList.remove('active')); el.classList.add('active'); renderProyek(); }
-function toggleProj(id, event){ if(event && event.target.tagName.match(/BUTTON|SELECT|INPUT|A/i)) return; haptic(10); projOpen[id]=!projOpen[id]; renderProyek(); }
+function toggleProj(id, event){ if(event && event.target.tagName.match(/BUTTON|SELECT|INPUT|A|SVG|PATH/i)) return; haptic(10); projOpen[id]=!projOpen[id]; renderProyek(); }
 
 function renderProyek(){
   const el=document.getElementById('proj-list');
@@ -1065,7 +1013,7 @@ function renderProyek(){
   
   let list=data.projects.filter(p=>{
     const matchF = projFilter==='all' || p.status===projFilter;
-    const matchS = p.name.toLowerCase().includes(search) || (p.client||'').toLowerCase().includes(search);
+    const matchS = p.name.toLowerCase().includes(search) || (p.client||'').toLowerCase().includes(search) || (p.pic||'').toLowerCase().includes(search);
     return matchF && matchS;
   });
 
@@ -1081,18 +1029,20 @@ function renderProyek(){
       <div class="pj-card-header" onclick="toggleProj('${p.id}', event)">
         <div style="flex:1;min-width:0">
           <div class="pj-name">${esc(p.name)}</div>
-          <div class="pj-meta">${esc(p.client||'—')}${p.deadline?' · '+fmtDate(p.deadline):''}</div>
+          <div class="pj-meta">${esc(p.client||'—')}${p.pic?` · <strong>PIC: ${esc(p.pic)}</strong>`:''}${p.deadline?' · '+fmtDate(p.deadline):''}</div>
           <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:10px;align-items:center">
             <span class="badge ${BADGE[p.status]||'b-aktif'}">${p.status}</span>
             ${todos.length?`<span class="badge" style="background:var(--bg-body);color:var(--text2)">${doneT}/${todos.length} tugas</span>`:''}
             <span style="font-size:12px;color:var(--text3);font-weight:700;margin-left:auto;letter-spacing:0.5px" id="pp-head-${p.id}">${ep}%</span>
           </div>
         </div>
-        <div class="action-box">
-          <button class="btn-icon up-down" onclick="moveItem('proj','${p.id}',-1, event)">▲</button>
-          <button class="btn-icon up-down" onclick="moveItem('proj','${p.id}',1, event)">▼</button>
+        <div class="action-box" style="display:flex; flex-direction:column; align-items:center;">
+          <div style="display:flex; flex-direction:column; background:var(--bg-body); border-radius:12px; border:0.5px solid var(--border2); overflow:hidden; margin-bottom:8px;">
+            <button class="btn-action" style="border-radius:0; height:24px; color:var(--text3);" onclick="moveItem('proj','${p.id}',-1, event)" title="Naik">▲</button>
+            <button class="btn-action" style="border-radius:0; height:24px; color:var(--text3); border-top:0.5px solid var(--border2);" onclick="moveItem('proj','${p.id}',1, event)" title="Turun">▼</button>
+          </div>
+          <div class="pj-toggle-icon" style="transform:${isOpen?'rotate(180deg)':'rotate(0deg)'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
         </div>
-        <div class="pj-toggle-icon" style="transform:${isOpen?'rotate(180deg)':'rotate(0deg)'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
       </div>
       
       <div class="pj-body ${isOpen?'open':''}">
@@ -1109,30 +1059,30 @@ function renderProyek(){
           <input class="finput" style="font-size:13px; background:var(--bg-body);" placeholder="https://..." value="${esc(p.repo||'')}" oninput="setRepoInline('${p.id}',this.value)">
           ${p.repo?`<a class="repo-link" href="${esc(p.repo)}" target="_blank" rel="noopener"><svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12l10-10M6 2h6v6"/></svg>${esc(p.repo.replace(/https?:\/\//,'').substring(0,40))}</a>`:''}
         </div>
-        <div class="pj-footer">
+        <div class="pj-footer" style="display:flex; align-items:center; gap:12px;">
           <select class="finput" style="flex:1; padding: 6px 12px; border-radius:8px; font-weight:500;" onchange="setStatus('${p.id}',this.value)">
             <option ${p.status==='Aktif'?'selected':''}>Status: Aktif</option><option ${p.status==='Urgent'?'selected':''}>Status: Urgent</option>
             <option ${p.status==='On Hold'?'selected':''}>Status: On Hold</option><option ${p.status==='Selesai'?'selected':''}>Status: Selesai</option>
           </select>
-          <div style="display:flex; gap:8px; margin-left:auto;"><button class="edit-btn" onclick="editProyek('${p.id}')">Edit</button><button class="del-btn" onclick="delProyek('${p.id}')">Hapus</button></div>
+          <div class="action-group" style="margin-left:auto;">
+            <button class="btn-action edit" title="Edit Proyek" onclick="editProyek('${p.id}')">${iconEdit}</button>
+            <button class="btn-action delete" title="Hapus Proyek" onclick="delProyek('${p.id}')">${iconDel}</button>
+          </div>
         </div>
       </div>
     </div>`
   }).join('');
 }
 
-
-// ======================
-// FITUR: TO-DO & KANBAN
-// ======================
 function resetTodoForm(){
-  editTodoId=null; document.getElementById('td-text').value=''; document.getElementById('td-proj').value=''; document.getElementById('td-date').value='';
+  editTodoId=null; document.getElementById('td-text').value=''; document.getElementById('td-proj').value=''; document.getElementById('td-pic').value=''; document.getElementById('td-date').value='';
   document.querySelector('#add-todo-card .btn-primary').textContent='Simpan Tugas'; document.getElementById('add-todo-card').style.display='none';
 }
 
 function editTodo(id){
   haptic(15); const t=data.todos.find(x=>x.id===id);if(!t)return; editTodoId=id;
-  document.getElementById('td-text').value=t.text||''; document.getElementById('td-proj').value=t.projId||''; document.getElementById('td-date').value=t.deadline||'';
+  document.getElementById('td-text').value=t.text||''; document.getElementById('td-proj').value=t.projId||''; 
+  document.getElementById('td-pic').value=t.pic||''; document.getElementById('td-date').value=t.deadline||'';
   document.querySelectorAll('#td-prio .pill').forEach(el=>el.classList.remove('on'));
   const pp=document.querySelector(`#td-prio .pill[data-v="${t.priority}"]`); if(pp)pp.classList.add('on');
   document.getElementById('add-todo-card').style.display='block'; document.querySelector('#add-todo-card .btn-primary').textContent='Update Tugas';
@@ -1143,13 +1093,14 @@ function addTodo(){
   haptic(15); const text=document.getElementById('td-text').value.trim(); if(!text){toast('Isi tugas terlebih dahulu!');return}
   const projId=document.getElementById('td-proj').value; const proj=data.projects.find(p=>p.id===projId);
   const deadline=document.getElementById('td-date').value; const priority=getPillVal('td-prio')||'med';
+  const pic = document.getElementById('td-pic').value.trim();
   
   if(editTodoId){
     const t=data.todos.find(x=>x.id===editTodoId);
-    if(t){t.text=text;t.projId=projId;t.projName=proj?proj.name:'';t.deadline=deadline;t.priority=priority}
+    if(t){t.text=text;t.projId=projId;t.projName=proj?proj.name:'';t.pic=pic;t.deadline=deadline;t.priority=priority}
     toast('To-do diperbarui!');
   }else{
-    data.todos.push({id:gid(),text,projId,projName:proj?proj.name:'',deadline,priority,done:false,doneAt:null,createdAt:Date.now()});
+    data.todos.push({id:gid(),text,projId,projName:proj?proj.name:'',pic:pic,deadline,priority,done:false,doneAt:null,createdAt:Date.now()});
     toast('To-do ditambahkan!');
   }
   save(); resetTodoForm(); renderTodo(); updateTodoBadge();
@@ -1171,14 +1122,17 @@ function toggleKanban() {
 function renderKanbanCard(t, today) {
     const pc=t.priority==='high'?'pr-high':t.priority==='low'?'pr-low':'pr-med'; const late=!t.done&&t.deadline&&t.deadline<today;
     return `
-    <div class="card" style="padding: 14px; margin-bottom: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 0.5px solid var(--border2);">
+    <div class="card" style="padding: 14px; margin-bottom: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 0.5px solid var(--border2); transition:border 0.2s;">
         <div style="font-weight: 400; font-size: 14px; margin-bottom: 10px; line-height: 1.4; color: var(--text); ${t.done?'text-decoration: line-through; opacity:0.5;':''} word-break: break-word;">${esc(t.text)}</div>
         <div class="todo-meta" style="margin-top:0; margin-bottom: 12px;">
-           <div class="prio-dot ${pc}" style="margin-top:2px;"></div>${t.projName?`<span class="meta-proj">${esc(t.projName)}</span>`:''}${t.deadline?`<span class="meta-pill">${fmtDate(t.deadline)}</span>`:''}${late?`<span class="meta-late">Terlambat</span>`:''}
+           <div class="prio-dot ${pc}" style="margin-top:2px;"></div>${t.projName?`<span class="meta-proj">${esc(t.projName)}</span>`:''}${t.pic?`<span class="meta-pic">👤 ${esc(t.pic)}</span>`:''}${t.deadline?`<span class="meta-pill">${fmtDate(t.deadline)}</span>`:''}${late?`<span class="meta-late">Terlambat</span>`:''}
         </div>
         <div style="display:flex; justify-content: space-between; align-items:center;">
            <div class="chk ${t.done?'on':''}" onclick="toggleTodo('${t.id}')"></div>
-           <div style="display:flex; gap:4px;"><button class="btn-icon" style="width:28px;height:28px;font-size:12px;" onclick="editTodo('${t.id}')">✎</button><button class="btn-icon" style="width:28px;height:28px;font-size:14px;color:var(--red-mid);" onclick="delTodo('${t.id}')">×</button></div>
+           <div class="action-group">
+             <button class="btn-action edit" title="Edit" onclick="editTodo('${t.id}')">${iconEdit}</button>
+             <button class="btn-action delete" title="Hapus" onclick="delTodo('${t.id}')">${iconDel}</button>
+           </div>
         </div>
     </div>`;
 }
@@ -1221,19 +1175,17 @@ function renderTodo(){
       <div class="todo-body">
         <div class="todo-text">${esc(t.text)}</div>
         <div class="todo-meta">
-          <div class="prio-dot ${pc}" style="margin-top:2px; margin-right:4px;"></div>${t.projName?`<span class="meta-proj">${esc(t.projName)}</span>`:''}${t.deadline?`<span class="meta-pill">${fmtDate(t.deadline)}</span>`:''}${late?`<span class="meta-late">Terlambat</span>`:''}
+          <div class="prio-dot ${pc}" style="margin-top:2px; margin-right:4px;"></div>${t.projName?`<span class="meta-proj">${esc(t.projName)}</span>`:''}${t.pic?`<span class="meta-pic">👤 ${esc(t.pic)}</span>`:''}${t.deadline?`<span class="meta-pill">${fmtDate(t.deadline)}</span>`:''}${late?`<span class="meta-late">Terlambat</span>`:''}
         </div>
       </div>
-      <div style="display:flex; flex-direction:column; gap:4px; align-items:flex-end;">
-          <div style="display:flex; gap:4px"><button class="edit-btn" style="padding:4px 8px" onclick="editTodo('${t.id}')">Edit</button><button class="del-btn" style="padding:4px 8px" onclick="delTodo('${t.id}')">×</button></div>
+      <div class="action-group" style="align-self:center;">
+        <button class="btn-action edit" title="Edit" onclick="editTodo('${t.id}')">${iconEdit}</button>
+        <button class="btn-action delete" title="Hapus" onclick="delTodo('${t.id}')">${iconDel}</button>
       </div>
     </div>`
   }).join('');
 }
 
-// ======================
-// FITUR: PRESENSI / ABSEN
-// ======================
 function switchAbsInputTab(tabId, btn) {
   haptic(10); btn.parentElement.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active');
   document.getElementById('tab-log').style.display = 'none'; document.getElementById('tab-pomo').style.display = 'none'; document.getElementById(tabId).style.display = 'block';
@@ -1253,6 +1205,19 @@ function editPresensi(id){
   document.getElementById('btn-submit-abs').textContent='Update Aktivitas'; document.getElementById('btn-cancel-abs').style.display='block'; window.scrollTo({top:0,behavior:'smooth'});
 }
 
+function toggleAllDays() {
+    haptic(10);
+    allDaysCollapsed = !allDaysCollapsed;
+    const btn = document.getElementById('btn-toggle-all-days');
+    if(btn) btn.textContent = allDaysCollapsed ? 'Tampilkan Semua' : 'Sembunyikan Semua';
+
+    for(let i=0; i<7; i++){
+        let d = new Date(currentWeekStart); d.setDate(d.getDate()+i);
+        dayCollapsed[ds(d)] = allDaysCollapsed;
+    }
+    renderPresensi();
+}
+
 function moveAbsWeek(d){
   if(d===0)currentWeekStart=getMonday(new Date());
   else currentWeekStart.setDate(currentWeekStart.getDate()+(d*7));
@@ -1263,6 +1228,24 @@ function toggleDay(dStr){
   haptic(10); dayCollapsed[dStr]=!dayCollapsed[dStr];
   const body=document.getElementById('day-body-'+dStr); const toggle=document.getElementById('day-toggle-'+dStr);
   if(body)body.classList.toggle('hidden',dayCollapsed[dStr]); if(toggle)toggle.classList.toggle('collapsed',dayCollapsed[dStr]);
+}
+
+function toggleTalenta(dStr, e) {
+  if (e) e.stopPropagation();
+  haptic(10);
+  if (!data.talenta) data.talenta = {};
+  data.talenta[dStr] = !data.talenta[dStr];
+  save(); renderPresensi();
+  if (calSummaryOpen) renderCalendarSummary();
+}
+
+function toggleLibur(dStr, e) {
+  if (e) e.stopPropagation();
+  haptic(10);
+  if (!data.libur) data.libur = {};
+  data.libur[dStr] = !data.libur[dStr];
+  save(); renderPresensi();
+  if (calSummaryOpen) renderCalendarSummary();
 }
 
 function addPresensi(){
@@ -1283,6 +1266,108 @@ function addPresensi(){
 
 function delPresensi(id){ customConfirm('Hapus aktivitas ini?', () => { if(data.Presensi)data.Presensi=data.Presensi.filter(a=>a.id!==id); save(); renderPresensi(); toast('Dihapus'); }); }
 
+let calCurrentDate = new Date();
+let calSummaryOpen = false;
+
+function toggleCalendarSummary() {
+    haptic(10);
+    calSummaryOpen = !calSummaryOpen;
+    document.getElementById('cal-summary-body').style.display = calSummaryOpen ? 'block' : 'none';
+    document.getElementById('cal-toggle-icon').style.transform = calSummaryOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+    if(calSummaryOpen) renderCalendarSummary();
+}
+
+function moveCalMonth(dir) {
+    haptic(10);
+    calCurrentDate.setMonth(calCurrentDate.getMonth() + dir);
+    renderCalendarSummary();
+}
+
+function gotoDate(dStr) {
+    haptic(10);
+    const dateObj = new Date(dStr + 'T00:00:00');
+    currentWeekStart = getMonday(dateObj);
+    // Ensure the clicked day is open
+    dayCollapsed[dStr] = false;
+    renderPresensi();
+    
+    setTimeout(() => {
+        const dayBlock = document.getElementById('day-body-' + dStr);
+        if (dayBlock) {
+            dayBlock.parentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }, 100);
+}
+
+function renderCalendarSummary() {
+    const year = calCurrentDate.getFullYear();
+    const month = calCurrentDate.getMonth();
+    const todayStr = ds(new Date());
+
+    const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    document.getElementById('cal-month-title').textContent = `${monthNames[month]} ${year}`;
+    document.getElementById('cal-month-label').textContent = `${monthNames[month]}`;
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const startOffset = (firstDay === 0 ? 6 : firstDay - 1);
+
+    let html = `
+        <div style="font-weight:600; color:var(--text3); padding-bottom:8px;">Sn</div>
+        <div style="font-weight:600; color:var(--text3); padding-bottom:8px;">Sl</div>
+        <div style="font-weight:600; color:var(--text3); padding-bottom:8px;">Rb</div>
+        <div style="font-weight:600; color:var(--text3); padding-bottom:8px;">Km</div>
+        <div style="font-weight:600; color:var(--text3); padding-bottom:8px;">Jm</div>
+        <div style="font-weight:600; color:var(--text3); padding-bottom:8px;">Sb</div>
+        <div style="font-weight:600; color:var(--text3); padding-bottom:8px;">Mn</div>
+    `;
+
+    for(let i=0; i<startOffset; i++) {
+        html += `<div></div>`;
+    }
+
+    for(let d=1; d<=daysInMonth; d++) {
+        let currentDs = ds(new Date(year, month, d));
+        let isToday = currentDs === todayStr;
+        let isTalenta = data.talenta && data.talenta[currentDs];
+        let isLibur = data.libur && data.libur[currentDs];
+
+        let bg = 'transparent';
+        let color = 'var(--text)';
+        let border = '1.5px solid transparent';
+        let fw = '500';
+
+        if(isToday) {
+            border = '1.5px solid var(--blue-mid)';
+            bg = 'var(--blue-bg)';
+            color = 'var(--blue-mid)';
+            fw = '700';
+        }
+
+        if(isTalenta) {
+            bg = 'var(--teal-mid)';
+            color = '#fff';
+            border = '1.5px solid var(--teal-mid)';
+            fw = '600';
+        } else if(isLibur) {
+            bg = 'var(--amber-mid)';
+            color = '#fff';
+            border = '1.5px solid var(--amber-mid)';
+            fw = '600';
+        }
+
+        if(isTalenta && isLibur) {
+            bg = 'linear-gradient(135deg, var(--teal-mid) 50%, var(--amber-mid) 50%)';
+            color = '#fff';
+            border = '1.5px solid transparent';
+        }
+
+        html += `<div style="height:32px; display:flex; align-items:center; justify-content:center; border-radius:10px; background:${bg}; color:${color}; border:${border}; font-weight:${fw}; cursor:pointer;" onclick="gotoDate('${currentDs}')" title="${currentDs}">${d}</div>`;
+    }
+
+    document.getElementById('cal-grid').innerHTML = html;
+}
+
 function renderPresensi(){
   const we=new Date(currentWeekStart);we.setDate(we.getDate()+6);
   document.getElementById('abs-date-label').textContent=fmtDate(ds(currentWeekStart))+' – '+fmtDate(ds(we));
@@ -1293,22 +1378,37 @@ function renderPresensi(){
     let acts=data.Presensi.filter(a=>a.date===dStr).sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99')||a.createdAt-b.createdAt);
     
     let isToday=dStr===today; let isCollapsed=dayCollapsed[dStr]||false;
+    let isTalenta = data.talenta && data.talenta[dStr];
+    let isLibur = data.libur && data.libur[dStr];
+
     let actsHtml=acts.length?acts.map(a=>{
       let color=(data.projects.find(p=>p.id===a.projId)||{}).color||'var(--blue-mid)';
-      return`<div class="abs-entry"><style>#absl-${a.id}::before { background: ${color}; }</style><div id="absl-${a.id}"></div><div class="abs-time">${a.time||'—'}</div><div style="flex:1;min-width:0"><div class="abs-act">${esc(a.act)}</div>${a.projName?`<div class="abs-proj">${esc(a.projName)}</div>`:''}</div><div style="display:flex; flex-direction:column; gap:4px; align-items:flex-end;"><button class="edit-btn" style="padding:4px 8px" onclick="editPresensi('${a.id}')">Edit</button><button class="del-btn" style="padding:4px 8px" onclick="delPresensi('${a.id}')">×</button></div></div>`
+      return`<div class="abs-entry"><style>#absl-${a.id}::before { background: ${color}; }</style><div id="absl-${a.id}"></div><div class="abs-time">${a.time||'—'}</div><div style="flex:1;min-width:0"><div class="abs-act">${esc(a.act)}</div>${a.projName?`<div class="abs-proj" style="font-size:12px; color:var(--text3); margin-top:2px;">${esc(a.projName)}</div>`:''}</div><div class="action-group"><button class="btn-action edit" title="Edit" onclick="editPresensi('${a.id}')">${iconEdit}</button><button class="btn-action delete" title="Hapus" onclick="delPresensi('${a.id}')">${iconDel}</button></div></div>`
     }).join(''):`<div style="font-size:13px;color:var(--text3);padding:12px 0 16px;font-weight:500;">Tidak ada aktivitas</div>`;
 
     html+=`<div class="day-block">
       <div class="day-header" onclick="toggleDay('${dStr}')">
-        <div style="display:flex;align-items:center;gap:12px; flex:1">
-          <div style="display:flex;flex-direction:column;gap:2px">
+        
+        <div style="display:flex;align-items:flex-start;gap:12px; flex:1; flex-direction:column;">
+          <div style="display:flex;align-items:center;gap:8px; width:100%;">
             <div class="day-title" style="${isToday?'color:var(--blue-mid)':''}">${fmtDateLong(dStr)}${isToday?' <span class="badge b-selesai" style="margin-left:6px">Hari Ini</span>':''}</div>
-            <div class="day-count">${acts.length?`${acts.length} aktivitas`:'Kosong'}</div>
+            <div class="day-count" style="margin-left:auto;">${acts.length?`${acts.length} aktivitas`:'Kosong'}</div>
+          </div>
+          
+          <div style="display:flex; gap:8px; margin-top:4px;">
+            <div class="talenta-chip ${isTalenta ? 'on' : ''}" onclick="toggleTalenta('${dStr}', event)">
+              <div class="chk-sm ${isTalenta ? 'on' : ''}"></div><span class="talenta-label">Talenta</span>
+            </div>
+            <div class="libur-chip ${isLibur ? 'on' : ''}" onclick="toggleLibur('${dStr}', event)">
+              <div class="chk-sm libur ${isLibur ? 'on' : ''}"></div><span class="libur-label">Libur</span>
+            </div>
           </div>
         </div>
-        <div style="display:flex;align-items:center;gap:10px">
+
+        <div style="display:flex;align-items:center;gap:10px; margin-left:12px; height:100%;">
           <div class="day-toggle ${isCollapsed?'collapsed':''}" id="day-toggle-${dStr}"><svg width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,4 6,8 10,4"/></svg></div>
         </div>
+
       </div>
       <div class="day-body ${isCollapsed?'hidden':''}" id="day-body-${dStr}">${actsHtml}</div>
     </div>`;
@@ -1316,7 +1416,6 @@ function renderPresensi(){
   el.innerHTML=html;
 }
 
-// POMODORO LOGIC
 let pomoTime = 25 * 60; let pomoInterval = null; let isPomoRunning = false; let pomoCurrentMode = 'focus';
 
 function updatePomoDisplay() {
@@ -1366,9 +1465,6 @@ function togglePomo() {
 }
 function resetPomo() { haptic(10); let mins = 25; if(pomoCurrentMode === 'short') mins = 5; if(pomoCurrentMode === 'long') mins = 15; switchPomoLogic(pomoCurrentMode, mins); }
 
-// ======================
-// FITUR: LAPORAN 3P & AUTO-FILL
-// ======================
 function autoFillProgres() {
   haptic(15);
   const now = new Date(), day = now.getDay();
@@ -1406,10 +1502,6 @@ function copyLaporan(){
 function emailLaporan(){ haptic(10); const team=document.getElementById('rp-team').value||'Tim'; const date=document.getElementById('rp-date').value; window.open(`mailto:?subject=${encodeURIComponent('Laporan 3P '+team+' - '+(date?fmtDate(date):''))}&body=${encodeURIComponent(genRpText())}`,'_blank'); }
 function clearLaporan(){ customConfirm('Bersihkan semua isi laporan 3P?', () => { ['rp-progres','rp-problem','rp-plan'].forEach(id=>document.getElementById(id).value=''); document.getElementById('rp-prev').style.display='none'; toast('Laporan dibersihkan'); }); }
 
-
-// ======================
-// FITUR: STATISTIK KONTRIBUSI & DASHBOARD
-// ======================
 function getCustomPeriod21(){
   const now=new Date(); let startMonth, startYear, endMonth, endYear;
   if(now.getDate()>=21){ startMonth=now.getMonth();startYear=now.getFullYear(); endMonth=now.getMonth()+1;endYear=now.getFullYear(); if(endMonth>11){endMonth=0;endYear++} }
@@ -1418,7 +1510,7 @@ function getCustomPeriod21(){
 }
 
 function setKontribPeriod(p,btn){
-  haptic(10); kontribPeriod=p; document.querySelectorAll('.kp-btn').forEach(b=>b.classList.remove('active')); if(btn)btn.classList.add('active');
+  haptic(10); kontribPeriod=p; document.querySelectorAll('.kp-btn').forEach(b=>b.classList.remove('on')); if(btn)btn.classList.add('on');
   const customBox=document.getElementById('kp-custom-dates');
   if(p==='custom'){ customBox.style.display='grid'; const{s,e}=getCustomPeriod21(); document.getElementById('kp-start').value=s; document.getElementById('kp-end').value=e; }
   else{ customBox.style.display='none'; }
@@ -1432,10 +1524,22 @@ function getKontribRange(){
   }
   if(kontribPeriod==='month'){ const now=new Date(); return{start:new Date(now.getFullYear(),now.getMonth(),1,0,0,0,0).getTime(),end:new Date(now.getFullYear(),now.getMonth()+1,0,23,59,59,999).getTime()} }
   if(kontribPeriod==='custom'){
-    const s=document.getElementById('kp-start').value, e=document.getElementById('kp-end').value; if(!s||!e)return{start:0,end:Infinity};
+    const s=document.getElementById('kp-start').value, e=document.getElementById('kp-end').value; if(!s||e)return{start:0,end:Infinity};
     return{start:new Date(s+'T00:00:00').getTime(),end:new Date(e+'T23:59:59').getTime()}
   }
   return{start:0,end:Infinity}
+}
+
+function toggleKontribDetail(id, btn) {
+    haptic(10);
+    const el = document.getElementById('kd-' + id);
+    if (el.style.display === 'none') {
+        el.style.display = 'block';
+        btn.textContent = 'Sembunyikan';
+    } else {
+        el.style.display = 'none';
+        btn.textContent = 'Lihat Detail';
+    }
 }
 
 function renderKontribusi(){
@@ -1467,20 +1571,19 @@ function renderKontribusi(){
 
   chartEl.innerHTML = sorted.map(([id,score], i) => {
     const pct = finalPcts[i]; const name = getProjName(id); const color = getProjColor(id, i);
-    return `<div class="kontrib-row"><div class="kontrib-name" title="${esc(name)}">${esc(name)}</div><div class="kontrib-track"><div class="kontrib-fill" style="width:${pct}%;background:${color}"></div></div><div class="kontrib-pct" style="color:${color}">${pct}%</div></div>`;
+    return `<div style="display:flex; align-items:center; gap:12px;"><div style="width:30%; font-size:12px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${esc(name)}">${esc(name)}</div><div class="prog-bar" style="margin-bottom:0; flex:1;"><div class="prog-fill" style="width:${pct}%;background:${color}"></div></div><div style="width:36px; text-align:right; font-size:12px; font-weight:700; color:${color}">${pct}%</div></div>`;
   }).join('');
   
   const lbl = kontribPeriod === 'week' ? 'minggu ini' : kontribPeriod === 'month' ? 'bulan ini' : 'periode ini';
-  const sumValidation = finalPcts.reduce((a,b) => a+b, 0); 
   let totalAbsFiltered = 0, totalDoneFiltered = 0;
   allKeys.forEach(id => { totalAbsFiltered += (grpA[id]||0); totalDoneFiltered += (grpD[id]||0); });
 
-  totalEl.innerHTML = `${totalAbsFiltered} aktivitas + ${totalDoneFiltered} tugas selesai (${lbl})<br><span style="color:var(--teal-mid);font-weight:700;display:inline-block;margin-top:6px;">✓ Validasi Total: ${sumValidation}%</span>`;
+  totalEl.innerHTML = `${totalAbsFiltered} aktivitas + ${totalDoneFiltered} tugas selesai (${lbl})`;
   
   detailEl.innerHTML = sorted.map(([id,score], i) => {
     const pct = finalPcts[i]; const color = getProjColor(id, i); const name = getProjName(id);
-    const actsHtml = (listA[id] || []).map(a => `<div style="font-size:13px; color:var(--text2); margin-bottom:6px; padding-left:10px; border-left:2px solid ${color}; line-height:1.4;">${fmtDate(a.date)} - ${a.time ? `<strong>[${esc(a.time)}]</strong> ` : ''}${esc(a.act)}</div>`).join('') || '<div style="font-size:12px; color:var(--text3);">Tidak ada aktivitas</div>';
-    const todosHtml = (listD[id] || []).map(t => `<div style="font-size:13px; color:var(--text2); margin-bottom:6px; padding-left:10px; border-left:2px solid ${color}; line-height:1.4;">${fmtDate(ds(new Date(t.doneAt)))} - ${esc(t.text)}</div>`).join('') || '<div style="font-size:12px; color:var(--text3);">Tidak ada tugas selesai</div>';
+    const actsHtml = (listA[id] || []).map(a => `<div style="font-size:13px; color:var(--text2); margin-bottom:6px; padding-left:10px; border-left:2px solid ${color}; line-height:1.4;">${fmtDate(a.date)} - ${a.time ? `<strong>[${esc(a.time)}]</strong> ` : ''}${esc(a.act)}</div>`).join('') || '<div style="font-size:12px; color:var(--text3);">Tidak ada aktivitas dicatat pada periode ini.</div>';
+    const todosHtml = (listD[id] || []).map(t => `<div style="font-size:13px; color:var(--text2); margin-bottom:6px; padding-left:10px; border-left:2px solid ${color}; line-height:1.4;">${fmtDate(ds(new Date(t.doneAt)))} - ${esc(t.text)}</div>`).join('') || '<div style="font-size:12px; color:var(--text3);">Tidak ada tugas yang diselesaikan pada periode ini.</div>';
 
     return `<div style="padding:16px 0;border-bottom:0.5px solid var(--border)">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
@@ -1488,12 +1591,21 @@ function renderKontribusi(){
         <span style="font-size:14px;font-weight:600;color:var(--text);flex:1; word-break:break-word;">${esc(name)}</span>
         <span style="font-size:16px;font-weight:700;color:${color}">${pct}%</span>
       </div>
-      <div style="display:flex;gap:8px; flex-wrap:wrap;">
-        <span class="stat-detail-btn" style="font-size:12px;color:var(--text2);background:var(--bg-body);padding:6px 12px;border-radius:8px;border:0.5px solid var(--border2);" onclick="toggleStatDetail('det-act-${id}')">${grpA[id]||0} aktivitas ▾</span>
-        <span class="stat-detail-btn" style="font-size:12px;color:var(--text2);background:var(--bg-body);padding:6px 12px;border-radius:8px;border:0.5px solid var(--border2);" onclick="toggleStatDetail('det-todo-${id}')">${grpD[id]||0} tugas selesai ▾</span>
+      <div style="display:flex;gap:8px; flex-wrap:wrap; align-items:center;">
+        <span style="font-size:12px;color:var(--text2);background:var(--bg-body);padding:6px 12px;border-radius:8px;border:0.5px solid var(--border2);">${grpA[id]||0} aktivitas</span>
+        <span style="font-size:12px;color:var(--text2);background:var(--bg-body);padding:6px 12px;border-radius:8px;border:0.5px solid var(--border2);">${grpD[id]||0} tugas selesai</span>
+        <button class="btn btn-outline btn-sm" style="margin-left:auto; padding:4px 10px; font-size:11px;" onclick="toggleKontribDetail('${id}', this)">Lihat Detail</button>
       </div>
-      <div id="det-act-${id}" class="stat-list-container"><div style="font-size:11px; font-weight:700; color:var(--text3); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.05em;">Rincian Aktivitas</div>${actsHtml}</div>
-      <div id="det-todo-${id}" class="stat-list-container"><div style="font-size:11px; font-weight:700; color:var(--text3); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.05em;">Rincian Tugas Selesai</div>${todosHtml}</div>
+      <div id="kd-${id}" style="display:none; margin-top:16px; background:var(--bg-body); padding:16px; border-radius:12px; border:0.5px solid var(--border2); animation:slideDown 0.2s ease;">
+        <div style="margin-bottom:16px;">
+           <div style="font-size:12px; font-weight:700; color:var(--text); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.05em;">Log Aktivitas</div>
+           ${actsHtml}
+        </div>
+        <div>
+           <div style="font-size:12px; font-weight:700; color:var(--text); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.05em;">Tugas Selesai</div>
+           ${todosHtml}
+        </div>
+      </div>
     </div>`;
   }).join('');
 }
@@ -1513,8 +1625,8 @@ function renderDash(){
   if(!todayAbs.length&&!todayTodos.length)dtEl.innerHTML='<div class="empty">Belum ada aktivitas hari ini</div>';
   else{
     let html='';
-    todayAbs.forEach(a=>{ let c=(data.projects.find(p=>p.id===a.projId)||{}).color||'var(--teal-mid)'; html+=`<div class="sum-item"><div class="sum-dot" style="background:${c}"></div><div class="sum-text">${a.time?`<strong>${a.time}</strong> · `:''}${esc(a.act)}${a.projName?` <span style="color:var(--text3);font-size:12px">(${esc(a.projName)})</span>`:''}</div></div>` });
-    todayTodos.forEach(t=>{html+=`<div class="sum-item"><div class="sum-dot" style="opacity:.3; background:var(--text3)"></div><div class="sum-text" style="color:var(--text2)">✓ ${esc(t.text)}${t.projName?` <span style="font-size:12px">(${esc(t.projName)})</span>`:''}</div></div>`});
+    todayAbs.forEach(a=>{ let c=(data.projects.find(p=>p.id===a.projId)||{}).color||'var(--teal-mid)'; html+=`<div style="display:flex; gap:10px; margin-bottom:12px; align-items:flex-start;"><div style="width:8px; height:8px; border-radius:50%; background:${c}; margin-top:6px; flex-shrink:0;"></div><div style="font-size:13px; line-height:1.4;">${a.time?`<strong>${a.time}</strong> · `:''}${esc(a.act)}${a.projName?` <span style="color:var(--text3);font-size:12px">(${esc(a.projName)})</span>`:''}</div></div>` });
+    todayTodos.forEach(t=>{html+=`<div style="display:flex; gap:10px; margin-bottom:12px; align-items:flex-start;"><div style="width:8px; height:8px; border-radius:50%; background:var(--text3); opacity:0.5; margin-top:6px; flex-shrink:0;"></div><div style="font-size:13px; line-height:1.4; color:var(--text2);">✓ ${esc(t.text)}${t.projName?` <span style="font-size:12px">(${esc(t.projName)})</span>`:''}</div></div>`});
     dtEl.innerHTML=html;
   }
 
@@ -1529,19 +1641,15 @@ function renderDash(){
   ].filter(x=>x.diff<=14).sort((a,b)=>a.diff-b.diff).slice(0,6);
   if(!upcoming.length)dlEl.innerHTML='<div class="empty">Tidak ada deadline 14 hari ke depan</div>';
   else dlEl.innerHTML=upcoming.map(x=>{
-    const cls=x.diff<0?'dl-urgent':x.diff<=3?'dl-urgent':x.diff<=7?'dl-warn':'dl-ok'; const label=x.diff<0?`${Math.abs(x.diff)}h terlambat`:x.diff===0?'Hari ini':x.diff===1?'Besok':`${x.diff} hari lagi`; let c = x.color;
-    return`<div class="dl-item"><div class="dl-dot" style="background:${c}"></div><div class="dl-name">${esc(x.name)}</div><span class="badge ${cls}">${label}</span></div>`;
+    const cls=x.diff<0?'b-urgent':x.diff<=3?'b-urgent':x.diff<=7?'b-hold':'b-selesai'; const label=x.diff<0?`${Math.abs(x.diff)}h terlambat`:x.diff===0?'Hari ini':x.diff===1?'Besok':`${x.diff} hari lagi`; let c = x.color;
+    return`<div style="display:flex; align-items:center; gap:10px; margin-bottom:12px; padding-bottom:12px; border-bottom:0.5px solid var(--border);"><div style="width:10px; height:10px; border-radius:50%; background:${c}; flex-shrink:0;"></div><div style="font-size:13px; font-weight:500; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${esc(x.name)}</div><span class="badge ${cls}">${label}</span></div>`;
   }).join('');
 
   const highTodos=data.todos.filter(t=>!t.done&&t.priority==='high').slice(0,5); const htEl=document.getElementById('dash-high-todos');
   if(!highTodos.length)htEl.innerHTML='<div class="empty">Tidak ada to-do prioritas tinggi</div>';
-  else htEl.innerHTML=highTodos.map(t=>`<div class="sum-item"><div class="sum-dot" style="background:var(--red-mid)"></div><div class="sum-text">${esc(t.text)}${t.projName?` <span style="color:var(--text3);font-size:12px">(${esc(t.projName)})</span>`:''}</div></div>`).join('');
+  else htEl.innerHTML=highTodos.map(t=>`<div style="display:flex; gap:10px; margin-bottom:12px; align-items:flex-start;"><div style="width:8px; height:8px; border-radius:50%; background:var(--red-mid); margin-top:6px; flex-shrink:0; box-shadow: 0 0 6px rgba(255,59,48,0.4);"></div><div style="font-size:13px; line-height:1.4;">${esc(t.text)}${t.projName?` <span style="color:var(--text3);font-size:12px">(${esc(t.projName)})</span>`:''}</div></div>`).join('');
 }
 
-
-// ======================
-// INISIALISASI
-// ======================
 async function init(){
   try { const savedTheme = localStorage.getItem('gpm-theme'); if(savedTheme) document.documentElement.setAttribute('data-theme', savedTheme); } catch(e) {}
   

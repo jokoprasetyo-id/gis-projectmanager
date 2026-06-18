@@ -160,6 +160,19 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
 .filter-row { display: flex; gap: 6px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; width: 100%;}
 .filter-row::-webkit-scrollbar { display: none; }
 
+/* SPATIAL KIT TABLE */
+.sk-desc-box { font-size: 14px; color: var(--text2); line-height: 1.6; margin-bottom: 24px; background: var(--card-bg); padding: 16px; border-radius: var(--radius-lg); border: 0.5px solid var(--border); box-shadow: var(--card-shadow);}
+.sk-table-wrapper { overflow-x: auto; background: var(--card-bg); border-radius: var(--radius-lg); border: 0.5px solid var(--border); box-shadow: var(--card-shadow); -webkit-overflow-scrolling: touch; }
+.sk-table { width: 100%; border-collapse: collapse; min-width: 950px; text-align: left; }
+.sk-table th { padding: 14px 16px; border-bottom: 1px solid var(--border2); font-size: 13px; font-weight: 600; color: var(--text3); background: var(--bg-body); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.05em; }
+.sk-table td { padding: 14px 16px; border-bottom: 0.5px solid var(--border); font-size: 14px; color: var(--text); vertical-align: top; line-height: 1.5;}
+.sk-table tr:last-child td { border-bottom: none; }
+.sk-table tr:hover td { background: var(--bg-body); }
+.sk-table .sk-focus { font-weight: 600; display: flex; align-items: flex-start; gap: 8px;}
+.sk-table .sk-fungsi { min-width: 200px; max-width: 300px; word-break: break-word; font-size: 13px;}
+.soft-pill { padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 600; display: inline-block; white-space: nowrap; background: rgba(175, 82, 222, 0.15); color: var(--purple-mid); }
+.sk-actions { display: flex; gap: 8px; }
+
 /* CARDS GRID & COLLAPSIBLE */
 .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; width: 100%; }
 .pj-card { background: var(--card-bg); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--card-shadow); border: 0.5px solid var(--border); transition: all 0.2s ease; animation: fadein 0.25s ease; position: relative; overflow: hidden; width: 100%;}
@@ -483,6 +496,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
     <span class="dock-label">To-Do</span>
     <span class="nav-badge-count" id="todo-badge" style="display:none">0</span>
   </div>
+  <!-- TAB SPATIAL KIT -->
+  <div class="dock-item" data-p="spatial" onclick="goPage('spatial')" title="Spatial Kit">
+    <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 12 12 17 22 12"></polyline><polyline points="2 17 12 22 22 17"></polyline></svg>
+    <span class="dock-label">Spatial Kit</span>
+  </div>
   <div class="dock-item" data-p="Presensi" onclick="goPage('Presensi')" title="Presensi">
     <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
     <span class="dock-label">Absen</span>
@@ -631,6 +649,86 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
   
   <div id="todo-list"></div>
   <div id="todo-kanban" class="kanban-board" style="display:none;"></div>
+</div>
+
+<!-- PAGE SPATIAL KIT -->
+<div id="page-spatial" class="page">
+  <div class="section-header">
+    <div>
+      <div class="section-title">Spatial Kit</div>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <button class="btn btn-outline" onclick="shareSpatialKit()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+        Bagikan
+      </button>
+      <button class="btn btn-primary" onclick="haptic(10); resetKitForm(); document.getElementById('add-kit-card').style.display='block';">+ Tambah Baru</button>
+    </div>
+  </div>
+
+  <div class="sk-desc-box">
+    <strong>Spatial Kit</strong> adalah sekumpulan alat, plugin, atau perangkat lunak yang digunakan untuk melakukan analisis spasial, pemrosesan data geospasial, dan visualisasi peta dalam aplikasi GIS.<br>
+    Isi dari Spatial Kit:<br>
+    1. <strong>Tools/Alat GIS:</strong> Aplikasi atau skrip untuk pengolahan data spasial.<br>
+    2. <strong>Plugins:</strong> Ekstensi yang memperluas fungsi GIS.<br>
+    3. <strong>Metode Analisis:</strong> Dokumentasi atau template analisis seperti analisis spasial, pemodelan lahan.<br>
+    4. <strong>Dokumentasi:</strong> Panduan, tutorial, atau referensi teknis.
+  </div>
+
+  <!-- FORM SPATIAL KIT -->
+  <div class="card" id="add-kit-card" style="display:none; background:var(--card-bg); border: 1.5px solid var(--purple-mid); box-shadow:0 8px 24px rgba(0,0,0,0.08); margin-bottom: 24px;">
+    <div class="card-title" style="color: var(--purple-mid);">Form Entri Spatial Kit</div>
+    <div class="fgrow">
+      <div><div class="flabel">Focus (Nama Plugin/Tool)</div><input class="finput" id="sk-focus" placeholder="contoh: BlenderGIS"></div>
+      <div><div class="flabel">Judul Riset</div><input class="finput" id="sk-judul" placeholder="contoh: Support Project Geopark"></div>
+    </div>
+    <div class="fgrow">
+      <div><div class="flabel">Software</div><input class="finput" id="sk-software" placeholder="contoh: Blender, QGIS"></div>
+      <div><div class="flabel">Event / Scope</div><input class="finput" id="sk-scope" placeholder="contoh: Project, Sharing Session"></div>
+    </div>
+    <div class="frow">
+      <div class="flabel">Fungsi / Deskripsi Singkat</div>
+      <textarea class="finput" id="sk-fungsi" placeholder="Jelaskan fungsi alat/plugin ini..." style="resize:vertical; min-height:80px;"></textarea>
+    </div>
+    <div class="fgrow">
+      <div><div class="flabel">Tanggal (Date)</div><input class="finput" type="date" id="sk-date"></div>
+      <div><div class="flabel">Output (Link/URL)</div><input class="finput" id="sk-output" placeholder="https://..."></div>
+    </div>
+    <div class="frow">
+      <div class="flabel">Status</div>
+      <div class="pill-row" id="sk-status">
+        <div class="pill on" data-v="Done" onclick="pickPill(this)">Done</div>
+        <div class="pill" data-v="In Progress" onclick="pickPill(this)">In Progress</div>
+        <div class="pill" data-v="Planned" onclick="pickPill(this)">Planned</div>
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top: 24px;">
+      <button class="btn btn-primary" onclick="addSpatialKit()" style="background:var(--purple-mid);">Simpan Data</button>
+      <button class="btn btn-outline" onclick="haptic(10); resetKitForm()">Batal</button>
+    </div>
+  </div>
+
+  <!-- TABLE SPATIAL KIT -->
+  <div class="sk-table-wrapper">
+    <table class="sk-table">
+      <thead>
+        <tr>
+          <th style="min-width: 160px;">Focus</th>
+          <th style="min-width: 200px;">Judul Riset</th>
+          <th>Software</th>
+          <th style="min-width: 250px;">Fungsi</th>
+          <th>Event/Scope</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Output</th>
+          <th>Opsi</th>
+        </tr>
+      </thead>
+      <tbody id="kit-tbody">
+        <!-- Diisi oleh JS -->
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <div id="page-Presensi" class="page">
@@ -858,10 +956,10 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 // --- STATE & VARIABEL ---
-let data = {projects:[], todos:[], Presensi:[], quickNotes:"", talenta:{}, customLinks:[]};
+let data = {projects:[], todos:[], Presensi:[], spatialKits:[], talenta:{}, customLinks:[]};
 let projFilter='all', todoFilter='all', kontribPeriod='custom';
 let uid=Date.now();
-let editProjId=null, editTodoId=null, editAbsId=null;
+let editProjId=null, editTodoId=null, editAbsId=null, editKitId=null;
 let projOpen={}, dayCollapsed={};
 let isKanbanView = false; 
 let calCollapsed = false;
@@ -1003,9 +1101,9 @@ async function loadData(){
       if(!data.projects) data.projects=[];
       if(!data.todos) data.todos=[];
       if(!data.Presensi) data.Presensi=[];
+      if(!data.spatialKits) data.spatialKits=[];
       if(!data.talenta) data.talenta={};
       if(!data.libur) data.libur={};
-      if(!data.quickNotes) data.quickNotes="";
       if(!data.customLinks) data.customLinks=[];
     }
     const ap=document.querySelector('.page.active');
@@ -1014,6 +1112,7 @@ async function loadData(){
       if(p==='dashboard') renderDash();
       if(p==='proyek') renderProyek();
       if(p==='todo'){ fillProjSelects(); renderTodo(); }
+      if(p==='spatial') renderSpatialKit();
       if(p==='Presensi'){ fillProjSelects(); renderPresensi(); }
       if(p==='lapstat') renderKontribusi();
     }
@@ -1033,6 +1132,7 @@ function goPage(p){
   if(p==='dashboard') renderDash();
   if(p==='proyek') renderProyek();
   if(p==='todo'){ fillProjSelects(); renderTodo(); }
+  if(p==='spatial') renderSpatialKit();
   if(p==='Presensi'){ fillProjSelects(); renderPresensi(); }
   if(p==='lapstat') renderKontribusi();
 }
@@ -1053,6 +1153,167 @@ function moveItem(type, id, dir, event) {
   if (dir === 1 && idx < list.length - 1) [list[idx], list[idx+1]] = [list[idx+1], list[idx]];
   save(); 
 }
+
+// ======================
+// FITUR: SPATIAL KIT
+// ======================
+function resetKitForm() {
+  editKitId = null;
+  ['sk-focus', 'sk-judul', 'sk-software', 'sk-scope', 'sk-fungsi', 'sk-output'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('sk-date').value = '';
+  document.querySelectorAll('#sk-status .pill').forEach(el => el.classList.remove('on'));
+  document.querySelector('#sk-status .pill[data-v="Done"]').classList.add('on');
+  document.querySelector('#add-kit-card .btn-primary').textContent = 'Simpan Data';
+  document.getElementById('add-kit-card').style.display = 'none';
+}
+
+function addSpatialKit() {
+  haptic(15);
+  const focus = document.getElementById('sk-focus').value.trim();
+  if(!focus) { toast('Focus / Nama wajib diisi!'); return; }
+  
+  const payload = {
+    focus: focus,
+    judul: document.getElementById('sk-judul').value.trim(),
+    software: document.getElementById('sk-software').value.trim(),
+    scope: document.getElementById('sk-scope').value.trim(),
+    fungsi: document.getElementById('sk-fungsi').value.trim(),
+    date: document.getElementById('sk-date').value,
+    status: getPillVal('sk-status') || 'Done',
+    output: document.getElementById('sk-output').value.trim()
+  };
+
+  if(editKitId) {
+    const k = data.spatialKits.find(x => x.id === editKitId);
+    if(k) Object.assign(k, payload);
+    toast('Data diperbarui!');
+  } else {
+    data.spatialKits.push({ id: gid(), ...payload, createdAt: Date.now() });
+    toast('Data ditambahkan!');
+  }
+
+  save();
+  resetKitForm();
+  renderSpatialKit();
+}
+
+function editSpatialKit(id) {
+  haptic(15);
+  const k = data.spatialKits.find(x => x.id === id);
+  if(!k) return;
+  editKitId = id;
+  
+  document.getElementById('sk-focus').value = k.focus || '';
+  document.getElementById('sk-judul').value = k.judul || '';
+  document.getElementById('sk-software').value = k.software || '';
+  document.getElementById('sk-scope').value = k.scope || '';
+  document.getElementById('sk-fungsi').value = k.fungsi || '';
+  document.getElementById('sk-date').value = k.date || '';
+  document.getElementById('sk-output').value = k.output || '';
+  
+  document.querySelectorAll('#sk-status .pill').forEach(el => el.classList.remove('on'));
+  const ps = document.querySelector(`#sk-status .pill[data-v="${k.status}"]`);
+  if(ps) ps.classList.add('on');
+  else document.querySelector('#sk-status .pill[data-v="Done"]').classList.add('on');
+
+  document.getElementById('add-kit-card').style.display = 'block';
+  document.querySelector('#add-kit-card .btn-primary').textContent = 'Update Data';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function delSpatialKit(id) {
+  customConfirm('Hapus entri Spatial Kit ini?', () => {
+    data.spatialKits = data.spatialKits.filter(x => x.id !== id);
+    save();
+    renderSpatialKit();
+    toast('Data dihapus');
+  });
+}
+
+function shareSpatialKit() {
+  haptic(15);
+  if(!data.spatialKits || data.spatialKits.length === 0) {
+    toast('Belum ada data Spatial Kit');
+    return;
+  }
+  
+  let txt = '*📦 Data Spatial Kit - GIS Project Manager*\n\n';
+  data.spatialKits.forEach((k, i) => {
+    txt += `*${i+1}. ${k.focus}*\n`;
+    if(k.judul) txt += `- Judul Riset: ${k.judul}\n`;
+    if(k.software) txt += `- Software: ${k.software}\n`;
+    if(k.fungsi) txt += `- Fungsi: ${k.fungsi}\n`;
+    if(k.scope) txt += `- Event/Scope: ${k.scope}\n`;
+    if(k.date) txt += `- Date: ${fmtDate(k.date)}\n`;
+    txt += `- Status: ${k.status}\n`;
+    if(k.output) txt += `- Output: ${k.output}\n`;
+    txt += '\n';
+  });
+
+  if (navigator.share) {
+    navigator.share({
+      title: 'Spatial Kit Data',
+      text: txt
+    }).catch(err => {
+      console.log('Error sharing', err);
+      copyTextFallback(txt);
+    });
+  } else {
+    copyTextFallback(txt);
+  }
+}
+
+function copyTextFallback(txt) {
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(txt).then(() => toast('Data disalin ke Clipboard!')).catch(() => toast('Gagal menyalin.'));
+  } else {
+    const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy'); document.body.removeChild(ta); toast('Data disalin ke Clipboard!');
+  }
+}
+
+function renderSpatialKit() {
+  const tbody = document.getElementById('kit-tbody');
+  if(!data.spatialKits || data.spatialKits.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding: 40px; color:var(--text3);">Belum ada data Spatial Kit.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = data.spatialKits.map(k => {
+    let outputHtml = k.output 
+      ? `<a href="${k.output.startsWith('http') ? esc(k.output) : 'https://'+esc(k.output)}" target="_blank" style="color:var(--blue-mid); text-decoration:underline;">Lihat Output</a>` 
+      : '—';
+      
+    let statusCls = k.status === 'Done' ? 'b-selesai' : k.status === 'In Progress' ? 'b-aktif' : 'b-hold';
+    let softArr = (k.software || '—').split(',').map(s => s.trim());
+    let softHtml = softArr.map(s => `<span class="soft-pill" style="margin:2px;">${esc(s)}</span>`).join('');
+
+    return `
+      <tr>
+        <td>
+          <div class="sk-focus">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-top:2px; flex-shrink:0;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            <span>${esc(k.focus)}</span>
+          </div>
+        </td>
+        <td>${esc(k.judul || '—')}</td>
+        <td>${softHtml}</td>
+        <td class="sk-fungsi">${esc(k.fungsi || '—')}</td>
+        <td>${esc(k.scope || '—')}</td>
+        <td>${k.date ? fmtDate(k.date) : '—'}</td>
+        <td><span class="badge ${statusCls}">${k.status}</span></td>
+        <td>${outputHtml}</td>
+        <td>
+          <div class="sk-actions">
+            <button class="edit-btn" style="padding:4px 8px;" onclick="editSpatialKit('${k.id}')">✎</button>
+            <button class="del-btn" style="padding:4px 8px;" onclick="delSpatialKit('${k.id}')">×</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
 
 // ======================
 // FITUR: PROYEK

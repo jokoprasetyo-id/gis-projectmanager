@@ -1638,12 +1638,19 @@ function setKontribPeriod(p,btn){
 
 function getKontribRange(){
   if(kontribPeriod==='week'){
-    const now=new Date(),day=now.getDay(); const mon=new Date(now);mon.setDate(now.getDate()-(day===0?6:day-1));mon.setHours(0,0,0,0);
-    const sun=new Date(mon);sun.setDate(mon.getDate()+6);sun.setHours(23,59,59,999); return{start:mon.getTime(),end:sun.getTime()}
+    const now=new Date(),day=now.getDay();
+    const mon=new Date(now);mon.setDate(now.getDate()-(day===0?6:day-1));mon.setHours(0,0,0,0);
+    const sun=new Date(mon);sun.setDate(mon.getDate()+6);sun.setHours(23,59,59,999);
+    return{start:mon.getTime(),end:sun.getTime()}
   }
-  if(kontribPeriod==='month'){ const now=new Date(); return{start:new Date(now.getFullYear(),now.getMonth(),1,0,0,0,0).getTime(),end:new Date(now.getFullYear(),now.getMonth()+1,0,23,59,59,999).getTime()} }
+  if(kontribPeriod==='month'){
+    const now=new Date();
+    return{start:new Date(now.getFullYear(),now.getMonth(),1,0,0,0,0).getTime(),end:new Date(now.getFullYear(),now.getMonth()+1,0,23,59,59,999).getTime()}
+  }
   if(kontribPeriod==='custom'){
-    const s=document.getElementById('kp-start').value, e=document.getElementById('kp-end').value; if(!s||e)return{start:0,end:Infinity};
+    const s=document.getElementById('kp-start').value, e=document.getElementById('kp-end').value;
+    // Perbaikan bug: Operator logika harus && (jika salah satu kosong batalkan), diekspresikan dgn !s || !e
+    if(!s || !e) return {start:0, end:Infinity};
     return{start:new Date(s+'T00:00:00').getTime(),end:new Date(e+'T23:59:59').getTime()}
   }
   return{start:0,end:Infinity}
@@ -1681,10 +1688,19 @@ function renderKontribusi(){
   
   let exactPcts = sorted.map(item => total > 0 ? (item[1] / total) * 100 : 0);
   let finalPcts = exactPcts.map(Math.floor); 
-  let remainders = exactPcts.map((p, i) => ({ i, r: p - Math.floor(p) })).sort((a,b) => b.r - a.r); 
-  let diff = total > 0 ? 100 - finalPcts.reduce((a,b) => a+b, 0) : 0; 
-  for(let i=0; i < diff; i++) { finalPcts[remainders[i].i]++; }
   
+  if (total > 0) {
+    let remainders = exactPcts.map((p, i) => ({ i, r: p - Math.floor(p) })).sort((a,b) => b.r - a.r); 
+    let diff = 100 - finalPcts.reduce((a,b) => a+b, 0); 
+    for(let i=0; i < diff && i < remainders.length; i++) { finalPcts[remainders[i].i]++; }
+    
+    // Validasi Mutlak: Memaksa total progress bar pas 100% jika ada perbedaan ujung
+    let currentTotal = finalPcts.reduce((a,b) => a+b, 0);
+    if (currentTotal !== 100 && finalPcts.length > 0) {
+        finalPcts[0] += (100 - currentTotal);
+    }
+  }
+
   const getProjName = (id) => id === 'none' ? 'Tanpa Proyek' : validProjs[id].name;
   const getProjColor = (id, i) => id === 'none' ? 'var(--text3)' : validProjs[id].color;
 
@@ -1693,6 +1709,14 @@ function renderKontribusi(){
     return `<div style="display:flex; align-items:center; gap:12px;"><div style="width:30%; font-size:12px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${esc(name)}">${esc(name)}</div><div class="prog-bar" style="margin-bottom:0; flex:1;"><div class="prog-fill" style="width:${pct}%;background:${color}"></div></div><div style="width:36px; text-align:right; font-size:12px; font-weight:700; color:${color}">${pct}%</div></div>`;
   }).join('');
   
+  if (total > 0) {
+    chartEl.innerHTML += `<div style="display:flex; align-items:center; gap:12px; margin-top:8px; padding-top:12px; border-top:1px dashed var(--border2);">
+       <div style="width:30%; font-size:12px; font-weight:700; color:var(--text);">Total Kontribusi</div>
+       <div style="flex:1;"></div>
+       <div style="width:36px; text-align:right; font-size:13px; font-weight:700; color:var(--blue-mid);">100%</div>
+    </div>`;
+  }
+
   const lbl = kontribPeriod === 'week' ? 'minggu ini' : kontribPeriod === 'month' ? 'bulan ini' : 'periode ini';
   let totalAbsFiltered = 0, totalDoneFiltered = 0;
   allKeys.forEach(id => { totalAbsFiltered += (grpA[id]||0); totalDoneFiltered += (grpD[id]||0); });

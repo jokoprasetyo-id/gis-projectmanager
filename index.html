@@ -125,17 +125,17 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
 
 /* FORM & INPUTS */
 .flabel { font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 6px; display: block; }
-.finput { width: 100%; background: var(--bg-body); border: 1px solid transparent; border-radius: 12px; padding: 12px 16px; font-size: 14px; color: var(--text); font-family: inherit; outline: none; transition: 0.2s; -webkit-appearance: none; max-width: 100%; }
+.finput { width: 100%; background: var(--bg-body); border: 1px solid var(--border2); border-radius: 12px; padding: 12px 16px; font-size: 14px; color: var(--text); font-family: inherit; outline: none; transition: 0.2s; -webkit-appearance: none; max-width: 100%; }
 .finput:focus { background: var(--card-bg); border-color: var(--blue-mid); box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2); }
 .finput::placeholder { color: var(--text3); }
-.finput[type=range] { padding: 0; height: 6px; border-radius: 3px; background: var(--border); appearance: none; cursor: pointer; }
+.finput[type=range] { padding: 0; height: 6px; border-radius: 3px; background: var(--border); appearance: none; cursor: pointer; border:none; }
 .finput[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.2); cursor: pointer; border: 0.5px solid rgba(0,0,0,0.1); }
 .finput[type=date], .finput[type=time], select.finput { cursor: pointer; color-scheme: light dark; }
 .frow { margin-bottom: 18px; width: 100%; }
 .fgrow { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 18px; width: 100%; }
 .search-container { position: relative; margin-bottom: 20px; width: 100%; }
 .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--text3); pointer-events: none; }
-.finput-search { padding-left: 44px; border-radius: 14px; background: var(--border2); }
+.finput-search { padding-left: 44px; border-radius: 14px; background: var(--border2); border-color: transparent;}
 
 /* BUTTONS & PILLS */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 18px; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; border: none; transition: 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); user-select: none; text-decoration: none; white-space: nowrap; }
@@ -206,9 +206,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
 .pr-low { background: var(--blue-mid); }
 
 /* PRESENSI */
+.abs-input-content { animation: fadein 0.3s ease; }
 .abs-date-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;}
 .abs-date-label { font-size: 18px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
-.abs-nav { display: flex; background: var(--bg-body); border-radius: 10px; padding: 3px; }
+.abs-nav { display: flex; background: var(--bg-body); border-radius: 10px; padding: 3px; border: 0.5px solid var(--border); }
 .abs-nav-btn { height: 32px; padding: 0 16px; border-radius: 8px; background: transparent; border: none; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text); transition: 0.2s; white-space: nowrap;}
 .abs-nav-btn:hover { background: rgba(128,128,128,0.1); }
 .day-block { margin-bottom: 16px; border-radius: var(--radius-lg); overflow: hidden; background: var(--card-bg); border: 0.5px solid var(--border); box-shadow: var(--card-shadow); }
@@ -238,6 +239,19 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
 .libur-label { font-size: 12px; font-weight: 600; color: var(--text2); }
 .libur-chip.on .libur-label { color: var(--amber-mid); }
 .chk-sm.libur.on { background: var(--amber-mid); border-color: var(--amber-mid); }
+
+/* CALENDAR */
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
+.cal-day-head { font-size: 11px; font-weight: 600; color: var(--text3); padding-bottom: 8px; text-transform: uppercase; }
+.cal-cell { padding: 6px 2px; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; min-height: 52px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; border: 1.5px solid transparent; background: var(--bg-body); user-select: none;}
+.cal-cell:hover { background: var(--border2); transform: scale(1.05); }
+.cal-cell.today { border-color: var(--blue-mid); color: var(--blue-mid); background: var(--blue-bg); }
+.cal-cell.other-month { opacity: 0.4; font-weight: 500; }
+.cal-date-num { margin-bottom: 6px; pointer-events: none;}
+.cal-dots { display: flex; gap: 4px; justify-content: center; height: 6px; flex-wrap: wrap; max-width: 24px; pointer-events: none;}
+.cal-dot-t { width: 6px; height: 6px; border-radius: 50%; background: var(--teal-mid); }
+.cal-dot-l { width: 6px; height: 6px; border-radius: 50%; background: var(--amber-mid); }
+.cal-dot-a { width: 5px; height: 5px; border-radius: 50%; background: var(--blue-mid); margin-top:0.5px; }
 
 /* LAPORAN & STAT (COMBINED TAB) */
 .seg-control { display: flex; background: var(--border2); border-radius: 12px; padding: 3px; margin-bottom: 24px; width: 100%; max-width: 400px; margin-left: auto; margin-right: auto;}
@@ -501,14 +515,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
       <div class="card"><div class="card-title"><span>Ringkasan Minggu Ini</span><span id="dash-week-badge" style="font-size:11px;color:var(--blue-mid);font-weight:600;background:var(--blue-bg);padding:2px 8px;border-radius:10px;"></span></div><div id="dash-week"></div></div>
     </div>
     <div class="dash-col">
-      <div class="card" style="background: var(--amber-bg); border-color: transparent;">
-        <div class="card-title" style="color: var(--amber-mid); margin-bottom: 12px;">Catatan Cepat 💡</div>
-        <textarea class="rp-textarea" id="dash-braindump" style="min-height: 120px; background: var(--card-bg); border-radius: 12px; padding: 14px; font-size: 13px; color: var(--text); resize: vertical; box-shadow: 0 2px 8px rgba(0,0,0,0.05);" placeholder="Tulis ide riset, variabel spatial, atau script cepat di sini..." onchange="saveBraindump()"></textarea>
-      </div>
       <div class="card"><div class="card-title">Deadline Mendatang</div><div id="dash-deadline"></div></div>
       <div class="card"><div class="card-title">Workload Minggu Ini</div><div id="dash-workload"></div></div>
       <div class="card"><div class="card-title">Prioritas Tinggi</div><div id="dash-high-todos"></div></div>
-      <div class="card"><div class="card-title">Repository Proyek</div><div id="dash-repos"></div></div>
     </div>
   </div>
 </div>
@@ -526,8 +535,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
     Buka Workspace Basecamp ↗
   </a>
 
-  <div class="card" id="add-proyek-card" style="display:none; background:var(--bg-body); box-shadow:none;">
-    <div class="card-title">Form Proyek</div>
+  <!-- FORM PROYEK (Dengan Border Biru Terang) -->
+  <div class="card" id="add-proyek-card" style="display:none; background:var(--card-bg); border: 1.5px solid var(--blue-mid); box-shadow:0 8px 24px rgba(0,0,0,0.08); margin-bottom: 24px;">
+    <div class="card-title" style="color: var(--blue-mid);">Form Proyek</div>
     <div class="frow"><div class="flabel">Nama Proyek</div><input class="finput" id="pj-name" placeholder="Nama Proyek GIS"></div>
     <div class="fgrow">
       <div><div class="flabel">Klien / Instansi</div><input class="finput" id="pj-client" placeholder="Pemda Blora"></div>
@@ -587,8 +597,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
       <button class="btn btn-primary" onclick="haptic(10); resetTodoForm(); document.getElementById('add-todo-card').style.display='block';">+ Tugas</button>
     </div>
   </div>
-  <div class="card" id="add-todo-card" style="display:none; background:var(--bg-body); box-shadow:none;">
-    <div class="card-title">Form Tugas</div>
+
+  <!-- FORM TUGAS (Dengan Border Hijau Terang) -->
+  <div class="card" id="add-todo-card" style="display:none; background:var(--card-bg); border: 1.5px solid var(--teal-mid); box-shadow:0 8px 24px rgba(0,0,0,0.08); margin-bottom: 24px;">
+    <div class="card-title" style="color: var(--teal-mid);">Form Tugas</div>
     <div class="frow"><div class="flabel">Deskripsi Tugas</div><input class="finput" id="td-text" placeholder="contoh: Analisis isochrone Banjarmasin"></div>
     <div class="fgrow">
       <div><div class="flabel">Proyek</div><select class="finput" id="td-proj"><option value="">— Pilih —</option></select></div>
@@ -607,6 +619,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
       <button class="btn btn-outline" onclick="haptic(10); resetTodoForm()">Batal</button>
     </div>
   </div>
+
   <div class="filter-row" id="todo-filter-row">
     <div class="ftag active" data-f="all" onclick="setTodoFilter(this)">Semua</div>
     <div class="ftag" data-f="pending" onclick="setTodoFilter(this)">Pending</div>
@@ -629,46 +642,83 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
     </button>
   </div>
   
-  <!-- POMODORO COMPACT -->
-  <div class="card" style="text-align: center; padding: 24px 16px; border: 1.5px dashed var(--red-bg);">
-    <div class="card-title" style="justify-content: center; margin-bottom: 20px; color: var(--red-mid); font-size: 16px;">🍅 Pomodoro & Auto-Catat</div>
-    <div class="pill-row" style="justify-content: center; margin-bottom: 24px;" id="pomo-modes">
-      <div class="pill on" data-m="focus" onclick="setPomoMode('focus', 25)" style="color:var(--red-mid)">Fokus (25m)</div>
-      <div class="pill" data-m="short" onclick="setPomoMode('short', 5)" style="color:var(--teal-mid)">Ist. Pendek (5m)</div>
-      <div class="pill" data-m="long" onclick="setPomoMode('long', 15)" style="color:var(--blue-mid)">Ist. Panjang (15m)</div>
-    </div>
-    <div class="fgrow" style="text-align: left; max-width: 500px; margin: 0 auto 20px auto;" id="pomo-task-form">
-      <div><div class="flabel">Proyek:</div><select class="finput" id="pomo-proj" style="background: var(--bg-body);"></select></div>
-      <div><div class="flabel">Fokus aktivitas:</div><input class="finput" id="pomo-act" placeholder="Misal: Analisis Peta..." style="background: var(--bg-body);"></div>
-    </div>
-    <div id="pomo-display" style="font-size: 64px; font-weight: 700; letter-spacing: -2px; margin-bottom: 24px; font-variant-numeric: tabular-nums; color: var(--red-mid); text-shadow: 0 4px 12px rgba(0,0,0,0.05);">25:00</div>
-    <div class="btn-row" style="justify-content: center; gap: 12px;">
-      <button class="btn btn-primary" id="btn-pomo-start" onclick="togglePomo()" style="width: 120px; font-size: 14px;">Mulai</button>
-      <button class="btn btn-outline" onclick="resetPomo()" style="width: 120px; font-size: 14px;">Reset</button>
+  <!-- TABS FOR INPUT -->
+  <div class="seg-control" style="max-width: 100%; margin-bottom: 20px;">
+    <div class="seg-btn active" onclick="switchAbsInputTab('tab-log', this)">📝 Log Aktivitas</div>
+    <div class="seg-btn" onclick="switchAbsInputTab('tab-pomo', this)">🍅 Timer Pomodoro</div>
+  </div>
+
+  <div id="tab-log" class="abs-input-content active">
+    <!-- FORM INPUT LOG AKTIVITAS -->
+    <div class="card" style="background:var(--bg-body); box-shadow:none; border: 1px solid var(--border);">
+      <div class="card-title" style="margin-bottom: 12px;">Catat Aktivitas Baru</div>
+      <div class="fgrow">
+        <div><div class="flabel">Tanggal Aktivitas</div><input class="finput" type="date" id="abs-input-date" style="background:var(--card-bg)"></div>
+        <div><div class="flabel">Waktu (opsional)</div><input class="finput" type="time" id="abs-time" style="background:var(--card-bg)"></div>
+      </div>
+      <div class="frow">
+        <div class="flabel">Proyek</div><select class="finput" id="abs-proj" style="background:var(--card-bg)"><option value="">— Pilih —</option></select>
+      </div>
+      <div class="frow">
+        <div class="flabel">Aktivitas</div><input class="finput" id="abs-act" placeholder="contoh: Rapat koordinasi dinas" style="background:var(--card-bg)">
+      </div>
+      <div class="btn-row" style="margin-top: 10px;">
+        <button class="btn btn-primary" id="btn-submit-abs" onclick="addPresensi()">Simpan Aktivitas</button>
+        <button class="btn btn-outline" id="btn-cancel-abs" style="display:none" onclick="haptic(10); resetPresensiForm()">Batal Edit</button>
+      </div>
     </div>
   </div>
 
-  <!-- FORM INPUT MANUAL ABSEN -->
-  <div class="card" style="background:var(--bg-body); box-shadow:none;">
-    <div class="card-title" style="margin-bottom: 12px;">Input Aktivitas Manual</div>
-    <div class="fgrow">
-      <div><div class="flabel">Tanggal Aktivitas</div><input class="finput" type="date" id="abs-input-date" style="background:var(--card-bg)"></div>
-      <div><div class="flabel">Waktu (opsional)</div><input class="finput" type="time" id="abs-time" style="background:var(--card-bg)"></div>
+  <div id="tab-pomo" class="abs-input-content" style="display:none;">
+    <!-- POMODORO COMPACT -->
+    <div class="card" style="text-align: center; padding: 24px 16px; border: 1.5px dashed var(--red-bg);">
+      <div class="card-title" style="justify-content: center; margin-bottom: 20px; color: var(--red-mid); font-size: 16px;">🍅 Pomodoro & Auto-Catat</div>
+      <div class="pill-row" style="justify-content: center; margin-bottom: 24px;" id="pomo-modes">
+        <div class="pill on" data-m="focus" onclick="setPomoMode('focus', 25)" style="color:var(--red-mid)">Fokus (25m)</div>
+        <div class="pill" data-m="short" onclick="setPomoMode('short', 5)" style="color:var(--teal-mid)">Ist. Pendek (5m)</div>
+        <div class="pill" data-m="long" onclick="setPomoMode('long', 15)" style="color:var(--blue-mid)">Ist. Panjang (15m)</div>
+      </div>
+      <div class="fgrow" style="text-align: left; max-width: 500px; margin: 0 auto 20px auto;" id="pomo-task-form">
+        <div><div class="flabel">Proyek:</div><select class="finput" id="pomo-proj" style="background: var(--bg-body);"></select></div>
+        <div><div class="flabel">Fokus aktivitas:</div><input class="finput" id="pomo-act" placeholder="Misal: Analisis Peta..." style="background: var(--bg-body);"></div>
+      </div>
+      <div id="pomo-display" style="font-size: 64px; font-weight: 700; letter-spacing: -2px; margin-bottom: 24px; font-variant-numeric: tabular-nums; color: var(--red-mid); text-shadow: 0 4px 12px rgba(0,0,0,0.05);">25:00</div>
+      <div class="btn-row" style="justify-content: center; gap: 12px;">
+        <button class="btn btn-primary" id="btn-pomo-start" onclick="togglePomo()" style="width: 120px; font-size: 14px;">Mulai</button>
+        <button class="btn btn-outline" onclick="resetPomo()" style="width: 120px; font-size: 14px;">Reset</button>
+      </div>
     </div>
-    <div class="frow">
-      <div class="flabel">Proyek</div><select class="finput" id="abs-proj" style="background:var(--card-bg)"><option value="">— Pilih —</option></select>
+  </div>
+
+  <!-- KALENDER CARD (COLLAPSIBLE) -->
+  <div class="card" style="padding-bottom: 20px; background:var(--card-bg);">
+    <div class="card-title" style="margin-bottom: 16px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; user-select:none;" onclick="toggleCalBox()">
+      <span>Kalender Kehadiran</span>
+      <div style="display:flex; align-items:center; gap: 10px;">
+        <div class="abs-nav" style="background:var(--bg-body); padding:3px; border-radius:10px; border: 0.5px solid var(--border);" onclick="event.stopPropagation()">
+          <button class="abs-nav-btn" style="padding:0 12px; height:28px;" onclick="moveCalMonth(-1)">‹</button>
+          <span id="cal-month-label" style="font-size:13px; font-weight:600; padding:0 8px; min-width:90px; text-align:center; display:inline-block; line-height:28px;">Bulan</span>
+          <button class="abs-nav-btn" style="padding:0 12px; height:28px;" onclick="moveCalMonth(1)">›</button>
+        </div>
+        <div id="cal-toggle-icon" style="color:var(--text3); transition: transform 0.2s;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+      </div>
     </div>
-    <div class="frow">
-      <div class="flabel">Aktivitas</div><input class="finput" id="abs-act" placeholder="contoh: Rapat koordinasi dinas" style="background:var(--card-bg)">
-    </div>
-    <div class="btn-row" style="margin-top: 10px;">
-      <button class="btn btn-primary" id="btn-submit-abs" onclick="addPresensi()">Catat Aktivitas</button>
-      <button class="btn btn-outline" id="btn-cancel-abs" style="display:none" onclick="haptic(10); resetPresensiForm()">Batal Edit</button>
+    
+    <!-- Wrapper for hide/show -->
+    <div id="cal-collapsible" style="display: block;">
+      <div class="cal-grid" id="cal-grid"></div>
+      <div style="display:flex; gap:16px; font-size:12px; color:var(--text2); margin-top:20px; justify-content:center; flex-wrap:wrap; font-weight:500;">
+        <span style="display:flex;align-items:center;gap:6px;"><div class="cal-dot-t"></div> Talenta ✓</span>
+        <span style="display:flex;align-items:center;gap:6px;"><div class="cal-dot-l"></div> Libur 🏖️</span>
+        <span style="display:flex;align-items:center;gap:6px;"><div class="cal-dot-a"></div> Aktivitas</span>
+      </div>
     </div>
   </div>
 
   <div>
-    <div class="abs-date-head" style="margin-top: 24px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
+    <div class="abs-date-head" style="margin-top: 32px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
       <div class="abs-date-label" id="abs-date-label">—</div>
       <div class="abs-nav">
         <button class="abs-nav-btn" onclick="haptic(10); moveAbsWeek(-1)">‹ Mg</button>
@@ -814,10 +864,12 @@ let uid=Date.now();
 let editProjId=null, editTodoId=null, editAbsId=null;
 let projOpen={}, dayCollapsed={};
 let isKanbanView = false; 
+let calCollapsed = false;
 
 function getMonday(d){d=new Date(d);var day=d.getDay(),diff=d.getDate()-day+(day==0?-6:1);return new Date(d.setDate(diff))}
 let currentWeekStart=getMonday(new Date());
 currentWeekStart.setHours(0,0,0,0);
+let calCurrentDate = new Date(); // State kalender
 
 // --- UTILITIES ---
 function haptic(pattern = 15) { if(navigator.vibrate) { try { navigator.vibrate(pattern); } catch(e){} } }
@@ -934,14 +986,13 @@ function renderCustomHubs() {
 
 function switchStatTab(tabId, btn) {
     haptic(10);
-    document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#page-lapstat .seg-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     document.querySelectorAll('.stat-content').forEach(c => c.classList.remove('active'));
     document.getElementById(tabId).classList.add('active');
     if(tabId === 'stat-content') renderKontribusi();
 }
 
-function saveBraindump() { const el = document.getElementById('dash-braindump'); if(el) { data.quickNotes = el.value; save(); } }
 
 // --- FIREBASE SYNC ---
 async function save(){ try{await db.ref("gpm_data/main_state").set(data)}catch(e){console.error(e);toast('Gagal sinkronisasi!')} }
@@ -1344,18 +1395,31 @@ function renderTodo(){
 
 
 // ======================
-// FITUR: PRESENSI & EXPORT
+// FITUR: PRESENSI, KALENDER & EXPORT
 // ======================
+function switchAbsInputTab(tabId, btn) {
+  haptic(10);
+  btn.parentElement.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-log').style.display = 'none';
+  document.getElementById('tab-pomo').style.display = 'none';
+  document.getElementById(tabId).style.display = 'block';
+}
+
 function resetPresensiForm(){
   editAbsId=null;
   document.getElementById('abs-act').value='';
   document.getElementById('abs-time').value='';
-  document.getElementById('btn-submit-abs').textContent='Catat Aktivitas';
+  document.getElementById('btn-submit-abs').textContent='Simpan Aktivitas';
   document.getElementById('btn-cancel-abs').style.display='none';
 }
 
 function editPresensi(id){
   haptic(15);
+  // Pindah ke tab Log Aktivitas jika sedang di tab lain
+  const btnLog = document.querySelector('.seg-btn[onclick*="tab-log"]');
+  if(btnLog) switchAbsInputTab('tab-log', btnLog);
+
   const a=data.Presensi.find(x=>x.id===id);if(!a)return;
   editAbsId=id;
   document.getElementById('abs-input-date').value=a.date||'';
@@ -1384,6 +1448,16 @@ function moveAbsToDate(dateStr) {
         if(dayHeader) {
             dayHeader.scrollIntoView({ behavior: 'smooth', block: 'center' });
             if(dayCollapsed[dateStr]) toggleDay(dateStr);
+            
+            // Highlight effect
+            const block = dayHeader.parentElement;
+            block.style.transition = 'box-shadow 0.3s, transform 0.3s';
+            block.style.transform = 'scale(1.02)';
+            block.style.boxShadow = '0 0 0 3px var(--blue-mid)';
+            setTimeout(() => {
+                block.style.transform = 'scale(1)';
+                block.style.boxShadow = 'var(--card-shadow)';
+            }, 800);
         }
     }, 100);
 }
@@ -1426,6 +1500,21 @@ function toggleAllDays(){
     if(toggle)toggle.classList.toggle('collapsed',dayCollapsed[dStr]);
   }
   if(btn)btn.textContent=allCollapsed?'Sembunyikan':'Tampilkan';
+}
+
+function toggleCalBox() {
+  haptic(10);
+  calCollapsed = !calCollapsed;
+  const box = document.getElementById('cal-collapsible');
+  const icon = document.getElementById('cal-toggle-icon');
+  
+  if (calCollapsed) {
+    box.style.display = 'none';
+    icon.style.transform = 'rotate(-90deg)';
+  } else {
+    box.style.display = 'block';
+    icon.style.transform = 'rotate(0deg)';
+  }
 }
 
 function toggleTalentaDate(d){
@@ -1533,6 +1622,86 @@ function calcWeekStats(acts) {
     return `${acts.length} aktivitas ${timeStr ? ' • ' + timeStr : ''}`;
 }
 
+// LOGIKA KALENDER
+function renderCalendar() {
+  const y = calCurrentDate.getFullYear();
+  const m = calCurrentDate.getMonth();
+  
+  const mLabel = document.getElementById('cal-month-label');
+  if (mLabel) mLabel.textContent = new Date(y, m, 1).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+  
+  const firstDay = new Date(y, m, 1).getDay(); // 0 is Sunday
+  const daysInMonth = new Date(y, m + 1, 0).getDate();
+  const daysInPrevMonth = new Date(y, m, 0).getDate();
+  
+  const grid = document.getElementById('cal-grid');
+  if (!grid) return;
+  
+  let html = `
+    <div class="cal-day-head">Min</div>
+    <div class="cal-day-head">Sen</div>
+    <div class="cal-day-head">Sel</div>
+    <div class="cal-day-head">Rab</div>
+    <div class="cal-day-head">Kam</div>
+    <div class="cal-day-head">Jum</div>
+    <div class="cal-day-head">Sab</div>
+  `;
+  
+  let dateCount = 1;
+  let nextMonthCount = 1;
+  
+  for (let i = 0; i < 42; i++) {
+    if (i < firstDay) {
+      let dayNum = daysInPrevMonth - firstDay + i + 1;
+      let dStr = ds(new Date(y, m - 1, dayNum));
+      html += createCalCell(dayNum, dStr, true);
+    } else if (dateCount <= daysInMonth) {
+      let dStr = ds(new Date(y, m, dateCount));
+      html += createCalCell(dateCount, dStr, false);
+      dateCount++;
+    } else {
+      let dStr = ds(new Date(y, m + 1, nextMonthCount));
+      html += createCalCell(nextMonthCount, dStr, true);
+      nextMonthCount++;
+    }
+  }
+  grid.innerHTML = html;
+}
+
+function createCalCell(num, dStr, isOtherMonth) {
+  const isToday = dStr === ds(new Date());
+  const hasTalenta = data.talenta && data.talenta[dStr];
+  const hasLibur = data.libur && data.libur[dStr];
+  const hasAktivitas = data.Presensi && data.Presensi.some(a => a.date === dStr);
+  
+  let cls = 'cal-cell';
+  if (isOtherMonth) cls += ' other-month';
+  if (isToday) cls += ' today';
+  
+  let dots = '';
+  if (hasTalenta) dots += '<div class="cal-dot-t" title="Talenta ✓"></div>';
+  if (hasLibur) dots += '<div class="cal-dot-l" title="Libur"></div>';
+  if (hasAktivitas) dots += '<div class="cal-dot-a" title="Ada Aktivitas"></div>';
+  
+  return `
+    <div class="${cls}" onclick="clickCalCell('${dStr}')">
+      <div class="cal-date-num">${num}</div>
+      <div class="cal-dots">${dots}</div>
+    </div>
+  `;
+}
+
+function moveCalMonth(dir) {
+  haptic(10);
+  calCurrentDate.setMonth(calCurrentDate.getMonth() + dir);
+  renderCalendar();
+}
+
+function clickCalCell(dStr) {
+  moveAbsToDate(dStr);
+}
+
+
 function renderPresensi(){
   const we=new Date(currentWeekStart);we.setDate(we.getDate()+6);
   document.getElementById('abs-date-label').textContent=fmtDate(ds(currentWeekStart))+' – '+fmtDate(ds(we));
@@ -1606,6 +1775,7 @@ function renderPresensi(){
   el.innerHTML=html;
   updateToggleAllBtn();
   renderTalentaMissed();
+  renderCalendar(); // Sync Calendar with any state changes
 }
 
 function copyForTalenta(){
@@ -1714,8 +1884,14 @@ function genRpText(){
   const progres=(document.getElementById('rp-progres').value||'').trim();
   const problem=(document.getElementById('rp-problem').value||'').trim();
   const plan=(document.getElementById('rp-plan').value||'').trim();
-  let txt=`Laporan 3P ${team}\n${date?fmtDate(date):''}\n${'─'.repeat(36)}\n\n`;
-  txt+=`PROGRES\n${progres||'-'}\n\nPROBLEM\n${problem||'-'}\n\nPLAN\n${plan||'-'}`;
+  
+  let txt = `*Laporan 3P - ${team}*\n`;
+  if(date) txt += `*Tanggal:* ${fmtDate(date)}\n\n`;
+
+  txt += `*1. PROGRES*\n${progres||'-'}\n\n`;
+  txt += `*2. PROBLEM*\n${problem||'-'}\n\n`;
+  txt += `*3. PLAN*\n${plan||'-'}`;
+
   return txt.trim();
 }
 
@@ -1916,6 +2092,7 @@ function renderKontribusi(){
   }).join('');
 }
 
+
 // ======================
 // FITUR: DASHBOARD
 // ======================
@@ -1933,9 +2110,6 @@ function renderDash(){
   
   const wn=Math.ceil((((new Date()-new Date(new Date().getFullYear(),0,1))/86400000)+1)/7);
   document.getElementById('dash-week-badge').textContent='W'+wn;
-
-  const braindumpEl = document.getElementById('dash-braindump');
-  if(braindumpEl) braindumpEl.value = data.quickNotes || '';
 
   const todayAbs=data.Presensi.filter(a=>a.date===today).sort((a,b)=>(a.time||'').localeCompare(b.time||'')||a.createdAt-b.createdAt);
   const todayTodos=data.todos.filter(t=>t.done&&t.doneAt&&ds(new Date(t.doneAt))===today);
@@ -2001,14 +2175,6 @@ function renderDash(){
   const htEl=document.getElementById('dash-high-todos');
   if(!highTodos.length)htEl.innerHTML='<div class="empty">Tidak ada to-do prioritas tinggi</div>';
   else htEl.innerHTML=highTodos.map(t=>`<div class="sum-item"><div class="sum-dot" style="background:var(--red-mid)"></div><div class="sum-text">${esc(t.text)}${t.projName?` <span style="color:var(--text3);font-size:12px">(${esc(t.projName)})</span>`:''}</div></div>`).join('');
-
-  const reposEl=document.getElementById('dash-repos');
-  const withRepo=data.projects.filter(p=>p.repo);
-  if(!withRepo.length)reposEl.innerHTML='<div class="empty">Belum ada link repository.</div>';
-  else reposEl.innerHTML=withRepo.map(p=>{
-    let c = p.color;
-    return `<div class="sum-item"><div class="sum-dot" style="background:${c}"></div><div class="sum-text"><strong style="font-size:13px; font-weight:600">${esc(p.name)}</strong><br><a href="${esc(p.repo)}" target="_blank" rel="noopener" style="font-size:12px;color:var(--blue-mid);word-break:break-all; text-decoration:none;">${esc(p.repo)}</a></div></div>`
-  }).join('');
 }
 
 // ======================

@@ -193,13 +193,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
 .kanban-col { min-width: 300px; flex: 1; background: var(--bg-body); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 16px; display: flex; flex-direction: column; max-height: 75vh; scroll-snap-align: start; }
 .kanban-title { font-size: 14px; font-weight: 700; color: var(--text); padding-bottom: 12px; margin-bottom: 12px; border-bottom: 2px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
 
-.sk-table-wrapper { overflow-x: auto; background: var(--card-bg); border-radius: var(--radius-lg); border: 0.5px solid var(--border); box-shadow: var(--card-shadow); -webkit-overflow-scrolling: touch; }
-.sk-table { width: 100%; border-collapse: collapse; min-width: 950px; text-align: left; }
-.sk-table th { padding: 14px 16px; border-bottom: 1px solid var(--border2); font-size: 13px; font-weight: 600; color: var(--text3); background: var(--bg-body); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.05em; }
-.sk-table td { padding: 14px 16px; border-bottom: 0.5px solid var(--border); font-size: 14px; color: var(--text); vertical-align: top; line-height: 1.5;}
-.sk-table tr:hover td { background: var(--bg-body); }
-.sk-table .sk-focus { font-weight: 600; display: flex; align-items: flex-start; gap: 8px;}
-
 .rp-section { margin-bottom: 20px; border-radius: var(--radius-lg); overflow: hidden; border: 0.5px solid var(--border); box-shadow: var(--card-shadow); }
 .rp-section-head { display: flex; align-items: center; gap: 10px; padding: 14px 20px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; background: var(--bg-body); }
 .rp-section-head.ph { color: var(--teal-mid); }
@@ -261,9 +254,20 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
 .app-item-actions .btn-action:last-child { margin-bottom: 0; }
 .app-item-actions .btn-action svg { width: 14px; height: 14px; }
 
-body.public-view .top-bar, body.public-view .floating-dock, body.public-view .action-group, body.public-view .section-header button { display: none !important; }
-body.public-view .main { padding-top: 40px; padding-bottom: 40px; }
-body.public-view .sk-table th:last-child, body.public-view .sk-table td:last-child { display: none; }
+/* LAYAR LOGIN */
+#login-screen {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: var(--bg-body); z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 24px; transition: opacity 0.3s;
+}
+#login-screen .login-box {
+  background: var(--card-bg); padding: 40px; border-radius: 24px;
+  box-shadow: var(--card-shadow); border: 1px solid var(--border);
+  text-align: center; width: 90%; max-width: 400px;
+}
+#login-screen h1 { font-size: 22px; margin-bottom: 10px; color: var(--text); letter-spacing: -0.5px;}
+#login-screen p { font-size: 14px; color: var(--text2); margin-bottom: 24px; }
 
 @media(max-width: 768px){
   .top-bar { left: 16px; right: 16px; top: 16px; border-radius: 20px; padding: 8px 12px; }
@@ -278,7 +282,18 @@ body.public-view .sk-table th:last-child, body.public-view .sk-table td:last-chi
 </style>
 </head>
 <body>
-<div class="layout">
+
+<!-- Tampilan Login Google -->
+<div id="login-screen">
+  <div class="login-box">
+    <div style="width:64px; height:64px; background:var(--blue-mid); color:#fff; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:bold; margin: 0 auto 20px;">GIS</div>
+    <h1>GIS Project Manager</h1>
+    <p>Silakan login untuk mengakses data workspace Anda.</p>
+    <button class="btn btn-primary" onclick="loginWithGoogle()" style="font-size:15px; padding: 12px 24px; width:100%;">Masuk dengan Google</button>
+  </div>
+</div>
+
+<div class="layout" id="main-layout" style="display:none;">
 
 <header class="top-bar">
   <div class="logo-badge">GIS</div>
@@ -295,6 +310,7 @@ body.public-view .sk-table th:last-child, body.public-view .sk-table td:last-chi
       </svg>
     </button>
     <button class="top-action-btn" onclick="toggleTheme()" title="Ganti Tema">🌓</button>
+    <button class="top-action-btn" onclick="logout()" title="Logout" style="color:var(--red-mid);">🚪</button>
   </div>
 </header>
 
@@ -311,10 +327,6 @@ body.public-view .sk-table th:last-child, body.public-view .sk-table td:last-chi
     <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M9 12l2 2 4-4"/></svg>
     <span class="dock-label">To-Do</span>
     <span class="nav-badge-count" id="todo-badge" style="display:none">0</span>
-  </div>
-  <div class="dock-item" data-p="spatial" onclick="goPage('spatial')" title="Spatial Kit">
-    <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 12 12 17 22 12"></polyline><polyline points="2 17 12 22 22 17"></polyline></svg>
-    <span class="dock-label">Spatial Kit</span>
   </div>
   <div class="dock-item" data-p="presensi" onclick="goPage('presensi')" title="Presensi">
     <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -519,77 +531,6 @@ body.public-view .sk-table th:last-child, body.public-view .sk-table td:last-chi
   <div id="todo-kanban" class="kanban-board" style="display:none;"></div>
 </div>
 
-<div id="page-spatial" class="page">
-  <div class="section-header">
-    <div>
-      <div class="section-title">Spatial Kit</div>
-      <div class="section-sub" id="sk-public-info" style="display:none; color:var(--blue-mid);">Tampilan Publik (Hanya Baca)</div>
-    </div>
-    <div style="display: flex; gap: 8px;">
-      <button class="btn btn-outline" onclick="openShareModal()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-        Bagikan
-      </button>
-      <button class="btn btn-primary" onclick="haptic(10); resetKitForm(); document.getElementById('add-kit-card').style.display='block';">+ Tambah Baru</button>
-    </div>
-  </div>
-
-  <div class="sk-desc-box" style="font-size:13px; color:var(--text2); margin-bottom:24px; padding:16px; background:var(--card-bg); border-radius:var(--radius); border:0.5px solid var(--border);">
-    <strong>Spatial Kit</strong> adalah sekumpulan alat, plugin, atau perangkat lunak yang digunakan untuk melakukan analisis spasial, pemrosesan data geospasial, dan visualisasi peta dalam aplikasi GIS.
-  </div>
-
-  <div class="card" id="add-kit-card" style="display:none; background:var(--card-bg); border: 1.5px solid var(--purple-mid); box-shadow:0 8px 24px rgba(0,0,0,0.08); margin-bottom: 24px;">
-    <div class="card-title" style="color: var(--purple-mid);">Form Entri Spatial Kit</div>
-    <div class="fgrow">
-      <div><div class="flabel">Focus (Nama Plugin/Tool)</div><input class="finput" id="sk-focus" placeholder="contoh: BlenderGIS"></div>
-      <div><div class="flabel">Judul Riset</div><input class="finput" id="sk-judul" placeholder="contoh: Support Project Geopark"></div>
-    </div>
-    <div class="fgrow">
-      <div><div class="flabel">Software</div><input class="finput" id="sk-software" placeholder="contoh: Blender, QGIS"></div>
-      <div><div class="flabel">Event / Scope</div><input class="finput" id="sk-scope" placeholder="contoh: Project, Sharing Session"></div>
-    </div>
-    <div class="frow">
-      <div class="flabel">Fungsi / Deskripsi Singkat</div>
-      <textarea class="finput" id="sk-fungsi" placeholder="Jelaskan fungsi alat/plugin ini..." style="resize:vertical; min-height:80px;"></textarea>
-    </div>
-    <div class="fgrow">
-      <div><div class="flabel">Tanggal (Date)</div><input class="finput" type="date" id="sk-date"></div>
-      <div><div class="flabel">Output (Link/URL)</div><input class="finput" id="sk-output" placeholder="https://..."></div>
-    </div>
-    <div class="frow">
-      <div class="flabel">Status</div>
-      <div class="pill-row" id="sk-status">
-        <div class="pill on" data-v="Done" onclick="pickPill(this)">Done</div>
-        <div class="pill" data-v="In Progress" onclick="pickPill(this)">In Progress</div>
-        <div class="pill" data-v="Planned" onclick="pickPill(this)">Planned</div>
-      </div>
-    </div>
-    <div class="btn-row" style="margin-top: 24px;">
-      <button class="btn btn-primary" onclick="addSpatialKit()" style="background:var(--purple-mid);">Simpan Data</button>
-      <button class="btn btn-outline" onclick="haptic(10); resetKitForm()">Batal</button>
-    </div>
-  </div>
-
-  <div class="sk-table-wrapper">
-    <table class="sk-table">
-      <thead>
-        <tr>
-          <th style="min-width: 160px;">Focus</th>
-          <th style="min-width: 200px;">Judul Riset</th>
-          <th>Software</th>
-          <th style="min-width: 250px;">Fungsi</th>
-          <th>Event/Scope</th>
-          <th>Date</th>
-          <th>Status</th>
-          <th>Output</th>
-          <th style="text-align:right;">Opsi</th>
-        </tr>
-      </thead>
-      <tbody id="kit-tbody"></tbody>
-    </table>
-  </div>
-</div>
-
 <div id="page-apphub" class="page">
   <div class="section-header">
     <div><div class="section-title">AppHub</div><div class="section-sub">Akses Cepat Platform & Tooling GIS</div></div>
@@ -604,6 +545,10 @@ body.public-view .sk-table th:last-child, body.public-view .sk-table td:last-chi
     </div>
     <div class="frow">
       <div class="flabel">Deskripsi Singkat</div><input class="finput" id="ah-desc" placeholder="Sistem WebGIS Tim A">
+    </div>
+    <div class="frow">
+      <div class="flabel">URL Logo / Ikon (Opsional)</div>
+      <input class="finput" id="ah-logo" placeholder="https://contoh.com/logo.png">
     </div>
     <div class="btn-row" style="margin-top: 24px;">
       <button class="btn btn-primary" onclick="addAppHub()">Simpan App</button>
@@ -719,29 +664,14 @@ body.public-view .sk-table th:last-child, body.public-view .sk-table td:last-chi
   </div>
 </div>
 
-<div class="c-modal-overlay" id="share-modal" onclick="closeShareModal()">
-  <div class="c-modal-box" onclick="event.stopPropagation()">
-    <div class="c-modal-title">Bagikan Spatial Kit</div>
-    <div class="c-modal-msg">Pilih bagaimana Anda ingin membagikan data Spatial Kit ini ke orang lain.</div>
-    <div style="display:flex;flex-direction:column;gap:12px;">
-      <button class="btn btn-primary" onclick="copyPublicLink()" style="padding:12px; font-size:14px; width:100%; justify-content:center;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-        Salin Link Web
-      </button>
-      <button class="btn btn-outline" onclick="shareSpatialKitText()" style="padding:12px; font-size:14px; width:100%; justify-content:center;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-        Salin Format Teks
-      </button>
-    </div>
-  </div>
-</div>
-
 <script>
 const iconEdit = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`;
 const iconDel = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>`;
 </script>
 
 <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+<!-- TAMBAHAN SCRIPT AUTHENTICATION -->
+<script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database-compat.js"></script>
 
 <script>
@@ -755,16 +685,42 @@ const firebaseConfig = {
   appId: "1:55740115890:web:f32c57e2a3ab66d19892ab"
 };
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
 
-let data = {projects:[], todos:[], spatialKits:[], appHub:[], Presensi:[], talenta:{}, libur:{}};
+const auth = firebase.auth();
+const provider = new firebase.auth.GoogleAuthProvider();
+const db = firebase.database();
+let currentUser = null;
+
+let data = {projects:[], todos:[], appHub:[], Presensi:[], talenta:{}, libur:{}};
 let uid=Date.now();
-let editKitId=null, editProjId=null, editTodoId=null, editAbsId=null, editAppHubId=null;
+let editProjId=null, editTodoId=null, editAbsId=null, editAppHubId=null;
 let projFilter='all', todoFilter='all', kontribPeriod='custom';
-let isPublicView = false;
 let projOpen={}, dayCollapsed={};
 let isKanbanView = false; 
 let allDaysCollapsed = false;
+
+// LOGIN & LOGOUT FUNCTION
+function loginWithGoogle() {
+  auth.signInWithPopup(provider).catch(err => toast(err.message));
+}
+function logout() {
+  auth.signOut().catch(err => toast(err.message));
+}
+
+// AUTHENTICATION LISTENER
+auth.onAuthStateChanged(user => {
+  if (user) {
+    currentUser = user;
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('main-layout').style.display = 'block';
+    loadData(); // Load private data for this specific user
+  } else {
+    currentUser = null;
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('main-layout').style.display = 'none';
+  }
+});
+
 
 function getMonday(d){d=new Date(d);var day=d.getDay(),diff=d.getDate()-day+(day==0?-6:1);return new Date(d.setDate(diff))}
 let currentWeekStart=getMonday(new Date());
@@ -799,42 +755,36 @@ function toggleTheme() {
     toast(next === 'dark' ? 'Mode Gelap Aktif 🌙' : 'Mode Terang Aktif ☀️');
 }
 
-async function save(){ try{await db.ref("gpm_data/main_state").set(data)}catch(e){console.error(e);toast('Gagal sinkronisasi!')} }
+// BIND TO USER'S PRIVATE DATA NODE
+async function save(){ try{await db.ref("gpm_data/" + currentUser.uid + "/main_state").set(data)}catch(e){console.error(e);toast('Gagal sinkronisasi!')} }
 async function loadData(){
-  db.ref("gpm_data/main_state").on('value',snap=>{
+  if(!currentUser) return;
+  db.ref("gpm_data/" + currentUser.uid + "/main_state").on('value',snap=>{
     if(snap.exists()) {
       data=snap.val();
       if(!data.projects) data.projects=[];
       if(!data.todos) data.todos=[];
-      if(!data.spatialKits) data.spatialKits=[];
       if(!data.appHub) data.appHub=[];
       if(!data.Presensi) data.Presensi=[];
       if(!data.talenta) data.talenta={};
       if(!data.libur) data.libur={};
     }
     
-    if(isPublicView) {
-      renderSpatialKit();
-    } else {
-      const ap=document.querySelector('.page.active');
-      if(ap){
-        const p=ap.id.replace('page-','');
-        if(p==='dashboard') { renderDash(); renderKontribusi(); }
-        if(p==='proyek') renderProyek();
-        if(p==='todo') { fillProjSelects(); renderTodo(); updateTodoBadge(); }
-        if(p==='spatial') renderSpatialKit();
-        if(p==='apphub') renderAppHub();
-        if(p==='presensi') { fillProjSelects(); renderPresensi(); if(calSummaryOpen) renderCalendarSummary(); }
-      }
-      updateTodoBadge();
+    const ap=document.querySelector('.page.active');
+    if(ap){
+      const p=ap.id.replace('page-','');
+      if(p==='dashboard') { renderDash(); renderKontribusi(); }
+      if(p==='proyek') renderProyek();
+      if(p==='todo') { fillProjSelects(); renderTodo(); updateTodoBadge(); }
+      if(p==='apphub') renderAppHub();
+      if(p==='presensi') { fillProjSelects(); renderPresensi(); if(calSummaryOpen) renderCalendarSummary(); }
     }
+    updateTodoBadge();
   });
 }
 
 function goPage(p){
-  if(isPublicView && p !== 'spatial') return;
   haptic(15);
-  // Hapus class active dari dock item jika ada
   document.querySelectorAll('.dock-item').forEach(el=>el.classList.toggle('active',el.dataset.p===p));
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.getElementById('page-'+p).classList.add('active');
@@ -843,7 +793,6 @@ function goPage(p){
   if(p==='dashboard') { renderDash(); renderKontribusi(); }
   if(p==='proyek') renderProyek();
   if(p==='todo') { fillProjSelects(); renderTodo(); updateTodoBadge(); }
-  if(p==='spatial') renderSpatialKit();
   if(p==='apphub') renderAppHub();
   if(p==='presensi') { fillProjSelects(); renderPresensi(); if(calSummaryOpen) renderCalendarSummary(); }
 }
@@ -877,7 +826,7 @@ function moveItem(type, id, dir, event) {
 
 function resetAppHubForm() {
     editAppHubId = null;
-    ['ah-name', 'ah-url', 'ah-desc'].forEach(id => document.getElementById(id).value = '');
+    ['ah-name', 'ah-url', 'ah-desc', 'ah-logo'].forEach(id => document.getElementById(id).value = '');
     document.querySelector('#add-apphub-card .btn-primary').textContent = 'Simpan App';
     document.getElementById('add-apphub-card').style.display = 'none';
 }
@@ -886,15 +835,16 @@ function addAppHub() {
     haptic(15);
     const name = document.getElementById('ah-name').value.trim();
     const url = document.getElementById('ah-url').value.trim();
+    const logo = document.getElementById('ah-logo').value.trim();
     if(!name || !url) { toast('Nama dan URL wajib diisi!'); return; }
     
     let fUrl = url.startsWith('http') ? url : 'https://' + url;
     
     if(editAppHubId) {
         const ah = data.appHub.find(x => x.id === editAppHubId);
-        if(ah) { ah.name = name; ah.url = fUrl; ah.desc = document.getElementById('ah-desc').value.trim(); toast('AppHub diperbarui!'); }
+        if(ah) { ah.name = name; ah.url = fUrl; ah.desc = document.getElementById('ah-desc').value.trim(); ah.logo = logo; toast('AppHub diperbarui!'); }
     } else {
-        data.appHub.push({ id: gid(), name: name, url: fUrl, desc: document.getElementById('ah-desc').value.trim(), createdAt: Date.now() });
+        data.appHub.push({ id: gid(), name: name, url: fUrl, desc: document.getElementById('ah-desc').value.trim(), logo: logo, createdAt: Date.now() });
         toast('AppHub ditambahkan!');
     }
     save(); resetAppHubForm(); renderAppHub();
@@ -907,6 +857,7 @@ function editAppHub(id) {
     document.getElementById('ah-name').value = ah.name || '';
     document.getElementById('ah-url').value = ah.url || '';
     document.getElementById('ah-desc').value = ah.desc || '';
+    document.getElementById('ah-logo').value = ah.logo || '';
     document.getElementById('add-apphub-card').style.display = 'block';
     document.querySelector('#add-apphub-card .btn-primary').textContent = 'Update App';
     window.scrollTo({top:0, behavior:'smooth'});
@@ -921,18 +872,20 @@ function delAppHub(id) {
 
 function renderAppHub() {
     const el = document.getElementById('apphub-list');
-    el.className = 'apphub-grid'; // Memastikan tampilan menggunakan layout grid ikon terbaru
+    el.className = 'apphub-grid'; 
     if(!data.appHub || data.appHub.length === 0) { 
         el.innerHTML = '<div class="empty" style="grid-column:1/-1">Belum ada aplikasi atau link di AppHub. Klik + App Baru untuk menambahkan.</div>'; 
         return; 
     }
     
     el.innerHTML = data.appHub.map(a => {
-        let favicon = '';
-        try { favicon = `https://www.google.com/s2/favicons?domain=${new URL(a.url).hostname}&sz=64`; } catch(e) {}
+        let favicon = a.logo || '';
+        if(!favicon) {
+            try { favicon = `https://www.google.com/s2/favicons?domain=${new URL(a.url).hostname}&sz=64`; } catch(e) {}
+        }
         
         let iconHtml = favicon 
-            ? `<img src="${favicon}" style="width:36px; height:36px; border-radius:8px; object-fit:contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span style="display:none; width:100%; height:100%; align-items:center; justify-content:center;">${esc(a.name).substring(0,2).toUpperCase()}</span>`
+            ? `<img src="${esc(favicon)}" style="width:36px; height:36px; border-radius:8px; object-fit:contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span style="display:none; width:100%; height:100%; align-items:center; justify-content:center;">${esc(a.name).substring(0,2).toUpperCase()}</span>`
             : `<span style="display:flex; width:100%; height:100%; align-items:center; justify-content:center;">${esc(a.name).substring(0,2).toUpperCase()}</span>`;
 
         return `
@@ -950,109 +903,6 @@ function renderAppHub() {
     }).join('');
 }
 
-function openShareModal() { haptic(15); document.getElementById('share-modal').classList.add('show'); }
-function closeShareModal() { haptic(10); document.getElementById('share-modal').classList.remove('show'); }
-
-function copyPublicLink() {
-  haptic(15);
-  const baseUrl = window.location.origin + window.location.pathname;
-  const shareUrl = baseUrl + '?view=spatial-public';
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(shareUrl).then(() => { closeShareModal(); toast('Link berhasil disalin!'); }).catch(() => toast('Gagal menyalin link.'));
-  } else {
-    const ta = document.createElement('textarea'); ta.value = shareUrl; document.body.appendChild(ta);
-    ta.select(); document.execCommand('copy'); document.body.removeChild(ta); closeShareModal(); toast('Link berhasil disalin!');
-  }
-}
-
-function shareSpatialKitText() {
-  haptic(15);
-  if(!data.spatialKits || data.spatialKits.length === 0) { closeShareModal(); toast('Belum ada data Spatial Kit'); return; }
-  let txt = '*📦 Data Spatial Kit - GIS Project Manager*\n\n';
-  data.spatialKits.forEach((k, i) => {
-    txt += `*${i+1}. ${k.focus}*\n`;
-    if(k.judul) txt += `- Judul Riset: ${k.judul}\n`;
-    if(k.software) txt += `- Software: ${k.software}\n`;
-    if(k.fungsi) txt += `- Fungsi: ${k.fungsi}\n`;
-    if(k.scope) txt += `- Event/Scope: ${k.scope}\n`;
-    if(k.date) txt += `- Date: ${fmtDate(k.date)}\n`;
-    txt += `- Status: ${k.status}\n`;
-    if(k.output) txt += `- Output: ${k.output}\n\n`;
-  });
-
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(txt).then(() => { closeShareModal(); toast('Format Teks disalin!'); }).catch(() => toast('Gagal menyalin.'));
-  } else {
-    const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta);
-    ta.select(); document.execCommand('copy'); document.body.removeChild(ta); closeShareModal(); toast('Format Teks disalin!');
-  }
-}
-
-function resetKitForm() {
-  editKitId = null;
-  ['sk-focus', 'sk-judul', 'sk-software', 'sk-scope', 'sk-fungsi', 'sk-output'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('sk-date').value = '';
-  document.querySelectorAll('#sk-status .pill').forEach(el => el.classList.remove('on'));
-  document.querySelector('#sk-status .pill[data-v="Done"]').classList.add('on');
-  document.querySelector('#add-kit-card .btn-primary').textContent = 'Simpan Data';
-  document.getElementById('add-kit-card').style.display = 'none';
-}
-
-function addSpatialKit() {
-  haptic(15);
-  const focus = document.getElementById('sk-focus').value.trim();
-  if(!focus) { toast('Focus / Nama wajib diisi!'); return; }
-  const payload = {
-    focus: focus, judul: document.getElementById('sk-judul').value.trim(), software: document.getElementById('sk-software').value.trim(),
-    scope: document.getElementById('sk-scope').value.trim(), fungsi: document.getElementById('sk-fungsi').value.trim(),
-    date: document.getElementById('sk-date').value, status: getPillVal('sk-status') || 'Done', output: document.getElementById('sk-output').value.trim()
-  };
-  if(editKitId) { const k = data.spatialKits.find(x => x.id === editKitId); if(k) Object.assign(k, payload); toast('Data diperbarui!'); } 
-  else { data.spatialKits.push({ id: gid(), ...payload, createdAt: Date.now() }); toast('Data ditambahkan!'); }
-  save(); resetKitForm(); renderSpatialKit();
-}
-
-function editSpatialKit(id) {
-  haptic(15); const k = data.spatialKits.find(x => x.id === id); if(!k) return; editKitId = id;
-  document.getElementById('sk-focus').value = k.focus || ''; document.getElementById('sk-judul').value = k.judul || '';
-  document.getElementById('sk-software').value = k.software || ''; document.getElementById('sk-scope').value = k.scope || '';
-  document.getElementById('sk-fungsi').value = k.fungsi || ''; document.getElementById('sk-date').value = k.date || '';
-  document.getElementById('sk-output').value = k.output || '';
-  document.querySelectorAll('#sk-status .pill').forEach(el => el.classList.remove('on'));
-  const ps = document.querySelector(`#sk-status .pill[data-v="${k.status}"]`);
-  if(ps) ps.classList.add('on'); else document.querySelector('#sk-status .pill[data-v="Done"]').classList.add('on');
-  document.getElementById('add-kit-card').style.display = 'block';
-  document.querySelector('#add-kit-card .btn-primary').textContent = 'Update Data'; window.scrollTo({top:0, behavior:'smooth'});
-}
-
-function delSpatialKit(id) {
-  customConfirm('Hapus entri Spatial Kit ini?', () => { data.spatialKits = data.spatialKits.filter(x => x.id !== id); save(); renderSpatialKit(); toast('Data dihapus'); });
-}
-
-function renderSpatialKit() {
-  const tbody = document.getElementById('kit-tbody');
-  if(!data.spatialKits || data.spatialKits.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="${isPublicView ? 8 : 9}" style="text-align:center; padding: 40px; color:var(--text3);">Belum ada data Spatial Kit.</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = data.spatialKits.map(k => {
-    let outputHtml = k.output ? `<a href="${k.output.startsWith('http') ? esc(k.output) : 'https://'+esc(k.output)}" target="_blank" style="color:var(--blue-mid); text-decoration:underline;">Lihat Output</a>` : '—';
-    let statusCls = k.status === 'Done' ? 'b-selesai' : k.status === 'In Progress' ? 'b-aktif' : 'b-hold';
-    let softHtml = (k.software || '—').split(',').map(s => `<span class="soft-pill" style="margin:2px; font-size:12px; background:var(--bg-body); padding:2px 6px; border-radius:4px; border:0.5px solid var(--border2); display:inline-block;">${esc(s.trim())}</span>`).join('');
-    return `
-      <tr>
-        <td><div class="sk-focus"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-top:2px; flex-shrink:0;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg><span>${esc(k.focus)}</span></div></td>
-        <td>${esc(k.judul || '—')}</td><td>${softHtml}</td><td class="sk-fungsi">${esc(k.fungsi || '—')}</td><td>${esc(k.scope || '—')}</td>
-        <td>${k.date ? fmtDate(k.date) : '—'}</td><td><span class="badge ${statusCls}">${k.status}</span></td><td>${outputHtml}</td>
-        <td style="text-align:right;">
-          <div class="action-group" style="justify-content:flex-end;">
-            <button class="btn-action edit" title="Edit" onclick="editSpatialKit('${k.id}')">${iconEdit}</button>
-            <button class="btn-action delete" title="Hapus" onclick="delSpatialKit('${k.id}')">${iconDel}</button>
-          </div>
-        </td>
-      </tr>`;
-  }).join('');
-}
 
 function resetProyekForm(){
   editProjId=null;
@@ -1717,7 +1567,6 @@ function renderKontribusi(){
     let diff = 100 - finalPcts.reduce((a,b) => a+b, 0); 
     for(let i=0; i < diff && i < remainders.length; i++) { finalPcts[remainders[i].i]++; }
     
-    // Validasi Mutlak: Memaksa total progress bar pas 100% jika ada perbedaan ujung
     let currentTotal = finalPcts.reduce((a,b) => a+b, 0);
     if (currentTotal !== 100 && finalPcts.length > 0) {
         finalPcts[0] += (100 - currentTotal);
@@ -1816,23 +1665,18 @@ function renderDash(){
   else htEl.innerHTML=highTodos.map(t=>`<div style="display:flex; gap:10px; margin-bottom:12px; align-items:flex-start;"><div style="width:8px; height:8px; border-radius:50%; background:var(--red-mid); margin-top:6px; flex-shrink:0; box-shadow: 0 0 6px rgba(255,59,48,0.4);"></div><div style="font-size:13px; line-height:1.4;">${esc(t.text)}${t.projName?` <span style="color:var(--text3);font-size:12px">(${esc(t.projName)})</span>`:''}</div></div>`).join('');
 }
 
-async function init(){
+function init(){
   try { const savedTheme = localStorage.getItem('gpm-theme'); if(savedTheme) document.documentElement.setAttribute('data-theme', savedTheme); } catch(e) {}
   
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('view') === 'spatial-public') {
-    isPublicView = true; document.body.classList.add('public-view'); document.getElementById('sk-public-info').style.display = 'block';
-    document.querySelectorAll('.page').forEach(x=>x.classList.remove('active')); document.getElementById('page-spatial').classList.add('active');
-  } else {
-    const now=new Date(); document.getElementById('nav-date').textContent=now.toLocaleDateString('id-ID',{weekday:'short',day:'numeric',month:'short'});
-    document.getElementById('dash-date-sub').textContent=now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-    document.getElementById('rp-date').value=ds(now); document.getElementById('abs-input-date').value=ds(now);
-    setKontribPeriod('custom',document.getElementById('btn-kp-custom'));
-  }
-  await loadData();
+  const now=new Date(); document.getElementById('nav-date').textContent=now.toLocaleDateString('id-ID',{weekday:'short',day:'numeric',month:'short'});
+  document.getElementById('dash-date-sub').textContent=now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('rp-date').value=ds(now); document.getElementById('abs-input-date').value=ds(now);
+  setKontribPeriod('custom',document.getElementById('btn-kp-custom'));
+  
+  // Catatan: Load Data sekarang dipanggil dari observer auth.onAuthStateChanged
 }
 
-// Eksekusi fungsi utama
+// Eksekusi fungsi inisialisasi awal UI
 init();
 </script>
 </body>

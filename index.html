@@ -66,26 +66,6 @@
 body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif; background: var(--bg-body); color: var(--text); min-height: 100vh; font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em; overflow-x: hidden; transition: background-color 0.3s, color 0.3s; }
 .layout { display: block; padding-bottom: 120px; width: 100%; max-width: 100vw;}
 
-/* CSS LAYAR LOGIN */
-#login-screen {
-  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  background: var(--bg-body); z-index: 9999;
-  display: flex; align-items: center; justify-content: center;
-  flex-direction: column; gap: 24px; transition: opacity 0.3s;
-}
-.login-box {
-  background: var(--card-bg); padding: 40px; border-radius: 24px;
-  box-shadow: var(--card-shadow); border: 1px solid var(--border);
-  text-align: center; width: 90%; max-width: 400px;
-}
-.login-box h1 { font-size: 22px; margin-bottom: 10px; color: var(--text); letter-spacing: -0.5px;}
-.login-box p { font-size: 14px; color: var(--text2); margin-bottom: 24px; }
-#login-error {
-  display: none; background: var(--red-bg); color: var(--red-mid);
-  padding: 12px; border-radius: 8px; font-size: 12px; margin-top: 16px;
-  text-align: left; border: 1px solid rgba(255,59,48,0.3); word-wrap: break-word;
-}
-
 .top-bar { position: fixed; top: 20px; left: 24px; background: var(--glass-bg); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border: 0.5px solid var(--border); border-radius: 100px; padding: 6px 20px 6px 6px; display: flex; align-items: center; gap: 12px; z-index: 100; box-shadow: var(--float-shadow); transition: all 0.3s ease; }
 .logo-badge { width: 36px; height: 36px; border-radius: 50%; background: var(--blue-mid); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
 .top-bar-text { display: flex; flex-direction: column; justify-content: center; min-width: 0; flex: 1; padding-right: 12px;}
@@ -298,22 +278,7 @@ body.public-view .sk-table th:last-child, body.public-view .sk-table td:last-chi
 </style>
 </head>
 <body>
-
-<!-- TAMPILAN LOGIN -->
-<div id="login-screen" style="display:none;">
-  <div class="login-box">
-    <div style="width:64px; height:64px; background:var(--blue-mid); color:#fff; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:bold; margin: 0 auto 20px;">GIS</div>
-    <h1>GIS Project Manager</h1>
-    <p>Silakan login menggunakan akun Google Anda.</p>
-    
-    <button class="btn btn-primary" onclick="loginWithGooglePopup()" style="width:100%; padding:12px; font-size:15px; margin-bottom:10px;">Masuk dengan Google</button>
-    <button class="btn btn-outline" onclick="loginWithGoogleRedirect()" style="width:100%; padding:12px; font-size:14px;">Gunakan Redirect (Jika Popup Gagal)</button>
-    
-    <div id="login-error"></div>
-  </div>
-</div>
-
-<div class="layout" id="main-layout" style="display:none;">
+<div class="layout">
 
 <header class="top-bar">
   <div class="logo-badge">GIS</div>
@@ -330,9 +295,6 @@ body.public-view .sk-table th:last-child, body.public-view .sk-table td:last-chi
       </svg>
     </button>
     <button class="top-action-btn" onclick="toggleTheme()" title="Ganti Tema">🌓</button>
-    <button class="top-action-btn" onclick="logout()" title="Logout" style="color:var(--red-mid);">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-    </button>
   </div>
 </header>
 
@@ -780,7 +742,6 @@ const iconDel = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stro
 </script>
 
 <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database-compat.js"></script>
 
 <script>
@@ -794,11 +755,8 @@ const firebaseConfig = {
   appId: "1:55740115890:web:f32c57e2a3ab66d19892ab"
 };
 firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const provider = new firebase.auth.GoogleAuthProvider();
 const db = firebase.database();
 
-let currentUser = null;
 let data = {projects:[], todos:[], spatialKits:[], appHub:[], Presensi:[], talenta:{}, libur:{}};
 let uid=Date.now();
 let editKitId=null, editProjId=null, editTodoId=null, editAbsId=null, editAppHubId=null;
@@ -807,57 +765,6 @@ let isPublicView = false;
 let projOpen={}, dayCollapsed={};
 let isKanbanView = false; 
 let allDaysCollapsed = false;
-
-// =====================================
-// FUNGSI LOGIN
-// =====================================
-function loginWithGooglePopup() {
-  const errBox = document.getElementById('login-error');
-  errBox.style.display = 'none';
-  auth.signInWithPopup(provider).catch((error) => {
-    errBox.style.display = 'block';
-    errBox.innerText = 'Gagal (Popup): ' + error.message;
-  });
-}
-
-function loginWithGoogleRedirect() {
-  const errBox = document.getElementById('login-error');
-  errBox.style.display = 'none';
-  auth.signInWithRedirect(provider).catch((error) => {
-    errBox.style.display = 'block';
-    errBox.innerText = 'Gagal (Redirect): ' + error.message;
-  });
-}
-
-function logout() {
-  auth.signOut().catch((error) => toast("Gagal Logout: " + error.message));
-}
-
-// Cek error redirect jika ada
-auth.getRedirectResult().catch((error) => {
-  if (error) {
-    const errBox = document.getElementById('login-error');
-    errBox.style.display = 'block';
-    errBox.innerText = 'Error Redirect: ' + error.message;
-  }
-});
-
-// Pantau state auth (User login / tidak)
-auth.onAuthStateChanged((user) => {
-  // Jika sedang membuka Public View, abaikan aturan login
-  if (isPublicView) return; 
-
-  if (user) {
-    currentUser = user;
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('main-layout').style.display = 'block';
-    loadData();
-  } else {
-    currentUser = null;
-    document.getElementById('login-screen').style.display = 'flex';
-    document.getElementById('main-layout').style.display = 'none';
-  }
-});
 
 function getMonday(d){d=new Date(d);var day=d.getDay(),diff=d.getDate()-day+(day==0?-6:1);return new Date(d.setDate(diff))}
 let currentWeekStart=getMonday(new Date());
@@ -892,11 +799,7 @@ function toggleTheme() {
     toast(next === 'dark' ? 'Mode Gelap Aktif 🌙' : 'Mode Terang Aktif ☀️');
 }
 
-async function save(){ 
-  try{ await db.ref("gpm_data/main_state").set(data); }
-  catch(e){ console.error(e); toast('Gagal sinkronisasi!'); } 
-}
-
+async function save(){ try{await db.ref("gpm_data/main_state").set(data)}catch(e){console.error(e);toast('Gagal sinkronisasi!')} }
 async function loadData(){
   db.ref("gpm_data/main_state").on('value',snap=>{
     if(snap.exists()) {
@@ -1018,7 +921,7 @@ function delAppHub(id) {
 
 function renderAppHub() {
     const el = document.getElementById('apphub-list');
-    el.className = 'apphub-grid'; 
+    el.className = 'apphub-grid'; // Memastikan tampilan menggunakan layout grid ikon terbaru
     if(!data.appHub || data.appHub.length === 0) { 
         el.innerHTML = '<div class="empty" style="grid-column:1/-1">Belum ada aplikasi atau link di AppHub. Klik + App Baru untuk menambahkan.</div>'; 
         return; 
@@ -1761,7 +1664,7 @@ function getKontribRange(){
   if(kontribPeriod==='week'){
     const now=new Date(),day=now.getDay();
     const mon=new Date(now);mon.setDate(now.getDate()-(day===0?6:day-1));mon.setHours(0,0,0,0);
-    const sun=new Date(mon);sun.setDate(sun.getDate()+6);sun.setHours(23,59,59,999);
+    const sun=new Date(mon);sun.setDate(mon.getDate()+6);sun.setHours(23,59,59,999);
     return{start:mon.getTime(),end:sun.getTime()}
   }
   if(kontribPeriod==='month'){
@@ -1814,6 +1717,7 @@ function renderKontribusi(){
     let diff = 100 - finalPcts.reduce((a,b) => a+b, 0); 
     for(let i=0; i < diff && i < remainders.length; i++) { finalPcts[remainders[i].i]++; }
     
+    // Validasi Mutlak: Memaksa total progress bar pas 100% jika ada perbedaan ujung
     let currentTotal = finalPcts.reduce((a,b) => a+b, 0);
     if (currentTotal !== 100 && finalPcts.length > 0) {
         finalPcts[0] += (100 - currentTotal);
@@ -1875,7 +1779,7 @@ function renderKontribusi(){
 function renderDash(){
   const today=ds(new Date()); const now=new Date(),day=now.getDay();
   const mon=new Date(now);mon.setDate(now.getDate()-(day===0?6:day-1));mon.setHours(0,0,0,0);
-  const sun=new Date(mon);sun.setDate(sun.getDate()+6);sun.setHours(23,59,59,999); const start=mon.getTime(), end=sun.getTime();
+  const sun=new Date(mon);sun.setDate(mon.getDate()+6);sun.setHours(23,59,59,999); const start=mon.getTime(), end=sun.getTime();
 
   document.getElementById('d-aktif').textContent=data.projects.filter(p=>p.status!=='Selesai').length;
   document.getElementById('d-todo').textContent=data.todos.filter(t=>!t.done).length;
@@ -1918,24 +1822,17 @@ async function init(){
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('view') === 'spatial-public') {
     isPublicView = true; document.body.classList.add('public-view'); document.getElementById('sk-public-info').style.display = 'block';
-    
-    // Sembunyikan layar login dan langsung tampilkan main layout jika dalam Public View
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('main-layout').style.display = 'block';
-    document.querySelectorAll('.page').forEach(x=>x.classList.remove('active')); 
-    document.getElementById('page-spatial').classList.add('active');
-    
-    await loadData();
+    document.querySelectorAll('.page').forEach(x=>x.classList.remove('active')); document.getElementById('page-spatial').classList.add('active');
   } else {
     const now=new Date(); document.getElementById('nav-date').textContent=now.toLocaleDateString('id-ID',{weekday:'short',day:'numeric',month:'short'});
     document.getElementById('dash-date-sub').textContent=now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
     document.getElementById('rp-date').value=ds(now); document.getElementById('abs-input-date').value=ds(now);
     setKontribPeriod('custom',document.getElementById('btn-kp-custom'));
-    // loadData akan dipanggil otomatis oleh auth.onAuthStateChanged jika user login
   }
+  await loadData();
 }
 
-// Eksekusi fungsi utama (Hanya setup UI dasar)
+// Eksekusi fungsi utama
 init();
 </script>
 </body>

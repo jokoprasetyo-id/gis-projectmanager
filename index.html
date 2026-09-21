@@ -561,6 +561,15 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
       <div><div class="flabel">Waktu (Jam)</div><input class="finput" type="time" id="jw-time"></div>
     </div>
     <div class="frow">
+      <div class="flabel">Pengulangan</div>
+      <select class="finput" id="jw-repeat">
+        <option value="none">Sekali</option>
+        <option value="daily">Harian</option>
+        <option value="weekly">Mingguan</option>
+        <option value="monthly">Bulanan</option>
+      </select>
+    </div>
+    <div class="frow">
       <div class="flabel">Jenis Agenda</div>
       <div class="pill-row" id="jw-type">
         <div class="pill on" data-v="meeting" onclick="pickPill(this)" style="color:var(--blue-mid)">Meeting</div>
@@ -964,6 +973,7 @@ function resetJadwalForm() {
   editJadwalId = null;
   ['jw-title', 'jw-time', 'jw-link', 'jw-notes', 'jw-proj'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('jw-date').value = jadwalSelectedDate || ds(new Date());
+  document.getElementById('jw-repeat').value = 'none';
   document.querySelectorAll('#jw-type .pill').forEach(el => el.classList.remove('on'));
   document.querySelector('#jw-type .pill[data-v="meeting"]').classList.add('on');
   document.querySelector('#add-jadwal-card .btn-primary').textContent = 'Simpan Jadwal';
@@ -982,6 +992,7 @@ function addJadwal() {
     title: title,
     date: document.getElementById('jw-date').value,
     time: document.getElementById('jw-time').value,
+    repeat: document.getElementById('jw-repeat').value,
     type: getPillVal('jw-type') || 'meeting',
     link: document.getElementById('jw-link').value.trim(),
     notes: document.getElementById('jw-notes').value.trim(),
@@ -1015,6 +1026,7 @@ function editJadwal(id) {
   document.getElementById('jw-proj').value = j.projId || '';
   document.getElementById('jw-date').value = j.date || '';
   document.getElementById('jw-time').value = j.time || ''; 
+  document.getElementById('jw-repeat').value = j.repeat || 'none';
   document.getElementById('jw-link').value = j.link || '';
   document.getElementById('jw-notes').value = j.notes || '';
   
@@ -1051,6 +1063,23 @@ function selectJadwalDate(dStr) {
   renderJadwalList();
 }
 
+function isEventOnDate(j, targetDateStr) {
+  if (j.date === targetDateStr) return true;
+  if (!j.repeat || j.repeat === 'none') return false;
+
+  const evDate = new Date(j.date + 'T00:00:00');
+  const tgtDate = new Date(targetDateStr + 'T00:00:00');
+
+  // Jangan tampilkan agenda sebelum tanggal mulainya
+  if (tgtDate < evDate) return false;
+
+  if (j.repeat === 'daily') return true;
+  if (j.repeat === 'weekly') return evDate.getDay() === tgtDate.getDay();
+  if (j.repeat === 'monthly') return evDate.getDate() === tgtDate.getDate();
+
+  return false;
+}
+
 function renderJadwalCalendar() {
   const year = jadwalCurrentMonth.getFullYear();
   const month = jadwalCurrentMonth.getMonth();
@@ -1081,9 +1110,9 @@ function renderJadwalCalendar() {
     let todayClass = isToday ? 'today' : '';
     
     // Check for events to render dots
-    let hasMeeting = data.jadwal.some(j => j.date === currentDs && j.type === 'meeting');
-    let hasLapangan = data.jadwal.some(j => j.date === currentDs && j.type === 'lapangan');
-    let hasLainnya = data.jadwal.some(j => j.date === currentDs && j.type === 'lainnya');
+    let hasMeeting = data.jadwal.some(j => isEventOnDate(j, currentDs) && j.type === 'meeting');
+    let hasLapangan = data.jadwal.some(j => isEventOnDate(j, currentDs) && j.type === 'lapangan');
+    let hasLainnya = data.jadwal.some(j => isEventOnDate(j, currentDs) && j.type === 'lainnya');
     let hasTodoDeadline = data.todos.some(t => t.deadline === currentDs && !t.done);
     
     let dotsHtml = '';
@@ -1115,7 +1144,7 @@ function renderJadwalList() {
   }
 
   // Gather events from data.jadwal
-  let agendas = data.jadwal.filter(j => j.date === targetDate);
+  let agendas = data.jadwal.filter(j => isEventOnDate(j, targetDate));
   
   // Gather uncompleted todos mapped to this date
   let deadlines = data.todos.filter(t => t.deadline === targetDate && !t.done);
@@ -1133,13 +1162,17 @@ function renderJadwalList() {
     let timeBadge = j.time ? `<div class="jw-time">${j.time}</div>` : '';
     let notes = j.notes ? `<div class="jw-notes">${esc(j.notes).replace(/\n/g, '<br>')}</div>` : '';
     let projBadge = j.projName ? `<div style="font-size:11px; color:var(--blue-mid); margin-top:2px; font-weight:600;">Proyek: ${esc(j.projName)}</div>` : '';
+    let repeatBadge = (j.repeat && j.repeat !== 'none') ? `<span style="font-size:9px; color:var(--purple-mid); background:var(--purple-bg); padding:2px 6px; border-radius:4px; margin-left:6px; font-weight:700; text-transform:uppercase;">${j.repeat==='daily'?'Harian':j.repeat==='weekly'?'Mingguan':'Bulanan'}</span>` : '';
     
     html += `
       <div class="jw-item type-${j.type}">
         <div class="jw-item-header">
           <div style="flex:1;">
             <div class="jw-title">${esc(j.title)}</div>
-            <div style="font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:0.05em; font-weight:600; margin-top:2px;">Agenda ${j.type}</div>
+            <div style="display:flex; align-items:center; margin-top:2px;">
+              <div style="font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:0.05em; font-weight:600;">Agenda ${j.type}</div>
+              ${repeatBadge}
+            </div>
             ${projBadge}
           </div>
           ${timeBadge}

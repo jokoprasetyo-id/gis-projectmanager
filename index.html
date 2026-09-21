@@ -838,13 +838,16 @@ async function loadData(){
       if(!data.libur) data.libur={};
     }
     
+    // Pastikan dropdown proyek selalu di-update secara global setiap kali ada perubahan data
+    fillProjSelects();
+    
     const ap=document.querySelector('.page.active');
     if(ap){
       const p=ap.id.replace('page-','');
       if(p==='dashboard') { renderDash(); renderKontribusi(); }
       if(p==='proyek') renderProyek();
       if(p==='todo') { fillProjSelects(); renderTodo(); updateTodoBadge(); }
-      if(p==='jadwal') { renderJadwalCalendar(); renderJadwalList(); }
+      if(p==='jadwal') { fillProjSelects(); renderJadwalCalendar(); renderJadwalList(); }
       if(p==='apphub') renderAppHub();
       if(p==='presensi') { fillProjSelects(); renderPresensi(); if(calSummaryOpen) renderCalendarSummary(); }
     }
@@ -862,7 +865,7 @@ function goPage(p){
   if(p==='dashboard') { renderDash(); renderKontribusi(); }
   if(p==='proyek') renderProyek();
   if(p==='todo') { fillProjSelects(); renderTodo(); updateTodoBadge(); }
-  if(p==='jadwal') { renderJadwalCalendar(); renderJadwalList(); }
+  if(p==='jadwal') { fillProjSelects(); renderJadwalCalendar(); renderJadwalList(); }
   if(p==='apphub') renderAppHub();
   if(p==='presensi') { fillProjSelects(); renderPresensi(); if(calSummaryOpen) renderCalendarSummary(); }
 }

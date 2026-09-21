@@ -552,6 +552,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Di
       <div class="flabel">Judul Kegiatan / Meeting</div>
       <input class="finput" id="jw-title" placeholder="Contoh: Rapat Mingguan Tim GIS">
     </div>
+    <div class="frow">
+      <div class="flabel">Proyek Terkait (Opsional)</div>
+      <select class="finput" id="jw-proj"><option value="">— Pilih Proyek —</option></select>
+    </div>
     <div class="fgrow">
       <div><div class="flabel">Tanggal</div><input class="finput" type="date" id="jw-date"></div>
       <div><div class="flabel">Waktu (Jam)</div><input class="finput" type="time" id="jw-time"></div>
@@ -866,7 +870,7 @@ function switchDashTab(tabId, btn) {
 
 function fillProjSelects(){
   const opts = '<option value="">— Pilih Proyek —</option>'+data.projects.filter(p=>p.status!=='Selesai').map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
-  ['td-proj','abs-proj','pomo-proj'].forEach(id=>{
+  ['td-proj','abs-proj','pomo-proj','jw-proj'].forEach(id=>{
     const s=document.getElementById(id); if(s){ const cur=s.value; s.innerHTML=opts; s.value=cur; }
   });
 }
@@ -958,7 +962,7 @@ function renderAppHub() {
 
 function resetJadwalForm() {
   editJadwalId = null;
-  ['jw-title', 'jw-time', 'jw-link', 'jw-notes'].forEach(id => document.getElementById(id).value = '');
+  ['jw-title', 'jw-time', 'jw-link', 'jw-notes', 'jw-proj'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('jw-date').value = jadwalSelectedDate || ds(new Date());
   document.querySelectorAll('#jw-type .pill').forEach(el => el.classList.remove('on'));
   document.querySelector('#jw-type .pill[data-v="meeting"]').classList.add('on');
@@ -971,13 +975,18 @@ function addJadwal() {
   const title = document.getElementById('jw-title').value.trim();
   if(!title) { toast('Judul kegiatan wajib diisi!'); return; }
   
+  const projId = document.getElementById('jw-proj').value;
+  const proj = data.projects.find(p => p.id === projId);
+  
   const payload = {
     title: title,
     date: document.getElementById('jw-date').value,
     time: document.getElementById('jw-time').value,
     type: getPillVal('jw-type') || 'meeting',
     link: document.getElementById('jw-link').value.trim(),
-    notes: document.getElementById('jw-notes').value.trim()
+    notes: document.getElementById('jw-notes').value.trim(),
+    projId: projId,
+    projName: proj ? proj.name : ''
   };
   
   if(editJadwalId) {
@@ -1003,6 +1012,7 @@ function editJadwal(id) {
   editJadwalId = id;
   
   document.getElementById('jw-title').value = j.title || ''; 
+  document.getElementById('jw-proj').value = j.projId || '';
   document.getElementById('jw-date').value = j.date || '';
   document.getElementById('jw-time').value = j.time || ''; 
   document.getElementById('jw-link').value = j.link || '';
@@ -1122,6 +1132,7 @@ function renderJadwalList() {
     let linkBtn = j.link ? `<a href="${j.link.startsWith('http') ? esc(j.link) : 'https://'+esc(j.link)}" target="_blank" class="jw-link-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg> Buka Link</a>` : '';
     let timeBadge = j.time ? `<div class="jw-time">${j.time}</div>` : '';
     let notes = j.notes ? `<div class="jw-notes">${esc(j.notes).replace(/\n/g, '<br>')}</div>` : '';
+    let projBadge = j.projName ? `<div style="font-size:11px; color:var(--blue-mid); margin-top:2px; font-weight:600;">Proyek: ${esc(j.projName)}</div>` : '';
     
     html += `
       <div class="jw-item type-${j.type}">
@@ -1129,6 +1140,7 @@ function renderJadwalList() {
           <div style="flex:1;">
             <div class="jw-title">${esc(j.title)}</div>
             <div style="font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:0.05em; font-weight:600; margin-top:2px;">Agenda ${j.type}</div>
+            ${projBadge}
           </div>
           ${timeBadge}
         </div>
